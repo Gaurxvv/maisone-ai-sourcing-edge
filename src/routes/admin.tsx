@@ -1039,17 +1039,18 @@ function AdminPage() {
     navigate({ to: "/" });
   };
 
-  // Skip the admin layout entirely if rendering the login route
-  if (pathname === "/admin/login") {
-    return <Outlet />;
-  }
-
+  // Always block render until we know auth state — prevents flash of login or admin content
   if (authLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#07070a] text-white">
         <Loader2 className="size-8 animate-spin text-electric" />
       </div>
     );
+  }
+
+  // Skip the admin layout entirely if rendering the login route
+  if (pathname === "/admin/login") {
+    return <Outlet />;
   }
 
   return (
