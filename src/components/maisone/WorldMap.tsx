@@ -14,10 +14,7 @@ export const HUBS = [
   { name: "Paris", region: "France", lat: 48.85, lon: 2.35, align: "left" },
   { name: "Milan", region: "Italy", lat: 45.46, lon: 9.19, align: "bottom" },
   { name: "Florence", region: "Italy", lat: 43.77, lon: 11.25, align: "right" },
-  { name: "Mumbai", region: "India", lat: 19.07, lon: 72.87, align: "left" },
-  { name: "Delhi", region: "India", lat: 28.61, lon: 77.21, align: "right" },
   { name: "Tokyo", region: "Japan", lat: 35.68, lon: 139.69, align: "right" },
-  { name: "Buenos Aires", region: "Argentina", lat: -34.6, lon: -58.38, align: "right" },
 ];
 
 const getLabelStyle = (align?: string) => {

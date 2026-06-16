@@ -10,7 +10,7 @@ import {
 import { ThemeProvider } from "@/components/theme-provider";
 import { Logo } from "@/components/maisone/Logo";
 import { supabase } from "@/lib/supabase";
-import { Overview, Suppliers, Shipments, Inventory, Trends, SUPPLIERS, DEFAULT_INVENTORY, SHIPMENTS } from "@/components/maisone/Dashboard";
+import { Overview, Suppliers, Shipments, Inventory, SUPPLIERS, DEFAULT_INVENTORY, SHIPMENTS } from "@/components/maisone/Dashboard";
 
 export const Route = createFileRoute("/admin")({
   beforeLoad: async ({ location }) => {
@@ -273,7 +273,7 @@ export function TableSkeleton() {
   );
 }
 
-type AdminTab = "overview" | "demo_requests" | "suppliers" | "shipments" | "inventory" | "trends";
+type AdminTab = "overview" | "demo_requests" | "suppliers" | "shipments" | "inventory";
 
 const ADMIN_TABS = [
   { id: "overview" as const, to: "/admin" as const, label: "Overview", icon: Layers },
@@ -281,7 +281,6 @@ const ADMIN_TABS = [
   { id: "suppliers" as const, to: "/admin/suppliers" as const, label: "Suppliers", icon: Building2 },
   { id: "shipments" as const, to: "/admin/shipments" as const, label: "Shipments", icon: Globe },
   { id: "inventory" as const, to: "/admin/inventory" as const, label: "Inventory", icon: Layers },
-  { id: "trends" as const, to: "/admin/trends" as const, label: "Trends", icon: Sparkles },
 ];export function SuppliersWrapper() {
   const [region, setRegion] = useState("All");
   const [query, setQuery] = useState("");

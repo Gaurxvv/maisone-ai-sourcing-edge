@@ -1,14 +1,25 @@
 import { Logo } from "./Logo";
 import { ArrowUpRight, Mail, MessageCircle, MapPin } from "lucide-react";
 
-const offices = [
-  { city: "New York", region: "United States" },
-  { city: "London", region: "United Kingdom" },
-  { city: "Milan", region: "Italy" },
-  { city: "Paris", region: "France" },
-  { city: "Mumbai", region: "India" },
-  { city: "Tokyo", region: "Japan" },
-  { city: "Buenos Aires", region: "Argentina" },
+const contacts = [
+  {
+    region: "Italy",
+    name: "Charlène Le Ray",
+    phone: "+39 346 956 5469",
+  },
+  {
+    region: "Japan / Asia",
+    name: "Hada",
+    phone: "+81 70-9284-5568",
+    email: "Hada@maisone.in",
+  },
+  {
+    region: "India",
+    people: [
+      { name: "Shashank", phone: "+91 9873820888", email: "Shashank@maisone.in" },
+      { name: "Subah", phone: "+91 9811855070", email: "Subah@maisone.in" },
+    ]
+  }
 ];
 
 export function Footer() {
@@ -47,14 +58,14 @@ export function Footer() {
 
         {/* Contact strip */}
         <div className="grid md:grid-cols-3 gap-4 py-12 border-b border-border">
-          <a href="mailto:hello@maisone.global" className="glass-strong rounded-2xl p-5 flex items-center gap-4 hover:border-electric/40 transition-colors">
+          <a href="mailto:shashank@maisone.in" className="glass-strong rounded-2xl p-5 flex items-center gap-4 hover:border-electric/40 transition-colors">
             <div className="size-10 rounded-xl bg-electric/15 flex items-center justify-center"><Mail className="size-4 text-electric" /></div>
             <div>
               <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Email</p>
-              <p className="text-sm mt-0.5">hello@maisone.global</p>
+              <p className="text-sm mt-0.5">shashank@maisone.in</p>
             </div>
           </a>
-          <a href="https://wa.me/000000000" className="glass-strong rounded-2xl p-5 flex items-center gap-4 hover:border-electric/40 transition-colors">
+          <a href="https://wa.me/919873820888" className="glass-strong rounded-2xl p-5 flex items-center gap-4 hover:border-electric/40 transition-colors">
             <div className="size-10 rounded-xl bg-emerald-500/15 flex items-center justify-center"><MessageCircle className="size-4 text-emerald-400" /></div>
             <div>
               <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">WhatsApp</p>
@@ -64,40 +75,65 @@ export function Footer() {
           <a href="#contact" className="glass-strong rounded-2xl p-5 flex items-center gap-4 hover:border-electric/40 transition-colors">
             <div className="size-10 rounded-xl bg-violet-500/15 flex items-center justify-center"><MapPin className="size-4 text-violet-300" /></div>
             <div>
-              <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Global Offices</p>
-              <p className="text-sm mt-0.5">7 cities · 4 continents</p>
+              <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Global Presence</p>
+              <p className="text-sm mt-0.5">Italy · Japan · India</p>
             </div>
           </a>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-10 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-10 py-16">
           <div className="col-span-2">
             <Logo />
             <p className="mt-5 text-sm text-muted-foreground max-w-xs">
               Built on trust, transparency, and craftsmanship.
             </p>
-            <div className="mt-6 text-xs text-muted-foreground space-y-1">
-              <p>hello@maisone.global</p>
+            <div className="mt-6 space-y-4">
+              <div>
+                <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground mb-1">Head Office</p>
+                <p className="text-xs text-foreground/80 leading-relaxed">
+                  Plot 140, Udyog Vihar Industrial Area,<br />
+                  Phase VI, Sector 37, Gurgaon - 122001
+                </p>
+              </div>
+              <div className="text-xs text-muted-foreground">
+                <p>hello@maisone.in</p>
+              </div>
             </div>
           </div>
 
-          <div>
-            <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground mb-5">Offices</p>
-            <ul className="space-y-3">
-              {offices.map((o) => (
-                <li key={o.city} className="text-sm">
-                  <span className="text-foreground">{o.city}</span>
-                  <span className="text-muted-foreground"> · {o.region}</span>
-                </li>
+          <div className="col-span-2">
+            <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground mb-5">Regional Contacts</p>
+            <div className="space-y-4">
+              {contacts.map((c, idx) => (
+                <div key={idx} className="text-xs border-l border-white/10 pl-3">
+                  <p className="font-semibold text-white tracking-wider mb-1 uppercase text-[10px]">{c.region}</p>
+                  {c.people ? (
+                    <div className="space-y-2.5 mt-1.5">
+                      {c.people.map((p, pIdx) => (
+                        <div key={pIdx}>
+                          <p className="text-foreground font-medium">{p.name}</p>
+                          <p className="text-muted-foreground text-[11px]">Phone: {p.phone}</p>
+                          <p className="text-muted-foreground text-[11px]">Email: {p.email}</p>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="mt-1">
+                      <p className="text-foreground font-medium">{c.name}</p>
+                      <p className="text-muted-foreground text-[11px]">Phone: {c.phone}</p>
+                      {c.email && <p className="text-muted-foreground text-[11px]">Email: {c.email}</p>}
+                    </div>
+                  )}
+                </div>
               ))}
-            </ul>
+            </div>
           </div>
 
           {[
             { title: "Company", links: ["About", "How We Work", "Founders", "Case Studies"] },
             { title: "Legal", links: ["Privacy", "Terms", "Compliance", "Sustainability"] },
           ].map((c) => (
-            <div key={c.title}>
+            <div key={c.title} className="col-span-1">
               <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground mb-5">{c.title}</p>
               <ul className="space-y-3">
                 {c.links.map((l) => (

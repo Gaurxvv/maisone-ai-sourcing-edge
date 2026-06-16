@@ -13,7 +13,6 @@ import { Route as BookDemoRouteImport } from './routes/book-demo'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
-import { Route as AdminTrendsRouteImport } from './routes/admin/trends'
 import { Route as AdminSuppliersRouteImport } from './routes/admin/suppliers'
 import { Route as AdminShipmentsRouteImport } from './routes/admin/shipments'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
@@ -38,11 +37,6 @@ const IndexRoute = IndexRouteImport.update({
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => AdminRoute,
-} as any)
-const AdminTrendsRoute = AdminTrendsRouteImport.update({
-  id: '/trends',
-  path: '/trends',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminSuppliersRoute = AdminSuppliersRouteImport.update({
@@ -80,7 +74,6 @@ export interface FileRoutesByFullPath {
   '/admin/login': typeof AdminLoginRoute
   '/admin/shipments': typeof AdminShipmentsRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
-  '/admin/trends': typeof AdminTrendsRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -91,7 +84,6 @@ export interface FileRoutesByTo {
   '/admin/login': typeof AdminLoginRoute
   '/admin/shipments': typeof AdminShipmentsRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
-  '/admin/trends': typeof AdminTrendsRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
@@ -104,7 +96,6 @@ export interface FileRoutesById {
   '/admin/login': typeof AdminLoginRoute
   '/admin/shipments': typeof AdminShipmentsRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
-  '/admin/trends': typeof AdminTrendsRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -118,7 +109,6 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/shipments'
     | '/admin/suppliers'
-    | '/admin/trends'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -129,7 +119,6 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/shipments'
     | '/admin/suppliers'
-    | '/admin/trends'
     | '/admin'
   id:
     | '__root__'
@@ -141,7 +130,6 @@ export interface FileRouteTypes {
     | '/admin/login'
     | '/admin/shipments'
     | '/admin/suppliers'
-    | '/admin/trends'
     | '/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -179,13 +167,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/admin/'
       preLoaderRoute: typeof AdminIndexRouteImport
-      parentRoute: typeof AdminRoute
-    }
-    '/admin/trends': {
-      id: '/admin/trends'
-      path: '/trends'
-      fullPath: '/admin/trends'
-      preLoaderRoute: typeof AdminTrendsRouteImport
       parentRoute: typeof AdminRoute
     }
     '/admin/suppliers': {
@@ -232,7 +213,6 @@ interface AdminRouteChildren {
   AdminLoginRoute: typeof AdminLoginRoute
   AdminShipmentsRoute: typeof AdminShipmentsRoute
   AdminSuppliersRoute: typeof AdminSuppliersRoute
-  AdminTrendsRoute: typeof AdminTrendsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
@@ -242,7 +222,6 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminLoginRoute: AdminLoginRoute,
   AdminShipmentsRoute: AdminShipmentsRoute,
   AdminSuppliersRoute: AdminSuppliersRoute,
-  AdminTrendsRoute: AdminTrendsRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
