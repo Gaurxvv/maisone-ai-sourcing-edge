@@ -144,10 +144,12 @@ function AssistantRoute() {
     }
   }, [messages, isLoading])
 
-  const showCTA = messages.length > 2 && messages[messages.length - 1].role === 'ai' && (
-    /thank|bye|goodbye|done|exit|finish|wrap|great|perfect|awesome/i.test(messages[messages.length - 2]?.content || '') ||
-    /demo|admin|contact/i.test(messages[messages.length - 1]?.content || '')
-  )
+  const QUICK_OPTIONS = [
+    { label: "Find Denim Suppliers", icon: "👖", query: "Find Denim suppliers in Japan" },
+    { label: "Check SKU Inventory", icon: "📦", query: "Check inventory levels for DEN-501" },
+    { label: "View Product Categories", icon: "🏷️", query: "What product categories do you support?" },
+    { label: "Talk to an Admin", icon: "👤", query: "How can I contact a Maisone Admin?" }
+  ]
 
   const handleSend = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -169,6 +171,29 @@ function AssistantRoute() {
       setIsLoading(false)
     }
   }
+
+  const handleQuickOptionClick = async (queryText: string) => {
+    if (isLoading) return
+    
+    setMessages(prev => [...prev, { role: 'user', content: queryText }])
+    setIsLoading(true)
+
+    const currentHistory = [...messages]
+
+    try {
+      const result = await sendChatFn({ data: { message: queryText, history: currentHistory } })
+      setMessages(prev => [...prev, { role: 'ai', content: result.reply }])
+    } catch (error) {
+      setMessages(prev => [...prev, { role: 'ai', content: "Sorry, please make sure you've added your KIMI_API_KEY to your .env file and restart your development server if you just added it." }])
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const showCTA = messages.length > 2 && messages[messages.length - 1].role === 'ai' && (
+    /thank|bye|goodbye|done|exit|finish|wrap|great|perfect|awesome/i.test(messages[messages.length - 2]?.content || '') ||
+    /demo|admin|contact/i.test(messages[messages.length - 1]?.content || '')
+  )
 
   return (
     <div className="min-h-screen pt-32 pb-16 px-6">
@@ -193,20 +218,37 @@ function AssistantRoute() {
 
             <div ref={scrollRef} className="flex-1 overflow-y-auto p-6 space-y-6 scroll-smooth bg-background/20">
               {messages.map((msg, idx) => (
-                <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[85%] ${msg.role === 'user' ? '' : 'w-full'} `}>
-                    {msg.role === 'ai' && (
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="size-6 rounded-full bg-gradient-to-br from-electric to-violet-glow flex items-center justify-center shadow-md">
-                          <span className="font-serif text-[11px] text-white">M</span>
+                <div key={idx} className="space-y-4">
+                  <div className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                    <div className={`max-w-[85%] ${msg.role === 'user' ? '' : 'w-full'} `}>
+                      {msg.role === 'ai' && (
+                        <div className="flex items-center gap-2 mb-2">
+                          <div className="size-6 rounded-full bg-gradient-to-br from-electric to-violet-glow flex items-center justify-center shadow-md">
+                            <span className="font-serif text-[11px] text-white">M</span>
+                          </div>
+                          <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Maisone AI</span>
                         </div>
-                        <span className="text-[10px] uppercase tracking-widest text-muted-foreground">Maisone AI</span>
+                      )}
+                      <div className={`leading-relaxed rounded-2xl px-5 py-3.5 text-sm shadow-sm ${msg.role === 'user' ? 'bg-foreground text-background' : 'glass border border-border'}`}>
+                        {formatMessage(msg.content)}
                       </div>
-                    )}
-                    <div className={`leading-relaxed rounded-2xl px-5 py-3.5 text-sm shadow-sm ${msg.role === 'user' ? 'bg-foreground text-background' : 'glass border border-border'}`}>
-                      {formatMessage(msg.content)}
                     </div>
                   </div>
+                  {idx === 0 && messages.length === 1 && (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl sm:ml-8 mt-4 animate-fade-in">
+                      {QUICK_OPTIONS.map((opt) => (
+                        <button
+                          key={opt.label}
+                          type="button"
+                          onClick={() => handleQuickOptionClick(opt.query)}
+                          className="flex items-center gap-3 text-left p-4 rounded-2xl glass border border-border hover:border-electric/50 hover:bg-electric/5 transition-all text-xs font-semibold"
+                        >
+                          <span className="text-lg">{opt.icon}</span>
+                          <span>{opt.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
               ))}
               {showCTA && (
