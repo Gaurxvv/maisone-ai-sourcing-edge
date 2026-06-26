@@ -79,12 +79,19 @@ function Index() {
           <Testimonials />
           
           {/* Floating AI Assistant Button */}
-          <a
-            href="/assistant"
-            className="fixed bottom-6 right-6 z-50 size-14 rounded-full bg-electric text-background flex items-center justify-center shadow-2xl hover:scale-110 transition-transform shadow-electric/20 group"
-          >
-            <MessageSquare className="size-6 group-hover:scale-110 transition-transform" />
-          </a>
+          <div className="fixed bottom-8 right-8 z-50 flex items-center gap-4">
+            <span className="bg-card/95 text-foreground border border-electric/40 px-6 py-3 rounded-2xl text-sm font-semibold shadow-[0_10px_30px_-5px_rgba(0,0,0,0.3),0_0_20px_rgba(194,164,109,0.15)] backdrop-blur-md whitespace-nowrap relative animate-float flex items-center">
+              Talk with our <span className="font-serif italic text-electric ml-2 tracking-wide text-base">Maisone AI</span>
+              <span className="absolute top-1/2 -translate-y-1/2 -right-1.5 size-3 rotate-45 bg-card/95 border-r border-t border-electric/40" />
+            </span>
+            <a
+              href="/assistant"
+              className="size-16 rounded-full bg-electric text-background flex items-center justify-center shadow-[0_0_35px_rgba(194,164,109,0.4)] hover:scale-105 transition-transform hover:shadow-[0_0_45px_rgba(194,164,109,0.6)] shrink-0 animate-float"
+              style={{ animationDelay: '0.5s' }}
+            >
+              <MessageSquare className="size-7" />
+            </a>
+          </div>
         </main>
         <Footer />
       </div>

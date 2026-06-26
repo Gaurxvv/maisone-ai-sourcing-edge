@@ -1,55 +1,139 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
-import OpenAI from 'openai'
 import { useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
+import { supabase } from '../lib/supabase'
+
+interface ChatMessage {
+  role: 'user' | 'ai'
+  content: string
+}
 
 const sendChatFn = createServerFn({ method: 'POST' })
-  .validator((d: { message: string, threadId?: string }) => d)
+  .validator((d: { message: string; history: ChatMessage[] }) => d)
   .handler(async ({ data }) => {
-    const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
-    const assistantId = process.env.OPENAI_ASSISTANT_ID
+    const apiKey = process.env.KIMI_API_KEY
+    const baseURL = process.env.KIMI_BASE_URL || 'https://api.moonshot.cn/v1'
+    const model = process.env.KIMI_MODEL || 'moonshot-v1-8k'
 
-    if (!assistantId) {
-      throw new Error('Missing OPENAI_ASSISTANT_ID environment variable.')
+    if (!apiKey) {
+      throw new Error('Missing KIMI_API_KEY environment variable.')
     }
 
-    let threadId = data.threadId
-    if (!threadId) {
-      const thread = await openai.beta.threads.create()
-      threadId = thread.id
-    }
+    // Fetch real-time data from Supabase to provide as context
+    let dbContext = ""
+    try {
+      const [{ data: suppliers }, { data: inventory }] = await Promise.all([
+        supabase.from('suppliers').select('*'),
+        supabase.from('inventory').select('*')
+      ])
 
-    await openai.beta.threads.messages.create(threadId, {
-      role: 'user',
-      content: data.message
-    })
-
-    const run = await openai.beta.threads.runs.createAndPoll(threadId, {
-      assistant_id: assistantId,
-    })
-
-    if (run.status === 'completed') {
-      const messages = await openai.beta.threads.messages.list(threadId)
-      const lastMessage = messages.data[0]
-      if (lastMessage.content[0].type === 'text') {
-        return { reply: lastMessage.content[0].text.value, threadId }
+      if (suppliers && suppliers.length > 0) {
+        dbContext += "\n\nVerified Suppliers in our Database:\n" + suppliers.map(s => 
+          `- ${s.name} (${s.city}, ${s.region}) | Category: ${s.category} | Rating: ${s.rating} | Lead Time: ${s.lead_time} days | On-Time Delivery: ${s.otd}% | ID: ${s.supplier_id}`
+        ).join('\n')
       }
+
+      if (inventory && inventory.length > 0) {
+        dbContext += "\n\nInventory levels in our Database:\n" + inventory.map(i => 
+          `- ${i.name} (SKU: ${i.sku}) | Stock: ${i.stock} units | Reorder point: ${i.reorder} units`
+        ).join('\n')
+      }
+    } catch (e) {
+      console.warn("Could not fetch data from Supabase:", e)
     }
-    
-    return { reply: "I'm sorry, I encountered an error while communicating with the server.", threadId }
+
+    const messagesInput = [
+      {
+        role: 'system',
+        content: `You are the Maisone Sourcing Assistant, a helpful and professional AI assistant for Maisone (a premium sourcing platform). 
+
+OFFICIAL PRODUCT CATEGORIES ON MAISONE:
+- Flat Knits
+- Leather
+- Denim
+- Contemporary ready to wear
+- Couture
+- Accessories
+
+STRICT BEHAVIOR RULES:
+1. Base your answers ONLY on the official categories listed above and the verified database records from Supabase provided below.
+2. DO NOT hallucinate, make up, or invent suppliers, categories, stock levels, or details that are not explicitly present in the data below.
+3. If the user asks about a product category, supplier, or material not mentioned in the official list or database records, politely explain that Maisone does not currently support it and only list what is officially supported.
+4. Keep answers concise, high-end, premium, and professional.
+
+REAL-TIME DATABASE CONTEXT:${dbContext}`,
+      },
+    ]
+
+    for (const msg of data.history) {
+      messagesInput.push({
+        role: msg.role === 'ai' ? 'assistant' : 'user',
+        content: msg.content,
+      })
+    }
+
+    messagesInput.push({
+      role: 'user',
+      content: data.message,
+    })
+
+    const response = await fetch(`${baseURL}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      },
+      body: JSON.stringify({
+        model,
+        messages: messagesInput
+      })
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      throw new Error(`Kimi API error: ${response.statusText} - ${errorText}`)
+    }
+
+    const result = (await response.json()) as {
+      choices: { message: { content: string } }[]
+    }
+
+    const reply = result.choices?.[0]?.message?.content || "I'm sorry, I couldn't generate a response."
+    return { reply }
   })
 
 export const Route = createFileRoute('/assistant')({
   component: AssistantRoute,
 })
 
+function formatMessage(content: string) {
+  return content.split('\n').map((line, lineIdx) => {
+    const parts = line.split(/(\*\*.*?\*\*)/g)
+    const elements = parts.map((part, partIdx) => {
+      if (part.startsWith('**') && part.endsWith('**')) {
+        return (
+          <strong key={partIdx} className="font-semibold text-foreground">
+            {part.slice(2, -2)}
+          </strong>
+        )
+      }
+      return part
+    })
+
+    return (
+      <div key={lineIdx} className={lineIdx > 0 ? 'mt-2' : ''}>
+        {elements}
+      </div>
+    )
+  })
+}
+
 function AssistantRoute() {
-  const [messages, setMessages] = useState<{role: 'user'|'ai', content: string}[]>([
+  const [messages, setMessages] = useState<ChatMessage[]>([
     { role: 'ai', content: "Hello! I'm the Maisone Sourcing Assistant. How can I help you find the right supplier today?" }
   ])
   const [input, setInput] = useState('')
-  const [threadId, setThreadId] = useState<string | undefined>(undefined)
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSend = async (e: React.FormEvent) => {
@@ -58,15 +142,16 @@ function AssistantRoute() {
     
     const userMsg = input.trim()
     setInput('')
+    
+    const currentHistory = [...messages]
     setMessages(prev => [...prev, { role: 'user', content: userMsg }])
     setIsLoading(true)
 
     try {
-      const result = await sendChatFn({ data: { message: userMsg, threadId } })
-      setThreadId(result.threadId)
+      const result = await sendChatFn({ data: { message: userMsg, history: currentHistory } })
       setMessages(prev => [...prev, { role: 'ai', content: result.reply }])
     } catch (error) {
-      setMessages(prev => [...prev, { role: 'ai', content: "Sorry, please make sure you've added your OPENAI_API_KEY and OPENAI_ASSISTANT_ID to your .env file." }])
+      setMessages(prev => [...prev, { role: 'ai', content: "Sorry, please make sure you've added your KIMI_API_KEY to your .env file and restart your development server if you just added it." }])
     } finally {
       setIsLoading(false)
     }
@@ -106,7 +191,7 @@ function AssistantRoute() {
                       </div>
                     )}
                     <div className={`leading-relaxed rounded-2xl px-5 py-3.5 text-sm shadow-sm ${msg.role === 'user' ? 'bg-foreground text-background' : 'glass border border-border'}`}>
-                      {msg.content}
+                      {formatMessage(msg.content)}
                     </div>
                   </div>
                 </div>
