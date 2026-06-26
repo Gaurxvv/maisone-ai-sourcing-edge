@@ -55,9 +55,9 @@ export type DemoRequest = {
 
 export const AdminContext = createContext<any>(null);
 
-export function StatusDropdown({ currentStatus, onChange }: { currentStatus: string; onChange: (status: string) => void }) {
+export function StatusDropdown({ currentStatus, onChange, options = ["Pending", "Contacted", "Completed", "Archived"] }: { currentStatus: string; onChange: (status: string) => void; options?: string[] }) {
   const [isOpen, setIsOpen] = useState(false);
-  const statuses = ["Pending", "Contacted", "Completed", "Archived"];
+  const statuses = options;
 
   const getStatusStyles = (status: string) => {
     switch (status) {
@@ -76,11 +76,19 @@ export function StatusDropdown({ currentStatus, onChange }: { currentStatus: str
           dot: "bg-blue-400"
         };
       case "Completed":
+      case "Approved":
         return {
           bg: "bg-emerald-500/10 hover:bg-emerald-500/20",
           text: "text-emerald-400",
           border: "border-emerald-500/20",
           dot: "bg-emerald-400"
+        };
+      case "Rejected":
+        return {
+          bg: "bg-red-500/10 hover:bg-red-500/20",
+          text: "text-red-400",
+          border: "border-red-500/20",
+          dot: "bg-red-400"
         };
       default:
         return {
@@ -273,11 +281,53 @@ export function TableSkeleton() {
   );
 }
 
-type AdminTab = "overview" | "demo_requests" | "suppliers" | "shipments" | "inventory";
+export function OverviewSkeleton() {
+  return (
+    <div className="space-y-4">
+      {/* Cards Skeleton */}
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="rounded-xl p-4 bg-white/[0.02] border border-white/5 animate-pulse">
+            <div className="h-2 w-1/2 bg-white/5 rounded mb-3" />
+            <div className="h-6 w-3/4 bg-white/10 rounded" />
+          </div>
+        ))}
+      </div>
+
+      {/* Chart Skeleton */}
+      <div className="rounded-xl p-5 bg-white/[0.02] border border-white/5 animate-pulse h-[200px]">
+         <div className="h-3 w-1/4 bg-white/5 rounded mb-2" />
+         <div className="h-2 w-1/3 bg-white/5 rounded" />
+         <div className="mt-8 h-20 w-full bg-white/5 rounded" />
+      </div>
+
+      {/* List Skeleton */}
+      <div className="rounded-xl bg-white/[0.02] border border-white/5 overflow-hidden animate-pulse">
+        <div className="px-5 py-4 border-b border-white/5 flex items-center justify-between">
+          <div className="h-4 w-1/6 bg-white/5 rounded" />
+        </div>
+        <div className="divide-y divide-white/5">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="grid grid-cols-12 gap-4 px-5 py-4 items-center">
+              <div className="col-span-2 h-3 bg-white/5 rounded" />
+              <div className="col-span-4 h-3 bg-white/5 rounded" />
+              <div className="col-span-2 h-3 bg-white/5 rounded" />
+              <div className="col-span-3 h-1 bg-white/5 rounded" />
+              <div className="col-span-1 h-3 bg-white/5 rounded" />
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+type AdminTab = "overview" | "demo_requests" | "supplier_requests" | "suppliers" | "shipments" | "inventory" | "trends";
 
 const ADMIN_TABS = [
   { id: "overview" as const, to: "/admin" as const, label: "Overview", icon: Layers },
   { id: "demo_requests" as const, to: "/admin/demo-requests" as const, label: "Demo Requests", icon: Mail },
+  { id: "supplier_requests" as const, to: "/admin/supplier-requests" as const, label: "Supplier Requests", icon: Mail },
   { id: "suppliers" as const, to: "/admin/suppliers" as const, label: "Suppliers", icon: Building2 },
   { id: "shipments" as const, to: "/admin/shipments" as const, label: "Shipments", icon: Globe },
   { id: "inventory" as const, to: "/admin/inventory" as const, label: "Inventory", icon: Layers },
@@ -964,7 +1014,7 @@ export function OverviewWrapper() {
         />
       </div>
       {loading ? (
-        <TableSkeleton />
+        <OverviewSkeleton />
       ) : (
         <Overview query={query} data={shipmentsList} />
       )}
@@ -1034,6 +1084,7 @@ function AdminPage() {
   }, [session]);
 
   const handleLogout = async () => {
+    setAuthLoading(true);
     await supabase.auth.signOut();
     navigate({ to: "/" });
   };
