@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { useState, useRef, useEffect } from 'react'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Search, Package, Layers, Headphones } from 'lucide-react'
 import { supabase } from '../lib/supabase'
 
 interface ChatMessage {
@@ -145,10 +145,10 @@ function AssistantRoute() {
   }, [messages, isLoading])
 
   const QUICK_OPTIONS = [
-    { label: "Find Denim Suppliers", icon: "👖", query: "Find Denim suppliers in Japan" },
-    { label: "Check SKU Inventory", icon: "📦", query: "Check inventory levels for DEN-501" },
-    { label: "View Product Categories", icon: "🏷️", query: "What product categories do you support?" },
-    { label: "Talk to an Admin", icon: "👤", query: "How can I contact a Maisone Admin?" }
+    { label: "Find Denim Suppliers", icon: <Search className="size-4 text-electric" />, query: "Find Denim suppliers in Japan" },
+    { label: "Check SKU Inventory", icon: <Package className="size-4 text-electric" />, query: "Check inventory levels for DEN-501" },
+    { label: "View Product Categories", icon: <Layers className="size-4 text-electric" />, query: "What product categories do you support?" },
+    { label: "Talk to an Admin", icon: <Headphones className="size-4 text-electric" />, query: "How can I contact a Maisone Admin?" }
   ]
 
   const handleSend = async (e: React.FormEvent) => {
@@ -235,16 +235,23 @@ function AssistantRoute() {
                     </div>
                   </div>
                   {idx === 0 && messages.length === 1 && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-w-xl sm:ml-8 mt-4 animate-fade-in">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 max-w-xl sm:ml-8 mt-6 animate-fade-in">
                       {QUICK_OPTIONS.map((opt) => (
                         <button
                           key={opt.label}
                           type="button"
                           onClick={() => handleQuickOptionClick(opt.query)}
-                          className="flex items-center gap-3 text-left p-4 rounded-2xl glass border border-border hover:border-electric/50 hover:bg-electric/5 transition-all text-xs font-semibold"
+                          className="group flex items-center gap-4 text-left p-4.5 rounded-2xl glass border border-border hover:border-electric/40 hover:bg-electric/5 hover:shadow-[0_0_20px_rgba(194,164,109,0.05)] transition-all cursor-pointer"
                         >
-                          <span className="text-lg">{opt.icon}</span>
-                          <span>{opt.label}</span>
+                          <div className="size-9 rounded-xl bg-gradient-to-br from-electric/10 to-violet-glow/10 border border-electric/20 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform duration-300">
+                            {opt.icon}
+                          </div>
+                          <div>
+                            <span className="block text-[10px] uppercase tracking-wider text-muted-foreground mb-0.5">Quick Action</span>
+                            <span className="font-serif italic text-sm text-foreground group-hover:text-electric transition-colors duration-300">
+                              {opt.label}
+                            </span>
+                          </div>
                         </button>
                       ))}
                     </div>
