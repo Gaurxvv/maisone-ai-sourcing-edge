@@ -7,9 +7,7 @@ import { Hero } from "@/components/maisone/Hero";
 import { About } from "@/components/maisone/About";
 import { WhyMaisone } from "@/components/maisone/WhyMaisone";
 import { HowWeWork } from "@/components/maisone/HowWeWork";
-import { Features } from "@/components/maisone/Features";
 import { ProductCategories } from "@/components/maisone/ProductCategories";
-import { Challenges } from "@/components/maisone/Challenges";
 import { QualityControl } from "@/components/maisone/QualityControl";
 import { Dashboard } from "@/components/maisone/Dashboard";
 import { GlobalPresence } from "@/components/maisone/GlobalPresence";
@@ -61,9 +59,7 @@ function Index() {
           <WhyMaisone />
           <HowWeWork />
           <ProductCategories />
-          <Challenges />
           <QualityControl />
-          <Features />
           <Dashboard />
           <AIAssistant />
           <Marketplace />

@@ -249,7 +249,7 @@ export function Overview({ query, data }: { query: string; data?: any[] }) {
 }
 
 export function Suppliers({ query, region, setRegion, data }: { query: string; region: string; setRegion: (r: string) => void; data?: any[] }) {
-  const regions = ["All", "Japan", "United Kingdom", "Europe", "United States"];
+  const regions = ["All", "Japan", "United Kingdom", "Europe", "United States", "India", "China"];
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 10;
 

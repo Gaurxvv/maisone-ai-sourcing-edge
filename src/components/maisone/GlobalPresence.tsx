@@ -1,7 +1,7 @@
 import { WorldMap, HUBS } from "./WorldMap";
 
 export function GlobalPresence() {
-  const regions = ["United States", "United Kingdom", "France", "Italy", "Japan"];
+  const regions = ["United States", "United Kingdom", "France", "Italy", "India", "China", "Japan"];
   return (
     <section id="solutions" className="relative py-32">
       <div className="mx-auto max-w-7xl px-6">
@@ -12,7 +12,7 @@ export function GlobalPresence() {
               Four continents. <span className="italic gradient-text">One network.</span>
             </h2>
             <p className="mt-6 text-muted-foreground max-w-md">
-              Maisone empowers your brand with a dynamic network of dedicated on-the-ground agents across the world's most influential fashion capitals — delivering deep local expertise, verified compliance, and continuous benchmarking.
+              We currently source in all these countries, connecting your brand with a dynamic network of dedicated on-the-ground agents across the world's most influential fashion capitals — delivering deep local expertise, verified compliance, and continuous benchmarking.
             </p>
 
             <div className="mt-10 space-y-4">
