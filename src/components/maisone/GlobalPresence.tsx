@@ -1,5 +1,15 @@
 import { WorldMap, HUBS } from "./WorldMap";
 
+const REGION_HUBS: Record<string, string[]> = {
+  "United States": ["New York", "Los Angeles"],
+  "United Kingdom": ["London"],
+  "France": ["Paris"],
+  "Italy": ["Milan", "Florence"],
+  "India": ["New Delhi"],
+  "China": ["Shanghai"],
+  "Japan": ["Tokyo"],
+};
+
 export function GlobalPresence() {
   const regions = ["United States", "United Kingdom", "France", "Italy", "India", "China", "Japan"];
   return (
@@ -17,7 +27,7 @@ export function GlobalPresence() {
 
             <div className="mt-10 space-y-4">
               {regions.map((r) => {
-                const hubs = HUBS.filter((h) => h.region === r).map((h) => h.name);
+                const hubs = REGION_HUBS[r] || [];
                 return (
                   <div key={r} className="flex items-baseline justify-between border-b border-border pb-4">
                     <span className="font-serif text-2xl">{r}</span>
