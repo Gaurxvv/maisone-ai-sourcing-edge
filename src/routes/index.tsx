@@ -8,12 +8,9 @@ import { About } from "@/components/maisone/About";
 import { WhyMaisone } from "@/components/maisone/WhyMaisone";
 import { HowWeWork } from "@/components/maisone/HowWeWork";
 import { ProductCategories } from "@/components/maisone/ProductCategories";
-import { QualityControl } from "@/components/maisone/QualityControl";
 import { Dashboard } from "@/components/maisone/Dashboard";
 import { GlobalPresence } from "@/components/maisone/GlobalPresence";
 import { AIAssistant } from "@/components/maisone/AIAssistant";
-
-import { Catalog } from "@/components/maisone/Catalog";
 
 import { TrendForecast } from "@/components/maisone/TrendForecast";
 
@@ -25,6 +22,9 @@ import { Partners } from "@/components/maisone/Partners";
 import { Testimonials } from "@/components/maisone/Testimonials";
 
 import { Footer } from "@/components/maisone/Footer";
+import { useEffect } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -48,6 +48,63 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Smooth reveal animation for landing page elements
+    const sections = document.querySelectorAll("main > section, main > div:not(.fixed)");
+    sections.forEach((section) => {
+      // Avoid conflict with Hero's custom loaders
+      if (section.id === "home") return;
+
+      // Select high-impact elements inside the section for staggered reveal
+      const targets = section.querySelectorAll(
+        "h2, h3, p:not(.absolute), .grid > div, .glass, .glass-strong, form, label"
+      );
+
+      if (targets.length > 0) {
+        gsap.fromTo(
+          targets,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.08,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      } else {
+        // Fallback for simple structural containers
+        gsap.fromTo(
+          section,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: section,
+              start: "top 80%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      }
+    });
+
+    // Clean up ScrollTrigger instances on component unmount
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+    };
+  }, []);
+
   return (
     <ThemeProvider>
       <Loader />
@@ -59,10 +116,8 @@ function Index() {
           <WhyMaisone />
           <HowWeWork />
           <ProductCategories />
-          <QualityControl />
           <Dashboard />
           <AIAssistant />
-           <Catalog />
 
           <TrendForecast />
           <GlobalPresence />

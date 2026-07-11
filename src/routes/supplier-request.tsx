@@ -162,6 +162,7 @@ function SupplierRequestPage() {
                       </div>
                     ))}
                   </div>
+
                   <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-2">— Step {step + 1} of {STEPS.length}</p>
                   <h2 className="font-serif text-2xl mb-6">{STEPS[step]}</h2>
 

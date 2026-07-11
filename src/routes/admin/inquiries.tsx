@@ -4,16 +4,17 @@ import { motion, AnimatePresence } from "framer-motion";
 import { 
   Loader2, Search, Filter, Trash2, Mail, Building2, User, Globe,
   Calendar, MessageSquare, ShieldAlert, Check, RefreshCw,
-  ChevronLeft, ChevronRight, X, Layers
+  ChevronLeft, ChevronRight, X, Layers, Link2
 } from "lucide-react";
 import { supabase } from "@/lib/supabase";
+import { toast } from "sonner";
 import { AdminContext, StatusDropdown, type DemoRequest } from "../admin";
 
-export const Route = createFileRoute("/admin/demo-requests")({
-  component: DemoRequestsPage,
+export const Route = createFileRoute("/admin/inquiries")({
+  component: InquiriesPage,
 });
 
-function DemoRequestsPage() {
+function InquiriesPage() {
   const { session, stats, fetchStats } = useContext(AdminContext);
   
   // Dashboard States
@@ -144,7 +145,7 @@ function DemoRequestsPage() {
     <div className="space-y-8 animate-in fade-in duration-300">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="font-serif text-4xl tracking-tight">Demo Inquiries</h1>
+          <h1 className="font-serif text-4xl tracking-tight">Inquiries</h1>
           <p className="text-sm text-muted-foreground mt-1">Review, qualify, and update status of brand requests.</p>
         </div>
         <div className="flex items-center gap-2">
@@ -235,15 +236,15 @@ function DemoRequestsPage() {
       {reqLoading && requests.length === 0 ? (
         /* Shimmer Skeleton Loader Rows */
         <div className="overflow-x-auto rounded-3xl border border-white/5 glass">
-          <table className="w-full border-collapse text-left text-sm">
+          <table className="w-full border-collapse text-left text-sm min-w-[950px]">
             <thead>
               <tr className="border-b border-white/5 bg-white/[0.01] text-[10px] uppercase tracking-widest text-muted-foreground">
-                <th className="px-4 py-4">Brand / Company</th>
-                <th className="px-4 py-4">Contact</th>
-                <th className="px-4 py-4">Sourcing Profile</th>
-                <th className="px-4 py-4">Message</th>
-                <th className="px-4 py-4">Status</th>
-                <th className="px-4 py-4 text-right">Actions</th>
+                <th className="px-4 py-4 w-[20%]">Brand / Company</th>
+                <th className="px-4 py-4 w-[25%]">Contact</th>
+                <th className="px-4 py-4 w-[20%]">Sourcing Profile</th>
+                <th className="px-4 py-4 w-[20%]">Message</th>
+                <th className="px-4 py-4 w-[10%]">Status</th>
+                <th className="px-4 py-4 w-[5%] text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -284,16 +285,16 @@ function DemoRequestsPage() {
         </div>
       ) : (
         <>
-          <div className="overflow-x-auto lg:overflow-visible rounded-3xl border border-white/5 glass">
-            <table className="w-full border-collapse text-left text-sm">
+          <div className="overflow-x-auto rounded-3xl border border-white/5 glass">
+            <table className="w-full border-collapse text-left text-sm min-w-[950px]">
               <thead>
-                <tr className="border-b border-white/5 bg-white/[0.01] text-[10px] uppercase tracking-widest text-muted-foreground col-auto">
-                  <th className="px-4 py-4">Brand / Company</th>
-                  <th className="px-4 py-4">Contact</th>
-                  <th className="px-4 py-4">Sourcing Profile</th>
-                  <th className="px-4 py-4">Message</th>
-                  <th className="px-4 py-4">Status</th>
-                  <th className="px-4 py-4 text-right">Actions</th>
+                <tr className="border-b border-white/5 bg-white/[0.01] text-[10px] uppercase tracking-widest text-muted-foreground">
+                  <th className="px-4 py-4 w-[20%]">Brand / Company</th>
+                  <th className="px-4 py-4 w-[25%]">Contact</th>
+                  <th className="px-4 py-4 w-[20%]">Sourcing Profile</th>
+                  <th className="px-4 py-4 w-[20%]">Message</th>
+                  <th className="px-4 py-4 w-[10%]">Status</th>
+                  <th className="px-4 py-4 w-[5%] text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
@@ -337,21 +338,24 @@ function DemoRequestsPage() {
 
                     {/* Message Clamping & Modal Trigger */}
                     <td className="px-4 py-4 align-top max-w-xs">
-                      {req.message ? (
-                        <div className="space-y-1">
-                          <p className="text-xs text-muted-foreground line-clamp-3 whitespace-pre-line bg-black/20 p-2.5 rounded-xl border border-white/5">
+                      <div className="space-y-1">
+                        {req.message ? (
+                          <p className="text-xs text-muted-foreground line-clamp-3 whitespace-pre-line bg-black/20 p-2.5 rounded-xl border border-white/5 break-all">
                             {req.message}
                           </p>
-                          <button 
-                            onClick={() => setSelectedRequest(req)}
-                            className="text-[10px] text-electric hover:underline font-medium cursor-pointer"
-                          >
-                            View Full Details
-                          </button>
-                        </div>
-                      ) : (
-                        <span className="text-xs text-muted-foreground/50 italic">No message provided</span>
-                      )}
+                        ) : (
+                          <p className="text-xs text-muted-foreground/50 italic p-2 bg-white/[0.02] border border-white/5 rounded-xl">
+                            No message provided
+                          </p>
+                        )}
+                        <button 
+                          type="button"
+                          onClick={() => setSelectedRequest(req)}
+                          className="text-[10px] text-electric hover:underline font-medium cursor-pointer block mt-1"
+                        >
+                          View Details
+                        </button>
+                      </div>
                     </td>
 
                     {/* Status Dropdown */}
@@ -509,12 +513,27 @@ function DemoRequestsPage() {
                     />
                   </div>
 
-                  <button
-                    onClick={() => deleteRequest(selectedRequest.id)}
-                    className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/10 transition-colors cursor-pointer"
-                  >
-                    <Trash2 className="size-3.5" /> Delete Request
-                  </button>
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const baseUrl = typeof window !== "undefined" ? window.location.origin : "";
+                        const url = `${baseUrl}/book-demo?name=${encodeURIComponent(selectedRequest.full_name)}&email=${encodeURIComponent(selectedRequest.work_email)}&company=${encodeURIComponent(selectedRequest.company)}&role=${encodeURIComponent(selectedRequest.role || "")}&companySize=${encodeURIComponent(selectedRequest.company_size || "")}&region=${encodeURIComponent(selectedRequest.region || "")}`;
+                        navigator.clipboard.writeText(url);
+                        toast.success("Client inquiry link copied!");
+                      }}
+                      className="inline-flex items-center gap-1.5 px-4 py-2 text-xs font-semibold rounded-xl border border-white/10 hover:border-electric/50 hover:bg-electric/5 text-white transition-all cursor-pointer"
+                    >
+                      <Link2 className="size-3.5" /> Share Form
+                    </button>
+
+                    <button
+                      onClick={() => deleteRequest(selectedRequest.id)}
+                      className="inline-flex items-center gap-2 px-4 py-2 text-xs font-semibold rounded-xl bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/10 transition-colors cursor-pointer"
+                    >
+                      <Trash2 className="size-3.5" /> Delete Request
+                    </button>
+                  </div>
                 </div>
               </div>
             </motion.div>
