@@ -22,55 +22,54 @@ export function Navbar() {
   }, []);
 
   return (
-    <>
-      {/* Extreme Top Right Utility Bar */}
-      <div className="fixed top-4 right-6 z-55 flex flex-col items-end gap-2">
+    <motion.header
+      initial={{ y: -30, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.6 }}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        scrolled ? "py-3" : "py-5"
+      }`}
+    >
+      {/* Extreme Top Right Utility Bar (Vertically Aligned) */}
+      <div className="absolute right-6 top-1/2 -translate-y-1/2 z-55 flex flex-col items-end gap-2">
         <button
           onClick={() => setSettingsOpen(!settingsOpen)}
           aria-label="Preferences"
-          className={`size-12 rounded-full flex items-center justify-center transition-all border border-white/10 shadow-xl ${
+          className={`size-11 rounded-full flex items-center justify-center transition-all border border-white/10 shadow-lg ${
             settingsOpen ? "bg-electric text-black scale-105" : "glass-strong text-white hover:bg-white/10"
           }`}
         >
-          <Info className="size-6" />
+          <Info className="size-5" />
         </button>
 
         {settingsOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: -10 }}
+            initial={{ opacity: 0, scale: 0.95, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            className="glass-strong rounded-2xl p-5 border border-white/5 shadow-2xl flex flex-col gap-5 min-w-[240px]"
+            className="absolute right-0 top-full mt-2 glass-strong rounded-2xl p-4 border border-white/5 shadow-2xl flex flex-col gap-4 min-w-[200px]"
           >
             {/* Theme section */}
             <div className="flex items-center justify-between gap-4">
-              <span className="text-sm text-muted-foreground font-medium">{t("nav.theme") || "Theme"}</span>
+              <span className="text-xs text-muted-foreground font-medium">{t("nav.theme") || "Theme"}</span>
               <button
                 onClick={toggle}
                 aria-label="Toggle theme"
-                className="size-10 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center hover:scale-105 transition-all border border-white/10"
+                className="size-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center hover:scale-105 transition-all border border-white/10"
               >
-                {theme === "dark" ? <Sun className="size-5" /> : <Moon className="size-5" />}
+                {theme === "dark" ? <Sun className="size-3.5" /> : <Moon className="size-3.5" />}
               </button>
             </div>
 
             {/* Language section */}
             <div className="flex items-center justify-between gap-4">
-              <span className="text-sm text-muted-foreground font-medium">{t("nav.language") || "Language"}</span>
+              <span className="text-xs text-muted-foreground font-medium">{t("nav.language") || "Language"}</span>
               <LanguageToggle />
             </div>
           </motion.div>
         )}
       </div>
 
-      <motion.header
-        initial={{ y: -30, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          scrolled ? "py-3" : "py-5"
-        }`}
-      >
-        <div className={`mx-auto max-w-7xl px-6 ${scrolled ? "" : ""}`}>
+      <div className={`mx-auto max-w-7xl px-6 ${scrolled ? "" : ""}`}>
           <div className={`flex items-center justify-between rounded-2xl px-5 py-3 transition-all ${
             scrolled ? "glass-strong" : ""
           }`}>
@@ -136,68 +135,68 @@ export function Navbar() {
             </div>
           </div>
 
-          {open && (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="lg:hidden mt-2 glass-strong rounded-2xl p-4 flex flex-col gap-3"
-            >
-              <a href="/#home" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.home")}</a>
-              <a href="/#about" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.about")}</a>
-              <a href="/#services" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.services")}</a>
-              <a href="/#categories" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.categories")}</a>
+        {open && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="lg:hidden mt-2 glass-strong rounded-2xl p-4 flex flex-col gap-3"
+          >
+            <a href="/#home" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.home")}</a>
+            <a href="/#about" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.about")}</a>
+            <a href="/#services" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.services")}</a>
+            <a href="/#categories" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.categories")}</a>
 
-              {/* Mobile Platform Links */}
-              <div className="flex flex-col gap-1.5 pl-3 border-l border-border/50 my-1">
-                <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60 px-2 py-1">{t("nav.platform")}</p>
-                <a
-                  href="/#dashboard"
-                  onClick={() => setOpen(false)}
-                  className="text-sm text-muted-foreground hover:text-foreground px-2 py-1.5"
-                >
-                  {t("nav.console")}
-                </a>
-                <a
-                  href="/#maisone-ai"
-                  onClick={() => setOpen(false)}
-                  className="text-sm text-muted-foreground hover:text-foreground px-2 py-1.5"
-                >
-                  {t("nav.maisoneAi")}
-                </a>
-                <a
-                  href="/#trends"
-                  onClick={() => setOpen(false)}
-                  className="text-sm text-muted-foreground hover:text-foreground px-2 py-1.5"
-                >
-                  {t("nav.aiTrendForecast")}
-                </a>
-              </div>
+            {/* Mobile Platform Links */}
+            <div className="flex flex-col gap-1.5 pl-3 border-l border-border/50 my-1">
+              <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60 px-2 py-1">{t("nav.platform")}</p>
+              <a
+                href="/#dashboard"
+                onClick={() => setOpen(false)}
+                className="text-sm text-muted-foreground hover:text-foreground px-2 py-1.5"
+              >
+                {t("nav.console")}
+              </a>
+              <a
+                href="/#maisone-ai"
+                onClick={() => setOpen(false)}
+                className="text-sm text-muted-foreground hover:text-foreground px-2 py-1.5"
+              >
+                {t("nav.maisoneAi")}
+              </a>
+              <a
+                href="/#trends"
+                onClick={() => setOpen(false)}
+                className="text-sm text-muted-foreground hover:text-foreground px-2 py-1.5"
+              >
+                {t("nav.aiTrendForecast")}
+              </a>
+            </div>
 
-              <a href="/#founders" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.founders")}</a>
-              <a href="/#blog" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.blog")}</a>
-              
-              {/* Mobile language & action buttons */}
-              <div className="flex items-center gap-2 pt-2 border-t border-border/50">
-                <LanguageToggle />
-                <Link
-                  to="/supplier-request"
-                  onClick={() => setOpen(false)}
-                  className="flex-1 text-center text-sm font-medium px-4 py-2.5 rounded-full border border-border bg-background/50 text-foreground hover:bg-secondary/50 transition-colors"
-                >
-                  {t("nav.joinAsSupplier")}
-                </Link>
-                <Link
-                  to="/book-demo"
-                  onClick={() => setOpen(false)}
-                  className="flex-1 text-center text-sm font-medium px-4 py-2.5 rounded-full bg-foreground text-background hover:opacity-90 transition-opacity"
-                >
-                  {t("nav.inquireAboutUs")}
-                </Link>
-              </div>
-            </motion.div>
-          )}
-        </div>
-      </motion.header>
-    </>
+            <a href="/#founders" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.founders")}</a>
+            <a href="/#blog" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.blog")}</a>
+            
+            {/* Mobile language & action buttons */}
+            <div className="flex items-center gap-2 pt-2 border-t border-border/50">
+              <LanguageToggle />
+              <Link
+                to="/supplier-request"
+                onClick={() => setOpen(false)}
+                className="flex-1 text-center text-sm font-medium px-4 py-2.5 rounded-full border border-border bg-background/50 text-foreground hover:bg-secondary/50 transition-colors"
+              >
+                {t("nav.joinAsSupplier")}
+              </Link>
+              <Link
+                to="/book-demo"
+                onClick={() => setOpen(false)}
+                className="flex-1 text-center text-sm font-medium px-4 py-2.5 rounded-full bg-foreground text-background hover:opacity-90 transition-opacity"
+              >
+                {t("nav.inquireAboutUs")}
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </div>
+    </motion.header>
   );
 }
+

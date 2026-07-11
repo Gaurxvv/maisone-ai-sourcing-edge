@@ -132,7 +132,7 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
       </div>
 
-      <div className="relative mx-auto max-w-7xl px-6 z-10">
+      <div className="relative mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-10 z-10">
         <motion.div
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
@@ -229,7 +229,7 @@ export function Hero() {
               {t("hero.weCurrentlySource")} <span className="italic gradient-text font-serif">{t("hero.countries")}</span>
             </h3>
           </div>
-          <div className="glass-strong rounded-3xl p-6 sm:p-10 text-foreground/80">
+          <div className="glass-strong rounded-3xl p-2 sm:p-6 text-foreground/80">
             <WorldMap />
           </div>
 
