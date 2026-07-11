@@ -56,7 +56,7 @@ export function TrustStrip() {
 
         {/* Compliance */}
         <div>
-          <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">— Compliance & Certifications</p>
+          <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">— Compliance & Certifications To Our Factory Network</p>
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
             {COMPLIANCE.map((c, i) => (
               <motion.div

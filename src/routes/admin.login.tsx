@@ -93,7 +93,7 @@ function AdminLoginPage() {
                 </div>
                 <h1 className="font-serif text-3xl mb-2 tracking-tight">Atelier Access</h1>
                 <p className="text-sm text-muted-foreground leading-relaxed">
-                  Sign in to manage demo requests, suppliers, and shipments.
+                  Sign in to manage inquiries, suppliers, and shipments.
                 </p>
               </div>
 

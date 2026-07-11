@@ -5,6 +5,7 @@ import {
   Network, Search, Globe2, Workflow, Truck, TrendingUp,
   PackageSearch, Bot, ShieldAlert, Zap
 } from "lucide-react";
+import { InteractiveFolderGallery } from "@/components/ui/interactive-folder-gallery";
 
 const categories = [
   {
@@ -126,29 +127,6 @@ const features = [
   { icon: Zap, title: "Workflow Automation", desc: "Connect Notion, Zoho, WhatsApp and email to orchestrate every step of your supply chain." },
 ];
 
-const pairs = [
-  {
-    problem: "Struggling to find reliable factories?",
-    solution: "We connect brands with trusted manufacturing partners.",
-  },
-  {
-    problem: "Need tighter quality control?",
-    solution: "Our rigorous inspection systems ensure premium quality.",
-  },
-  {
-    problem: "Need compliance-ready factories?",
-    solution: "We help establish ethically responsible production ecosystems.",
-  },
-  {
-    problem: "Looking for innovative materials?",
-    solution: "Access cutting-edge fabrics and sustainable sourcing solutions.",
-  },
-  {
-    problem: "Want to focus on growth?",
-    solution: "We handle sourcing and operations while you focus on creativity.",
-  },
-];
-
 function CategoryCard({ category, index }: { category: typeof categories[0]; index: number }) {
   const [activeIndex, setActiveIndex] = useState(0);
 
@@ -240,6 +218,14 @@ function CategoryCard({ category, index }: { category: typeof categories[0]; ind
 }
 
 export function ProductCategories() {
+  const [activeIdx, setActiveIdx] = useState(0);
+
+  const activeCategory = categories[activeIdx];
+  const galleryPhotos = activeCategory.images.slice(0, 5).map((img, idx) => ({
+    id: idx,
+    image: img
+  }));
+
   return (
     <section id="categories" className="relative py-32 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6 space-y-32">
@@ -254,14 +240,55 @@ export function ProductCategories() {
 
         {/* 1. Product Categories Sub-section */}
         <div>
-          <div className="mb-10 border-b border-border/40 pb-4">
-            <h3 className="font-serif text-2xl tracking-wide">Product Categories</h3>
-            <p className="text-sm text-muted-foreground mt-1">Our curated selection of manufacturing domains.</p>
-          </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {categories.map((c, i) => (
-              <CategoryCard key={c.name} category={c} index={i} />
-            ))}
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_1.5fr] gap-6 lg:gap-12 items-center">
+            {/* Category Navigation List */}
+            <div className="flex flex-row lg:flex-col gap-2 overflow-x-auto lg:overflow-y-auto max-w-full lg:max-h-[580px] pr-0 lg:pr-3 py-1 scrollbar-none lg:custom-scrollbar shrink-0">
+              {categories.map((c, i) => (
+                <button
+                  key={c.name}
+                  onClick={() => setActiveIdx(i)}
+                  className={`shrink-0 text-left px-4 py-2.5 lg:px-5 lg:py-2.5 rounded-xl border transition-all duration-300 relative overflow-hidden group cursor-pointer min-w-[150px] lg:min-w-0 ${
+                    i === activeIdx
+                      ? "bg-[#C2A46D]/12 dark:bg-[#C2A46D]/8 border-[#C2A46D]/70 dark:border-[#C2A46D]/50 text-[#2C2C2C] dark:text-white shadow-[0_0_25px_rgba(194,164,109,0.06)]"
+                      : "bg-[#E5E1D8]/35 dark:bg-[#2A2A2A]/20 border-[#B7B0A6]/20 dark:border-white/5 text-[#2C2C2C]/70 dark:text-muted-foreground hover:border-[#C2A46D]/60 dark:hover:border-[#C2A46D]/50 hover:bg-[#C2A46D]/8 hover:text-[#2C2C2C] dark:hover:text-white hover:shadow-[0_0_25px_rgba(194,164,109,0.06)]"
+                  }`}
+                >
+                  <div className="flex justify-between items-center relative z-10">
+                    <div className="flex items-center gap-3 lg:gap-4">
+                      <span className={`font-serif text-[10px] lg:text-xs transition-colors duration-300 ${
+                        i === activeIdx ? "text-[#C2A46D] font-bold" : "text-[#2C2C2C]/40 dark:text-muted-foreground/40 group-hover:text-[#C2A46D] group-hover:font-bold"
+                      }`}>
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <div>
+                        <h4 className={`font-serif text-sm lg:text-base tracking-wide transition-colors duration-300 ${
+                          i === activeIdx ? "text-[#C2A46D] font-medium" : "text-[#2C2C2C]/80 dark:text-white/80 group-hover:text-[#C2A46D]"
+                        }`}>
+                          {c.name}
+                        </h4>
+                      </div>
+                    </div>
+                    <ArrowRight className={`hidden lg:block size-3.5 transition-all duration-300 ${
+                      i === activeIdx ? "text-[#C2A46D] translate-x-0 opacity-100" : "text-muted-foreground/50 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-[#C2A46D]"
+                    }`} />
+                  </div>
+                  <div className={`absolute inset-0 bg-gradient-to-r from-[#C2A46D]/5 to-transparent pointer-events-none transition-opacity duration-300 ${
+                    i === activeIdx ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+                  }`} />
+                </button>
+              ))}
+            </div>
+
+            {/* Folder Gallery Display */}
+            <div className="relative flex flex-col items-center justify-center min-h-[420px] sm:min-h-[520px] lg:min-h-[580px]">
+              <InteractiveFolderGallery
+                key={activeCategory.name} // Force re-render on tab change to reset folder state
+                photos={galleryPhotos}
+                folderName={`${activeCategory.name}.sourcing`}
+                dragHintText="Drag photo down to return to folder"
+                className="py-4 lg:py-6"
+              />
+            </div>
           </div>
         </div>
 
@@ -293,31 +320,6 @@ export function ProductCategories() {
             ))}
           </div>
         </div>
-
-        {/* 3. Challenges We Solve Sub-section */}
-        <div>
-          <div className="mb-10 border-b border-border/40 pb-4">
-            <h3 className="font-serif text-2xl tracking-wide">Challenges We Solve</h3>
-            <p className="text-sm text-muted-foreground mt-1">Every bottleneck resolved by our supply chain experts.</p>
-          </div>
-          <div className="space-y-4">
-            {pairs.map((p, i) => (
-              <motion.div
-                key={p.problem}
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: i * 0.06 }}
-                className="grid md:grid-cols-[1fr_auto_1fr] items-center gap-5 glass-strong rounded-3xl p-6 md:p-8"
-              >
-                <p className="font-serif text-xl md:text-2xl text-balance">{p.problem}</p>
-                <ArrowRight className="size-5 text-electric mx-auto rotate-90 md:rotate-0" />
-                <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{p.solution}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
       </div>
     </section>
   );

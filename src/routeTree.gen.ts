@@ -15,11 +15,12 @@ import { Route as AssistantRouteImport } from './routes/assistant'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AdminIndexRouteImport } from './routes/admin/index'
+import { Route as AdminTrendsRouteImport } from './routes/admin/trends'
 import { Route as AdminSuppliersRouteImport } from './routes/admin/suppliers'
 import { Route as AdminSupplierRequestsRouteImport } from './routes/admin/supplier-requests'
 import { Route as AdminShipmentsRouteImport } from './routes/admin/shipments'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
-import { Route as AdminDemoRequestsRouteImport } from './routes/admin/demo-requests'
+import { Route as AdminInquiriesRouteImport } from './routes/admin/inquiries'
 
 const SupplierRequestRoute = SupplierRequestRouteImport.update({
   id: '/supplier-request',
@@ -51,6 +52,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminTrendsRoute = AdminTrendsRouteImport.update({
+  id: '/trends',
+  path: '/trends',
+  getParentRoute: () => AdminRoute,
+} as any)
 const AdminSuppliersRoute = AdminSuppliersRouteImport.update({
   id: '/suppliers',
   path: '/suppliers',
@@ -71,9 +77,9 @@ const AdminLoginRoute = AdminLoginRouteImport.update({
   path: '/login',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminDemoRequestsRoute = AdminDemoRequestsRouteImport.update({
-  id: '/demo-requests',
-  path: '/demo-requests',
+const AdminInquiriesRoute = AdminInquiriesRouteImport.update({
+  id: '/inquiries',
+  path: '/inquiries',
   getParentRoute: () => AdminRoute,
 } as any)
 
@@ -83,11 +89,12 @@ export interface FileRoutesByFullPath {
   '/assistant': typeof AssistantRoute
   '/book-demo': typeof BookDemoRoute
   '/supplier-request': typeof SupplierRequestRoute
-  '/admin/demo-requests': typeof AdminDemoRequestsRoute
+  '/admin/inquiries': typeof AdminInquiriesRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/shipments': typeof AdminShipmentsRoute
   '/admin/supplier-requests': typeof AdminSupplierRequestsRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
+  '/admin/trends': typeof AdminTrendsRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRoutesByTo {
@@ -95,11 +102,12 @@ export interface FileRoutesByTo {
   '/assistant': typeof AssistantRoute
   '/book-demo': typeof BookDemoRoute
   '/supplier-request': typeof SupplierRequestRoute
-  '/admin/demo-requests': typeof AdminDemoRequestsRoute
+  '/admin/inquiries': typeof AdminInquiriesRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/shipments': typeof AdminShipmentsRoute
   '/admin/supplier-requests': typeof AdminSupplierRequestsRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
+  '/admin/trends': typeof AdminTrendsRoute
   '/admin': typeof AdminIndexRoute
 }
 export interface FileRoutesById {
@@ -109,11 +117,12 @@ export interface FileRoutesById {
   '/assistant': typeof AssistantRoute
   '/book-demo': typeof BookDemoRoute
   '/supplier-request': typeof SupplierRequestRoute
-  '/admin/demo-requests': typeof AdminDemoRequestsRoute
+  '/admin/inquiries': typeof AdminInquiriesRoute
   '/admin/login': typeof AdminLoginRoute
   '/admin/shipments': typeof AdminShipmentsRoute
   '/admin/supplier-requests': typeof AdminSupplierRequestsRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
+  '/admin/trends': typeof AdminTrendsRoute
   '/admin/': typeof AdminIndexRoute
 }
 export interface FileRouteTypes {
@@ -124,11 +133,12 @@ export interface FileRouteTypes {
     | '/assistant'
     | '/book-demo'
     | '/supplier-request'
-    | '/admin/demo-requests'
+    | '/admin/inquiries'
     | '/admin/login'
     | '/admin/shipments'
     | '/admin/supplier-requests'
     | '/admin/suppliers'
+    | '/admin/trends'
     | '/admin/'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -136,11 +146,12 @@ export interface FileRouteTypes {
     | '/assistant'
     | '/book-demo'
     | '/supplier-request'
-    | '/admin/demo-requests'
+    | '/admin/inquiries'
     | '/admin/login'
     | '/admin/shipments'
     | '/admin/supplier-requests'
     | '/admin/suppliers'
+    | '/admin/trends'
     | '/admin'
   id:
     | '__root__'
@@ -149,11 +160,12 @@ export interface FileRouteTypes {
     | '/assistant'
     | '/book-demo'
     | '/supplier-request'
-    | '/admin/demo-requests'
+    | '/admin/inquiries'
     | '/admin/login'
     | '/admin/shipments'
     | '/admin/supplier-requests'
     | '/admin/suppliers'
+    | '/admin/trends'
     | '/admin/'
   fileRoutesById: FileRoutesById
 }
@@ -209,6 +221,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/trends': {
+      id: '/admin/trends'
+      path: '/trends'
+      fullPath: '/admin/trends'
+      preLoaderRoute: typeof AdminTrendsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/suppliers': {
       id: '/admin/suppliers'
       path: '/suppliers'
@@ -237,31 +256,33 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminLoginRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/demo-requests': {
-      id: '/admin/demo-requests'
-      path: '/demo-requests'
-      fullPath: '/admin/demo-requests'
-      preLoaderRoute: typeof AdminDemoRequestsRouteImport
+    '/admin/inquiries': {
+      id: '/admin/inquiries'
+      path: '/inquiries'
+      fullPath: '/admin/inquiries'
+      preLoaderRoute: typeof AdminInquiriesRouteImport
       parentRoute: typeof AdminRoute
     }
   }
 }
 
 interface AdminRouteChildren {
-  AdminDemoRequestsRoute: typeof AdminDemoRequestsRoute
+  AdminInquiriesRoute: typeof AdminInquiriesRoute
   AdminLoginRoute: typeof AdminLoginRoute
   AdminShipmentsRoute: typeof AdminShipmentsRoute
   AdminSupplierRequestsRoute: typeof AdminSupplierRequestsRoute
   AdminSuppliersRoute: typeof AdminSuppliersRoute
+  AdminTrendsRoute: typeof AdminTrendsRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
-  AdminDemoRequestsRoute: AdminDemoRequestsRoute,
+  AdminInquiriesRoute: AdminInquiriesRoute,
   AdminLoginRoute: AdminLoginRoute,
   AdminShipmentsRoute: AdminShipmentsRoute,
   AdminSupplierRequestsRoute: AdminSupplierRequestsRoute,
   AdminSuppliersRoute: AdminSuppliersRoute,
+  AdminTrendsRoute: AdminTrendsRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 

@@ -206,15 +206,15 @@ function SupplierRequestsPage() {
 
       {reqLoading && requests.length === 0 ? (
         <div className="overflow-x-auto rounded-3xl border border-white/5 glass">
-          <table className="w-full border-collapse text-left text-sm">
+          <table className="w-full border-collapse text-left text-sm min-w-[950px]">
             <thead>
               <tr className="border-b border-white/5 bg-white/[0.01] text-[10px] uppercase tracking-widest text-muted-foreground">
-                <th className="px-4 py-4">Factory</th>
-                <th className="px-4 py-4">Contact</th>
-                <th className="px-4 py-4">Capabilities</th>
-                <th className="px-4 py-4">Message</th>
-                <th className="px-4 py-4">Status</th>
-                <th className="px-4 py-4 text-right">Actions</th>
+                <th className="px-4 py-4 w-[20%]">Factory</th>
+                <th className="px-4 py-4 w-[25%]">Contact</th>
+                <th className="px-4 py-4 w-[20%]">Capabilities</th>
+                <th className="px-4 py-4 w-[20%]">Message</th>
+                <th className="px-4 py-4 w-[10%]">Status</th>
+                <th className="px-4 py-4 w-[5%] text-right">Actions</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
@@ -237,16 +237,16 @@ function SupplierRequestsPage() {
         </div>
       ) : (
         <>
-          <div className="overflow-x-auto lg:overflow-visible rounded-3xl border border-white/5 glass">
-            <table className="w-full border-collapse text-left text-sm">
+          <div className="overflow-x-auto rounded-3xl border border-white/5 glass">
+            <table className="w-full border-collapse text-left text-sm min-w-[950px]">
               <thead>
-                <tr className="border-b border-white/5 bg-white/[0.01] text-[10px] uppercase tracking-widest text-muted-foreground col-auto">
-                  <th className="px-4 py-4">Factory</th>
-                  <th className="px-4 py-4">Contact</th>
-                  <th className="px-4 py-4">Capabilities</th>
-                  <th className="px-4 py-4">Message</th>
-                  <th className="px-4 py-4">Status</th>
-                  <th className="px-4 py-4 text-right">Actions</th>
+                <tr className="border-b border-white/5 bg-white/[0.01] text-[10px] uppercase tracking-widest text-muted-foreground">
+                  <th className="px-4 py-4 w-[20%]">Factory</th>
+                  <th className="px-4 py-4 w-[25%]">Contact</th>
+                  <th className="px-4 py-4 w-[20%]">Capabilities</th>
+                  <th className="px-4 py-4 w-[20%]">Message</th>
+                  <th className="px-4 py-4 w-[10%]">Status</th>
+                  <th className="px-4 py-4 w-[5%] text-right">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/5">
@@ -282,21 +282,24 @@ function SupplierRequestsPage() {
                     </td>
 
                     <td className="px-4 py-4 align-top max-w-xs">
-                      {req.message ? (
-                        <div className="space-y-1">
-                          <p className="text-xs text-muted-foreground line-clamp-3 whitespace-pre-line bg-black/20 p-2.5 rounded-xl border border-white/5">
+                      <div className="space-y-1">
+                        {req.message ? (
+                          <p className="text-xs text-muted-foreground line-clamp-3 whitespace-pre-line bg-black/20 p-2.5 rounded-xl border border-white/5 break-all">
                             {req.message}
                           </p>
-                          <button 
-                            onClick={() => setSelectedRequest(req)}
-                            className="text-[10px] text-electric hover:underline font-medium cursor-pointer"
-                          >
-                            View Details
-                          </button>
-                        </div>
-                      ) : (
-                        <span className="text-xs text-muted-foreground/50 italic">No message provided</span>
-                      )}
+                        ) : (
+                          <p className="text-xs text-muted-foreground/50 italic p-2 bg-white/[0.02] border border-white/5 rounded-xl">
+                            No message provided
+                          </p>
+                        )}
+                        <button 
+                          type="button"
+                          onClick={() => setSelectedRequest(req)}
+                          className="text-[10px] text-electric hover:underline font-medium cursor-pointer block mt-1"
+                        >
+                          View Details
+                        </button>
+                      </div>
                     </td>
 
                     <td className="px-4 py-4 align-top">

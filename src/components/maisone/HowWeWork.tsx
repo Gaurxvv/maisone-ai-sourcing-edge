@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { ArrowRight } from "lucide-react";
 
 const phases = [
   {
@@ -23,6 +24,29 @@ const phases = [
   },
 ];
 
+const pairs = [
+  {
+    problem: "Struggling to find reliable factories?",
+    solution: "We connect brands with trusted manufacturing partners.",
+  },
+  {
+    problem: "Need tighter quality control?",
+    solution: "Our rigorous inspection systems ensure premium quality.",
+  },
+  {
+    problem: "Need compliance-ready factories?",
+    solution: "We help establish ethically responsible production ecosystems.",
+  },
+  {
+    problem: "Looking for innovative materials?",
+    solution: "Access cutting-edge fabrics and sustainable sourcing solutions.",
+  },
+  {
+    problem: "Want to focus on growth?",
+    solution: "We handle sourcing and operations while you focus on creativity.",
+  },
+];
+
 export function HowWeWork() {
   return (
     <section id="services" className="relative py-32">
@@ -40,7 +64,7 @@ export function HowWeWork() {
         </div>
 
         {/* Timeline */}
-        <div className="relative">
+        <div className="relative mb-32">
           {/* Connector line */}
           <div className="hidden lg:block absolute left-0 right-0 top-5 h-px bg-gradient-to-r from-transparent via-electric/30 to-transparent" />
 
@@ -70,6 +94,30 @@ export function HowWeWork() {
                   {/* Bottom accent line */}
                   <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-electric/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* Challenges We Solve Sub-section */}
+        <div>
+          <div className="mb-10 border-b border-border/40 pb-4">
+            <h3 className="font-serif text-2xl tracking-wide">Challenges We Solve</h3>
+            <p className="text-sm text-muted-foreground mt-1">Every bottleneck resolved by our supply chain experts.</p>
+          </div>
+          <div className="space-y-4">
+            {pairs.map((p, i) => (
+              <motion.div
+                key={p.problem}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.06 }}
+                className="grid md:grid-cols-[1fr_auto_1fr] items-center gap-5 glass-strong rounded-3xl p-6 md:p-8"
+              >
+                <p className="font-serif text-xl md:text-2xl text-balance">{p.problem}</p>
+                <ArrowRight className="size-5 text-electric mx-auto rotate-90 md:rotate-0" />
+                <p className="text-sm md:text-base text-muted-foreground leading-relaxed">{p.solution}</p>
               </motion.div>
             ))}
           </div>

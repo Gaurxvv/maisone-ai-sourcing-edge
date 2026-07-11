@@ -1,5 +1,5 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, Check, Sparkles, Loader2 } from "lucide-react";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -39,6 +39,7 @@ function BookDemoPage() {
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isPreFilled, setIsPreFilled] = useState(false);
   const [form, setForm] = useState<Form>({
     fullName: "",
     workEmail: "",
@@ -53,6 +54,33 @@ function BookDemoPage() {
   });
 
   const set = <K extends keyof Form>(k: K, v: Form[K]) => setForm((f) => ({ ...f, [k]: v }));
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const searchParams = new URLSearchParams(window.location.search);
+      const name = searchParams.get("name") || searchParams.get("fullName") || "";
+      const email = searchParams.get("email") || searchParams.get("workEmail") || "";
+      const company = searchParams.get("company") || "";
+      const role = searchParams.get("role") || "";
+      const size = searchParams.get("companySize") || "";
+      const region = searchParams.get("region") || "";
+
+      if (company || email || name) {
+        setForm((f) => ({
+          ...f,
+          fullName: name ? decodeURIComponent(name) : f.fullName,
+          workEmail: email ? decodeURIComponent(email) : f.workEmail,
+          company: company ? decodeURIComponent(company) : f.company,
+          role: role ? decodeURIComponent(role) : f.role,
+          companySize: size ? decodeURIComponent(size) : f.companySize,
+          region: region ? decodeURIComponent(region) : f.region,
+        }));
+        setIsPreFilled(true);
+        // Skip straight to capabilities / sourcing needs
+        setStep(1);
+      }
+    }
+  }, []);
 
   const canNext =
     (step === 0 && form.fullName.trim() && form.workEmail.includes("@") && form.company.trim()) ||
@@ -107,24 +135,23 @@ function BookDemoPage() {
           {/* Left intro */}
           <aside className="lg:col-span-2 space-y-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-[10px] tracking-[0.25em] uppercase text-muted-foreground">
-              <Sparkles className="size-3 text-electric" /> Request
+              <Sparkles className="size-3 text-electric animate-pulse" /> Sourcing Platform
             </div>
             <h1 className="font-serif text-4xl sm:text-5xl tracking-tight text-balance">
-              Meet the team behind <span className="italic gradient-text">Maisone</span>.
+              Experience the future of <span className="italic gradient-text">production Sourcing</span>.
             </h1>
-            <p className="text-muted-foreground leading-relaxed">
-              A 30-minute walkthrough tailored to your sourcing roadmap — covering supplier
-              intelligence, real-time logistics, and the AI sourcing console.
+            <p className="text-muted-foreground leading-relaxed text-sm">
+              Discover how our AI matching engine connects your design specifications with pre-qualified, certified factories globally.
             </p>
-            <ul className="space-y-3 text-sm">
+            <ul className="space-y-3.5 text-xs">
               {[
-                "Live walkthrough of the sourcing console",
-                "Personalised supplier shortlist for your category",
-                "Q&A with a senior sourcing strategist",
-                "No commitment — your data stays private",
+                "10x faster supplier shortlisting & match-making",
+                "Direct API feeds into verified manufacturer capacity",
+                "Complete custom catalog generation in 60 seconds",
+                "End-to-end milestone and compliance auditing",
               ].map((b) => (
                 <li key={b} className="flex items-start gap-3">
-                  <span className="mt-1 size-4 rounded-full bg-electric/15 flex items-center justify-center">
+                  <span className="mt-0.5 size-4 rounded-full bg-electric/15 flex items-center justify-center shrink-0">
                     <Check className="size-2.5 text-electric" />
                   </span>
                   <span className="text-muted-foreground">{b}</span>
@@ -145,7 +172,7 @@ function BookDemoPage() {
                   <div className="mx-auto size-14 rounded-full bg-electric/15 flex items-center justify-center mb-6">
                     <Check className="size-6 text-electric" />
                   </div>
-                  <h2 className="font-serif text-3xl mb-3">Request received</h2>
+                  <h2 className="font-serif text-3xl mb-3">Demo Requested</h2>
                   <p className="text-muted-foreground max-w-sm mx-auto">
                     Thank you, {form.fullName.split(" ")[0] || "there"}. A Maisone strategist
                     will reach out at <span className="text-foreground">{form.workEmail}</span> within one business day.
@@ -172,6 +199,14 @@ function BookDemoPage() {
                       </div>
                     ))}
                   </div>
+
+                  {isPreFilled && (
+                    <div className="mb-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-electric/25 bg-electric/10 text-electric text-[11px] font-medium animate-in fade-in duration-300">
+                      <span className="size-1.5 rounded-full bg-electric animate-pulse" />
+                      Verified Client Link: Company details pre-filled.
+                    </div>
+                  )}
+
                   <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-2">— Step {step + 1} of {STEPS.length}</p>
                   <h2 className="font-serif text-2xl mb-6">{STEPS[step]}</h2>
 
@@ -179,17 +214,17 @@ function BookDemoPage() {
                     {step === 0 && (
                       <>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <Field label="Full name" value={form.fullName} onChange={(v) => set("fullName", v)} placeholder="Yuki Tanaka" />
-                          <Field label="Work email" type="email" value={form.workEmail} onChange={(v) => set("workEmail", v)} placeholder="you@brand.com" />
+                          <Field label="Full name" value={form.fullName} onChange={(v) => set("fullName", v)} placeholder="Yuki Tanaka" disabled={isPreFilled} />
+                          <Field label="Work email" type="email" value={form.workEmail} onChange={(v) => set("workEmail", v)} placeholder="you@brand.com" disabled={isPreFilled} />
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <Field label="Company" value={form.company} onChange={(v) => set("company", v)} placeholder="Maison Kyō" />
-                          <Field label="Your role" value={form.role} onChange={(v) => set("role", v)} placeholder="Head of Sourcing" />
+                          <Field label="Company" value={form.company} onChange={(v) => set("company", v)} placeholder="Maison Kyō" disabled={isPreFilled} />
+                          <Field label="Your role" value={form.role} onChange={(v) => set("role", v)} placeholder="Head of Sourcing" disabled={isPreFilled} />
                         </div>
                         <Select label="Company size" value={form.companySize} onChange={(v) => set("companySize", v)}
-                          options={["1–10", "11–50", "51–200", "201–1000", "1000+"]} />
+                          options={["1–10", "11–50", "51–200", "201–1000", "1000+"]} disabled={isPreFilled} />
                         <Select label="Primary region" value={form.region} onChange={(v) => set("region", v)}
-                          options={["Japan", "United Kingdom", "Europe", "United States", "India", "China", "Global"]} />
+                          options={["Japan", "United Kingdom", "Europe", "United States", "India", "China", "Global"]} disabled={isPreFilled} />
                       </>
                     )}
                     {step === 1 && (
@@ -249,7 +284,7 @@ function BookDemoPage() {
                           </>
                         ) : (
                           <>
-                            Submit request <ArrowRight className="size-4" />
+                            Submit application <ArrowRight className="size-4" />
                           </>
                         )}
                       </button>
@@ -265,7 +300,7 @@ function BookDemoPage() {
   );
 }
 
-function Field({ label, value, onChange, placeholder, type = "text" }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string }) {
+function Field({ label, value, onChange, placeholder, type = "text", disabled = false }: { label: string; value: string; onChange: (v: string) => void; placeholder?: string; type?: string; disabled?: boolean }) {
   return (
     <div>
       <label className="text-[10px] uppercase tracking-widest text-muted-foreground">{label}</label>
@@ -274,13 +309,14 @@ function Field({ label, value, onChange, placeholder, type = "text" }: { label: 
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="mt-2 w-full rounded-xl bg-background border border-border px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-electric"
+        disabled={disabled}
+        className="mt-2 w-full rounded-xl bg-background border border-border px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-electric disabled:opacity-50 disabled:cursor-not-allowed"
       />
     </div>
   );
 }
 
-function Select({ label, value, onChange, options }: { label: string; value: string; onChange: (v: string) => void; options: string[] }) {
+function Select({ label, value, onChange, options, disabled = false }: { label: string; value: string; onChange: (v: string) => void; options: string[]; disabled?: boolean }) {
   return (
     <div>
       <label className="text-[10px] uppercase tracking-widest text-muted-foreground">{label}</label>
@@ -289,24 +325,16 @@ function Select({ label, value, onChange, options }: { label: string; value: str
           <button
             key={o}
             type="button"
-            onClick={() => onChange(o)}
+            onClick={() => !disabled && onChange(o)}
+            disabled={disabled}
             className={`px-3.5 py-2 rounded-full text-xs border transition-colors ${
               value === o ? "bg-foreground text-background border-foreground" : "border-border text-muted-foreground hover:text-foreground"
-            }`}
+            } disabled:opacity-50 disabled:cursor-not-allowed`}
           >
             {o}
           </button>
         ))}
       </div>
-    </div>
-  );
-}
-
-function ReviewRow({ k, v }: { k: string; v: string }) {
-  return (
-    <div className="flex items-start justify-between gap-6 py-2 border-b border-border last:border-0">
-      <span className="text-[10px] uppercase tracking-widest text-muted-foreground">{k}</span>
-      <span className="text-right text-foreground/90 max-w-[60%]">{v}</span>
     </div>
   );
 }

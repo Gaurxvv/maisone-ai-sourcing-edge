@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowUpRight, ArrowDownRight, Bell, Search, Filter, MapPin, Package, Sparkles, User, Phone, Mail, Pencil, Trash2 } from "lucide-react";
+import { ArrowUpRight, ArrowDownRight, Bell, Search, Filter, MapPin, Package, Sparkles, User, Phone, Mail, Pencil, Trash2, Link2 } from "lucide-react";
+import { toast } from "sonner";
 
 const trend = [22, 30, 28, 42, 38, 55, 48, 65, 60, 72, 68, 84, 80, 92];
 
