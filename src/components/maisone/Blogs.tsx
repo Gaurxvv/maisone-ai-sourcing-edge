@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { User, ArrowRight } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { supabase } from "@/lib/supabase";
+import { useLanguage } from "@/lib/i18n";
 
 export type Blog = {
   id: string;
@@ -172,6 +173,7 @@ AI trend forecasting is not about replacing the human designer; it is about empo
 export function Blogs() {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
+  const { t } = useLanguage();
 
   const fetchBlogs = async () => {
     setLoading(true);
@@ -241,12 +243,12 @@ export function Blogs() {
       
       <div className="relative mx-auto max-w-7xl px-6">
         <div className="max-w-3xl mb-16">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">— Insights & Stories</p>
+          <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">{t("blogs.label")}</p>
           <h2 className="font-serif text-4xl sm:text-5xl tracking-tight mb-6">
             Maisone <span className="italic gradient-text font-serif">Journal</span>
           </h2>
           <p className="text-muted-foreground text-sm max-w-xl leading-relaxed">
-            Stay up to date with the latest innovations in sustainable manufacturing, global logistics guide, and AI fashion forecasting.
+            {t("blogs.headingHighlight")}
           </p>
         </div>
 
@@ -305,7 +307,7 @@ export function Blogs() {
                     params={{ blogId: blog.id }}
                     className="inline-flex items-center gap-1.5 text-xs font-semibold text-white group-hover:text-electric transition-colors cursor-pointer self-start"
                   >
-                    Read Full Post <ArrowRight className="size-3.5 group-hover:translate-x-1 transition-transform" />
+                    {t("blogs.readArticle")} <ArrowRight className="size-3.5 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </div>
               </motion.article>

@@ -4,9 +4,12 @@ import { Moon, Sun, Menu, X, ChevronDown } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { Logo } from "./Logo";
 import { useTheme } from "@/components/theme-provider";
+import { LanguageToggle } from "./LanguageToggle";
+import { useLanguage } from "@/lib/i18n";
 
 export function Navbar() {
   const { theme, toggle } = useTheme();
+  const { t } = useLanguage();
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -33,15 +36,15 @@ export function Navbar() {
           <a href="#home"><Logo /></a>
 
           <nav className="hidden lg:flex items-center gap-8">
-            <a href="/#home" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Home</a>
-            <a href="/#about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">About</a>
-            <a href="/#services" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Services</a>
-            <a href="/#categories" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Categories</a>
+            <a href="/#home" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t("nav.home")}</a>
+            <a href="/#about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t("nav.about")}</a>
+            <a href="/#services" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t("nav.services")}</a>
+            <a href="/#categories" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t("nav.categories")}</a>
 
             {/* Platform Dropdown */}
             <div className="relative group">
               <button className="flex items-center gap-1 text-sm text-muted-foreground group-hover:text-foreground transition-colors py-2 cursor-pointer">
-                <span>Platform</span>
+                <span>{t("nav.platform")}</span>
                 <ChevronDown className="size-3.5 transition-transform duration-300 group-hover:rotate-180" />
               </button>
               <div className="absolute top-full left-1/2 -translate-x-1/2 mt-1 w-48 rounded-xl glass-strong border border-border p-2 opacity-0 scale-95 pointer-events-none group-hover:opacity-100 group-hover:scale-100 group-hover:pointer-events-auto transition-all duration-300 origin-top shadow-xl">
@@ -49,25 +52,25 @@ export function Navbar() {
                   href="/#dashboard"
                   className="block text-xs text-muted-foreground hover:text-foreground hover:bg-secondary/40 rounded-lg px-3 py-2.5 transition-all"
                 >
-                  Console
+                  {t("nav.console")}
                 </a>
                 <a
                   href="/#maisone-ai"
                   className="block text-xs text-muted-foreground hover:text-foreground hover:bg-secondary/40 rounded-lg px-3 py-2.5 transition-all"
                 >
-                  Maisone AI
+                  {t("nav.maisoneAi")}
                 </a>
                 <a
                   href="/#trends"
                   className="block text-xs text-muted-foreground hover:text-foreground hover:bg-secondary/40 rounded-lg px-3 py-2.5 transition-all"
                 >
-                  AI Trend Forecast
+                  {t("nav.aiTrendForecast")}
                 </a>
               </div>
             </div>
 
-            <a href="/#founders" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Founders</a>
-            <a href="/#blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">Blog</a>
+            <a href="/#founders" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t("nav.founders")}</a>
+            <a href="/#blog" className="text-sm text-muted-foreground hover:text-foreground transition-colors">{t("nav.blog")}</a>
           </nav>
 
           <div className="flex items-center gap-2">
@@ -78,17 +81,18 @@ export function Navbar() {
             >
               {theme === "dark" ? <Sun className="size-4" /> : <Moon className="size-4" />}
             </button>
+            <LanguageToggle />
             <Link
               to="/supplier-request"
               className="hidden md:inline-flex items-center text-sm font-medium px-5 py-2.5 rounded-full border border-border bg-background/50 text-foreground hover:bg-secondary/50 transition-colors"
             >
-              Join as Supplier
+              {t("nav.joinAsSupplier")}
             </Link>
             <Link
               to="/book-demo"
               className="hidden md:inline-flex items-center text-sm font-medium px-5 py-2.5 rounded-full bg-foreground text-background hover:opacity-90 transition-opacity"
             >
-              Inquire about us
+              {t("nav.inquireAboutUs")}
             </Link>
             <button
               onClick={() => setOpen(!open)}
@@ -105,39 +109,58 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             className="lg:hidden mt-2 glass-strong rounded-2xl p-4 flex flex-col gap-3"
           >
-            <a href="/#home" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">Home</a>
-            <a href="/#about" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">About</a>
-            <a href="/#services" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">Services</a>
-            <a href="/#categories" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">Categories</a>
+            <a href="/#home" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.home")}</a>
+            <a href="/#about" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.about")}</a>
+            <a href="/#services" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.services")}</a>
+            <a href="/#categories" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.categories")}</a>
 
             {/* Mobile Platform Links */}
             <div className="flex flex-col gap-1.5 pl-3 border-l border-border/50 my-1">
-              <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60 px-2 py-1">Platform</p>
+              <p className="text-[10px] uppercase tracking-widest text-muted-foreground/60 px-2 py-1">{t("nav.platform")}</p>
               <a
                 href="/#dashboard"
                 onClick={() => setOpen(false)}
                 className="text-sm text-muted-foreground hover:text-foreground px-2 py-1.5"
               >
-                Console
+                {t("nav.console")}
               </a>
               <a
                 href="/#maisone-ai"
                 onClick={() => setOpen(false)}
                 className="text-sm text-muted-foreground hover:text-foreground px-2 py-1.5"
               >
-                Maisone AI
+                {t("nav.maisoneAi")}
               </a>
               <a
                 href="/#trends"
                 onClick={() => setOpen(false)}
                 className="text-sm text-muted-foreground hover:text-foreground px-2 py-1.5"
               >
-                AI Trend Forecast
+                {t("nav.aiTrendForecast")}
               </a>
             </div>
 
-            <a href="/#founders" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">Founders</a>
-            <a href="/#blog" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">Blog</a>
+            <a href="/#founders" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.founders")}</a>
+            <a href="/#blog" onClick={() => setOpen(false)} className="text-sm text-muted-foreground hover:text-foreground py-2">{t("nav.blog")}</a>
+            
+            {/* Mobile language & action buttons */}
+            <div className="flex items-center gap-2 pt-2 border-t border-border/50">
+              <LanguageToggle />
+              <Link
+                to="/supplier-request"
+                onClick={() => setOpen(false)}
+                className="flex-1 text-center text-sm font-medium px-4 py-2.5 rounded-full border border-border bg-background/50 text-foreground hover:bg-secondary/50 transition-colors"
+              >
+                {t("nav.joinAsSupplier")}
+              </Link>
+              <Link
+                to="/book-demo"
+                onClick={() => setOpen(false)}
+                className="flex-1 text-center text-sm font-medium px-4 py-2.5 rounded-full bg-foreground text-background hover:opacity-90 transition-opacity"
+              >
+                {t("nav.inquireAboutUs")}
+              </Link>
+            </div>
           </motion.div>
         )}
       </div>

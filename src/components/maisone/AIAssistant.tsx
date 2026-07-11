@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Send, Star, MapPin, Clock, Package } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
 
 type Supplier = {
   name: string;
@@ -76,11 +77,17 @@ const PROMPTS: { q: string; a: Bubble }[] = [
 ];
 
 export function AIAssistant() {
-  const [thread, setThread] = useState<Bubble[]>([
-    { role: "ai", text: "Maisone AI · sourcing copilot ready. Ask anything, or try a prompt below." },
-  ]);
+  const { t } = useLanguage();
+  const [thread, setThread] = useState<Bubble[]>([]);
   const [typing, setTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Initialize greeting with correct language
+  useEffect(() => {
+    setThread([
+      { role: "ai", text: t("aiAssistant.initialGreeting") }
+    ]);
+  }, [t]);
 
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: "smooth" });
@@ -101,16 +108,16 @@ export function AIAssistant() {
     <section id="maisone-ai" className="relative py-32 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6">
         <div className="text-center max-w-3xl mx-auto mb-10">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">— Maisone AI</p>
+          <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">{t("aiAssistant.label")}</p>
           <h2 className="font-serif text-4xl sm:text-6xl tracking-tight text-balance">
-            A sourcing copilot that <span className="italic gradient-text">thinks in fabric</span>.
+            {t("aiAssistant.heading")} <span className="italic gradient-text">{t("aiAssistant.headingHighlight")}</span>{t("aiAssistant.headingEnd")}
           </h2>
           <p className="mt-4 text-muted-foreground">
-            Conversational intelligence trained on global supplier networks, MOQs, lead times and trend signals.
+            {t("aiAssistant.description")}
           </p>
           <div className="mt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
             <a href="/assistant" className="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-foreground text-background text-sm font-medium hover:scale-105 transition-transform shadow-xl shadow-electric/20">
-              Try the AI Assistant <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
+              {t("aiAssistant.tryBtn")} <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8.14645 3.14645C8.34171 2.95118 8.65829 2.95118 8.85355 3.14645L12.8536 7.14645C13.0488 7.34171 13.0488 7.65829 12.8536 7.85355L8.85355 11.8536C8.65829 12.0488 8.34171 12.0488 8.14645 11.8536C7.95118 11.6583 7.95118 11.3417 8.14645 11.1464L11.2929 8H2.5C2.22386 8 2 7.77614 2 7.5C2 7.22386 2.22386 7 2.5 7H11.2929L8.14645 3.85355C7.95118 3.65829 7.95118 3.34171 8.14645 3.14645Z" fill="currentColor" fillRule="evenodd" clipRule="evenodd"></path></svg>
             </a>
           </div>
         </div>
@@ -228,7 +235,7 @@ export function AIAssistant() {
                     <Sparkles className="size-4 text-electric shrink-0" />
                     <input
                       readOnly
-                      placeholder="Ask Maisone AI — try a prompt on the right →"
+                      placeholder={t("aiAssistant.placeholder")}
                       className="flex-1 bg-transparent outline-none text-sm placeholder:text-muted-foreground"
                     />
                     <button className="size-8 rounded-full bg-foreground text-background flex items-center justify-center">
@@ -240,7 +247,7 @@ export function AIAssistant() {
 
               {/* prompts sidebar */}
               <div className="border-t lg:border-t-0 lg:border-l border-border p-5 bg-background/40">
-                <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-4">Sample prompts</p>
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-4">{t("aiAssistant.samplePrompts")}</p>
                 <div className="space-y-2">
                   {PROMPTS.map((p) => (
                     <button
@@ -253,11 +260,11 @@ export function AIAssistant() {
                   ))}
                 </div>
                 <div className="mt-6 pt-6 border-t border-border">
-                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">Live signals</p>
+                  <p className="text-[10px] uppercase tracking-widest text-muted-foreground mb-2">{t("aiAssistant.liveSignals")}</p>
                   <div className="space-y-1.5 text-[11px] text-muted-foreground">
-                    <p className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" /> 2,418 vendors online</p>
-                    <p className="flex items-center gap-2"><Package className="size-3" /> 184 active RFQs</p>
-                    <p className="flex items-center gap-2"><Clock className="size-3" /> Avg response · 1.4s</p>
+                    <p className="flex items-center gap-2"><span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" /> {t("aiAssistant.vendorsOnline")}</p>
+                    <p className="flex items-center gap-2"><Package className="size-3" /> {t("aiAssistant.activeRfqs")}</p>
+                    <p className="flex items-center gap-2"><Clock className="size-3" /> {t("aiAssistant.avgResponse")}</p>
                   </div>
                 </div>
               </div>

@@ -6,6 +6,7 @@ import {
   PackageSearch, Bot, ShieldAlert, Zap
 } from "lucide-react";
 import { InteractiveFolderGallery } from "@/components/ui/interactive-folder-gallery";
+import { useLanguage } from "@/lib/i18n";
 
 const categories = [
   {
@@ -114,18 +115,7 @@ const categories = [
   }
 ];
 
-const features = [
-  { icon: Network, title: "AI Supplier Matching", desc: "Semantic vector matching across 50K+ verified vendors by capability, MOQ, lead time and ethics score." },
-  { icon: Search, title: "Smart Product Discovery", desc: "Image-to-supplier search powered by multimodal models trained on textile, trim and silhouette taxonomies." },
-  { icon: Globe2, title: "Global Vendor Network", desc: "Curated mills and ateliers in Tokyo, London, Paris, Milan, Berlin, New York and Los Angeles." },
-  { icon: Workflow, title: "Procurement Automation", desc: "From RFQ to PO in minutes. Auto-route quotes, negotiate terms and trigger contract workflows." },
-  { icon: Truck, title: "Real-Time Shipment Tracking", desc: "Container-level visibility across air, sea and rail with predictive ETAs and customs alerts." },
-  { icon: TrendingUp, title: "Fashion Trend Intelligence", desc: "Runway, social and retail signals condensed into actionable colour, fabric and silhouette forecasts." },
-  { icon: PackageSearch, title: "Inventory Forecasting", desc: "Demand models trained on your sell-through data anticipate stock-outs eight weeks ahead." },
-  { icon: Bot, title: "AI Chat Assistant", desc: "A sourcing copilot that drafts briefs, summarises quotes and answers supplier questions, 24/7." },
-  { icon: ShieldAlert, title: "Supplier Risk Analysis", desc: "Continuous monitoring of compliance, financial health and geopolitical exposure." },
-  { icon: Zap, title: "Workflow Automation", desc: "Connect Notion, Zoho, WhatsApp and email to orchestrate every step of your supply chain." },
-];
+// features list moved inside ProductCategories component to use translations dynamically
 
 function CategoryCard({ category, index }: { category: typeof categories[0]; index: number }) {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -219,6 +209,20 @@ function CategoryCard({ category, index }: { category: typeof categories[0]; ind
 
 export function ProductCategories() {
   const [activeIdx, setActiveIdx] = useState(0);
+  const { t } = useLanguage();
+
+  const features = [
+    { icon: Network, title: t("categories.feat1Title"), desc: t("categories.feat1Desc") },
+    { icon: Search, title: t("categories.feat2Title"), desc: t("categories.feat2Desc") },
+    { icon: Globe2, title: t("categories.feat3Title"), desc: t("categories.feat3Desc") },
+    { icon: Workflow, title: t("categories.feat4Title"), desc: t("categories.feat4Desc") },
+    { icon: Truck, title: t("categories.feat5Title"), desc: t("categories.feat5Desc") },
+    { icon: TrendingUp, title: t("categories.feat6Title"), desc: t("categories.feat6Desc") },
+    { icon: PackageSearch, title: t("categories.feat7Title"), desc: t("categories.feat7Desc") },
+    { icon: Bot, title: t("categories.feat8Title"), desc: t("categories.feat8Desc") },
+    { icon: ShieldAlert, title: t("categories.feat9Title"), desc: t("categories.feat9Desc") },
+    { icon: Zap, title: t("categories.feat10Title"), desc: t("categories.feat10Desc") },
+  ];
 
   const activeCategory = categories[activeIdx];
   const galleryPhotos = activeCategory.images.slice(0, 5).map((img, idx) => ({
@@ -232,9 +236,9 @@ export function ProductCategories() {
         
         {/* Main Section Header */}
         <div className="max-w-3xl">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">— Sourcing Categories & Capabilities</p>
+          <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">{t("categories.label")}</p>
           <h2 className="font-serif text-4xl sm:text-6xl tracking-tight text-balance">
-            A full spectrum of <span className="italic gradient-text">luxury categories</span> & intelligent sourcing solutions.
+            {t("categories.heading")} <span className="italic gradient-text">{t("categories.headingHighlight")}</span>{t("categories.headingEnd")}
           </h2>
         </div>
 
@@ -295,8 +299,8 @@ export function ProductCategories() {
         {/* 2. Capabilities (Features) Sub-section */}
         <div>
           <div className="mb-10 border-b border-border/40 pb-4">
-            <h3 className="font-serif text-2xl tracking-wide">Capabilities</h3>
-            <p className="text-sm text-muted-foreground mt-1">Ten modules engineered to compress months of sourcing work.</p>
+            <h3 className="font-serif text-2xl tracking-wide">{t("categories.capabilitiesTitle")}</h3>
+            <p className="text-sm text-muted-foreground mt-1">{t("categories.capabilitiesSubtitle")}</p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-px bg-border rounded-3xl overflow-hidden">
             {features.map((f, i) => (

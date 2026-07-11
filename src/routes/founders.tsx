@@ -3,6 +3,7 @@ import { ArrowLeft, Quote, Briefcase } from "lucide-react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/maisone/Navbar";
 import { Footer } from "@/components/maisone/Footer";
+import { useLanguage } from "@/lib/i18n";
 
 // Import local founder images
 import shashankImg from "@/assets/founder-shashank.jpg";
@@ -19,19 +20,21 @@ export const Route = createFileRoute("/founders")({
 });
 
 function FoundersPage() {
+  const { t } = useLanguage();
+
   const bios = [
     {
       name: "Shashank Jain",
-      role: "Co-Founder · Operations & Strategy",
-      quote: "True sustainability begins by optimizing the first link of the chain. By aligning demand signals with capacity, we can respect both the makers and the earth.",
-      bio: "Shashank brings over 18 years of expertise in luxury fashion sourcing, handcrafted textiles, production planning, sustainability, and ethical manufacturing. Throughout his career, he has collaborated with premier global design houses including Valentino, Balmain, Stella McCartney, Giorgio Armani, and Dolce & Gabbana. At Maisone, he directs global operations and maps sustainable supply loops.",
+      role: t("founders.coFounder") + " · Operations & Strategy",
+      quote: t("foundersPageRoute.shashankQuote"),
+      bio: t("foundersPageRoute.shashankBio"),
       image: shashankImg
     },
     {
       name: "Subah",
-      role: "Co-Founder · Creative & Client Partnerships",
-      quote: "Fashion is a dialogue between creative vision and technical execution. Maisone translates that dialogue into transparent, beautifully crafted collections.",
-      bio: "Subah specializes in design coordination, luxury product development, client engagement, and creative collaborations. She acts as the bridge connecting international design houses with specialized manufacturers. Her expertise ensures that creative design concepts are executed with absolute technical precision and material integrity.",
+      role: t("founders.coFounder") + " · Creative & Client Partnerships",
+      quote: t("foundersPageRoute.subahQuote"),
+      bio: t("foundersPageRoute.subahBio"),
       image: subahImg
     }
   ];
@@ -46,11 +49,11 @@ function FoundersPage() {
           {/* Header */}
           <div className="space-y-6">
             <Link to="/" className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-electric transition-colors uppercase tracking-wider">
-              <ArrowLeft className="size-4" /> Back to home
+              <ArrowLeft className="size-4" /> {t("aboutPage.backToHome")}
             </Link>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-electric bg-black/50 px-2 py-0.5 rounded w-max">— Leadership & Philosophy</p>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-electric bg-black/50 px-2 py-0.5 rounded w-max">{t("foundersPageRoute.label")}</p>
             <h1 className="font-serif text-4xl sm:text-6xl text-white tracking-tight leading-tight">
-              The minds behind <span className="italic gradient-text font-serif">Maisone Global</span>.
+              {t("foundersPageRoute.heading")} <span className="italic gradient-text font-serif">{t("foundersPageRoute.headingHighlight")}</span>{t("foundersPageRoute.headingEnd")}
             </h1>
           </div>
 
@@ -64,7 +67,7 @@ function FoundersPage() {
                     <img src={f.image} alt={f.name} className="w-full h-full object-cover object-[center_20%] transition-all duration-500" />
                     <div className="absolute bottom-4 left-4">
                       <div className="text-[9px] uppercase tracking-widest font-semibold bg-black/85 border border-white/10 px-3 py-1.5 rounded-xl text-electric flex flex-col gap-0.5">
-                        <span>Co-Founder</span>
+                        <span>{t("founders.coFounder")}</span>
                         <span className="text-white/80 text-[8px] tracking-wider">{f.role.split(" · ")[1]}</span>
                       </div>
                     </div>
@@ -85,7 +88,7 @@ function FoundersPage() {
                 </div>
 
                 <div className="pt-4 border-t border-white/5 flex gap-2 items-center text-electric text-[10px] font-bold uppercase tracking-wider">
-                  <Briefcase className="size-3 text-electric/40" /> Vetting the future of apparel
+                  <Briefcase className="size-3 text-electric/40" /> {t("foundersPageRoute.vettingApparel")}
                 </div>
               </div>
             ))}
@@ -94,14 +97,14 @@ function FoundersPage() {
           {/* Founders' Manifesto */}
           <section className="glass-strong rounded-3xl p-8 md:p-10 border border-white/5 space-y-6 max-w-3xl">
             <h2 className="text-white font-serif text-2xl tracking-tight flex items-center gap-2">
-              <Quote className="size-5 text-electric" /> The Founders' Manifesto
+              <Quote className="size-5 text-electric" /> {t("foundersPageRoute.manifestoTitle")}
             </h2>
             <div className="space-y-4 text-sm text-muted-foreground/90 leading-relaxed italic font-serif">
               <p>
-                "We built Maisone Global because the old sourcing system is broken. Brands shouldn't have to choose between profitability and ethics, and artisans shouldn't have to compromise their craft for low-cost mass production.
+                "{t("foundersPageRoute.manifestoP1")}"
               </p>
               <p>
-                By digitizing capacity logs and using AI-based trend forecasting, we help brands plan and manufacture exactly what they need. This eliminates excess inventory, reduces waste, and allows us to pay workers living wages. We believe in supply chains that respect both the creator and the environment."
+                {t("foundersPageRoute.manifestoP2")}
               </p>
             </div>
             <div className="pt-4 border-t border-white/5 flex gap-4 text-xs font-semibold text-muted-foreground">

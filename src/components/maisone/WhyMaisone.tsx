@@ -1,38 +1,41 @@
 import { motion } from "framer-motion";
 import { Layers, ShieldCheck, Handshake, Sparkles } from "lucide-react";
 import abstractBg from "@/assets/fashion_abstract_1_1783761906196.png";
-
-const cards = [
-  {
-    icon: Layers,
-    title: "Clarity in Complexity",
-    text: "We simplify complex global supply chains through transparency and structure.",
-  },
-  {
-    icon: ShieldCheck,
-    title: "Integrity at the Core",
-    text: "Every process is guided by ethical practices and responsible sourcing.",
-  },
-  {
-    icon: Handshake,
-    title: "True Partnership",
-    text: "We work as collaborators, building long-term value with brands.",
-  },
-  {
-    icon: Sparkles,
-    title: "Craftsmanship with Conscience",
-    text: "Luxury craftsmanship delivered responsibly and sustainably.",
-  },
-];
+import { useLanguage } from "@/lib/i18n";
 
 export function WhyMaisone() {
+  const { t } = useLanguage();
+
+  const cards = [
+    {
+      icon: Layers,
+      title: t("why.card1Title"),
+      text: t("why.card1Text"),
+    },
+    {
+      icon: ShieldCheck,
+      title: t("why.card2Title"),
+      text: t("why.card2Text"),
+    },
+    {
+      icon: Handshake,
+      title: t("why.card3Title"),
+      text: t("why.card3Text"),
+    },
+    {
+      icon: Sparkles,
+      title: t("why.card4Title"),
+      text: t("why.card4Text"),
+    },
+  ];
+
   return (
     <section id="why" className="relative py-32">
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-3xl mb-16">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">— Why Maisone</p>
+          <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">{t("why.label")}</p>
           <h2 className="font-serif text-4xl sm:text-6xl tracking-tight text-balance">
-            Built on principles, not <span className="italic gradient-text">promises</span>.
+            {t("why.heading")} <span className="italic gradient-text">{t("why.headingHighlight")}</span>{t("why.headingEnd")}
           </h2>
         </div>
 
@@ -65,17 +68,17 @@ export function WhyMaisone() {
         >
           <div className="p-8 md:p-12 md:w-1/2 flex flex-col justify-center">
             <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-electric/10 border border-electric/20 w-fit text-[9px] tracking-[0.2em] uppercase text-electric font-semibold mb-6">
-              Startup Friendly
+              {t("why.startupFriendly")}
             </span>
-            <h3 className="font-serif text-3xl mb-4 text-foreground">Supporting emerging labels &amp; lower MOQs</h3>
+            <h3 className="font-serif text-3xl mb-4 text-foreground">{t("why.startupTitle")}</h3>
             <p className="text-sm text-muted-foreground leading-relaxed mb-8">
-              We believe in nurturing the next generation of fashion. Maisone proudly supports small startups, independent designers, and growing companies with low minimum order quantities (MOQs) to help scale your vision sustainably.
+              {t("why.startupText")}
             </p>
             <a
               href="/book-demo"
               className="px-6 py-3 w-fit rounded-full bg-foreground text-background text-sm font-medium hover:scale-[1.02] transition-transform whitespace-nowrap"
             >
-              Launch Your Brand
+              {t("why.launchYourBrand")}
             </a>
           </div>
           <div className="md:w-1/2 relative min-h-[300px]">

@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, Check, Sparkles, Loader2 } from "lucide-react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Logo } from "@/components/maisone/Logo";
 import { supabase } from "@/lib/supabase";
+import { useLanguage } from "@/lib/i18n";
 
 export const Route = createFileRoute("/book-demo")({
   head: () => ({
@@ -31,9 +32,8 @@ type Form = {
   message: string;
 };
 
-const STEPS = ["Your details", "Sourcing needs"];
-
 function BookDemoPage() {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -52,6 +52,8 @@ function BookDemoPage() {
     timeline: "1–3 months",
     message: "",
   });
+
+  const STEPS = [t("bookDemo.step1"), t("bookDemo.step2")];
 
   const set = <K extends keyof Form>(k: K, v: Form[K]) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -114,7 +116,7 @@ function BookDemoPage() {
       setSubmitted(true);
     } catch (err: any) {
       console.error("Failed to submit request:", err);
-      setError(err.message || "Connection error. Please try again.");
+      setError(err.message || t("bookDemo.errorGeneric"));
     } finally {
       setLoading(false);
     }
@@ -127,7 +129,7 @@ function BookDemoPage() {
         <header className="relative z-10 mx-auto max-w-6xl px-6 py-6 flex items-center justify-between">
           <Link to="/"><Logo /></Link>
           <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="size-4" /> Back to site
+            <ArrowLeft className="size-4" /> {t("nav.backToHome")}
           </Link>
         </header>
 
@@ -135,29 +137,14 @@ function BookDemoPage() {
           {/* Left intro */}
           <aside className="lg:col-span-2 space-y-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-[10px] tracking-[0.25em] uppercase text-muted-foreground">
-              <Sparkles className="size-3 text-electric animate-pulse" /> Sourcing Platform
+              <Sparkles className="size-3 text-electric animate-pulse" /> {t("bookDemo.pageTitle")}
             </div>
             <h1 className="font-serif text-4xl sm:text-5xl tracking-tight text-balance">
-              Experience the future of <span className="italic gradient-text">production Sourcing</span>.
+              {t("bookDemo.pageTitle")} <span className="italic gradient-text">Maisone</span>.
             </h1>
             <p className="text-muted-foreground leading-relaxed text-sm">
-              Discover how our AI matching engine connects your design specifications with pre-qualified, certified factories globally.
+              {t("bookDemo.pageSubtitle")}
             </p>
-            <ul className="space-y-3.5 text-xs">
-              {[
-                "10x faster supplier shortlisting & match-making",
-                "Direct API feeds into verified manufacturer capacity",
-                "Complete custom catalog generation in 60 seconds",
-                "End-to-end milestone and compliance auditing",
-              ].map((b) => (
-                <li key={b} className="flex items-start gap-3">
-                  <span className="mt-0.5 size-4 rounded-full bg-electric/15 flex items-center justify-center shrink-0">
-                    <Check className="size-2.5 text-electric" />
-                  </span>
-                  <span className="text-muted-foreground">{b}</span>
-                </li>
-              ))}
-            </ul>
           </aside>
 
           {/* Right form */}
@@ -172,16 +159,15 @@ function BookDemoPage() {
                   <div className="mx-auto size-14 rounded-full bg-electric/15 flex items-center justify-center mb-6">
                     <Check className="size-6 text-electric" />
                   </div>
-                  <h2 className="font-serif text-3xl mb-3">Demo Requested</h2>
+                  <h2 className="font-serif text-3xl mb-3">{t("bookDemo.thankYou")}</h2>
                   <p className="text-muted-foreground max-w-sm mx-auto">
-                    Thank you, {form.fullName.split(" ")[0] || "there"}. A Maisone strategist
-                    will reach out at <span className="text-foreground">{form.workEmail}</span> within one business day.
+                    {t("bookDemo.thankYouText")}
                   </p>
                   <button
                     onClick={() => navigate({ to: "/" })}
                     className="mt-8 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background text-sm font-medium hover:scale-[1.02] transition-transform"
                   >
-                    Return home <ArrowRight className="size-4" />
+                    {t("bookDemo.returnHome")} <ArrowRight className="size-4" />
                   </button>
                 </motion.div>
               ) : (
@@ -200,13 +186,6 @@ function BookDemoPage() {
                     ))}
                   </div>
 
-                  {isPreFilled && (
-                    <div className="mb-6 inline-flex items-center gap-2 px-3 py-1.5 rounded-xl border border-electric/25 bg-electric/10 text-electric text-[11px] font-medium animate-in fade-in duration-300">
-                      <span className="size-1.5 rounded-full bg-electric animate-pulse" />
-                      Verified Client Link: Company details pre-filled.
-                    </div>
-                  )}
-
                   <p className="text-[10px] uppercase tracking-[0.3em] text-muted-foreground mb-2">— Step {step + 1} of {STEPS.length}</p>
                   <h2 className="font-serif text-2xl mb-6">{STEPS[step]}</h2>
 
@@ -214,34 +193,34 @@ function BookDemoPage() {
                     {step === 0 && (
                       <>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <Field label="Full name" value={form.fullName} onChange={(v) => set("fullName", v)} placeholder="Yuki Tanaka" disabled={isPreFilled} />
-                          <Field label="Work email" type="email" value={form.workEmail} onChange={(v) => set("workEmail", v)} placeholder="you@brand.com" disabled={isPreFilled} />
+                          <Field label={t("bookDemo.fullName")} value={form.fullName} onChange={(v) => set("fullName", v)} placeholder="Yuki Tanaka" disabled={isPreFilled} />
+                          <Field label={t("bookDemo.workEmail")} type="email" value={form.workEmail} onChange={(v) => set("workEmail", v)} placeholder="you@brand.com" disabled={isPreFilled} />
                         </div>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <Field label="Company" value={form.company} onChange={(v) => set("company", v)} placeholder="Maison Kyō" disabled={isPreFilled} />
-                          <Field label="Your role" value={form.role} onChange={(v) => set("role", v)} placeholder="Head of Sourcing" disabled={isPreFilled} />
+                          <Field label={t("bookDemo.company")} value={form.company} onChange={(v) => set("company", v)} placeholder="Maison Kyō" disabled={isPreFilled} />
+                          <Field label={t("bookDemo.role")} value={form.role} onChange={(v) => set("role", v)} placeholder="Head of Sourcing" disabled={isPreFilled} />
                         </div>
-                        <Select label="Company size" value={form.companySize} onChange={(v) => set("companySize", v)}
+                        <Select label={t("bookDemo.companySize")} value={form.companySize} onChange={(v) => set("companySize", v)}
                           options={["1–10", "11–50", "51–200", "201–1000", "1000+"]} disabled={isPreFilled} />
-                        <Select label="Primary region" value={form.region} onChange={(v) => set("region", v)}
+                        <Select label={t("bookDemo.region")} value={form.region} onChange={(v) => set("region", v)}
                           options={["Japan", "United Kingdom", "Europe", "United States", "India", "China", "Global"]} disabled={isPreFilled} />
                       </>
                     )}
                     {step === 1 && (
                       <>
-                        <Select label="Category" value={form.category} onChange={(v) => set("category", v)}
+                        <Select label={t("bookDemo.category")} value={form.category} onChange={(v) => set("category", v)}
                           options={["Apparel", "Denim", "Knitwear", "Leather Goods", "Footwear", "Accessories", "Textiles"]} />
-                        <Select label="Monthly volume" value={form.monthlyVolume} onChange={(v) => set("monthlyVolume", v)}
+                        <Select label={t("bookDemo.monthlyVolume")} value={form.monthlyVolume} onChange={(v) => set("monthlyVolume", v)}
                           options={["< 1k units", "1k–10k units", "10k–50k units", "50k–250k units", "250k+ units"]} />
-                        <Select label="Sourcing timeline" value={form.timeline} onChange={(v) => set("timeline", v)}
+                        <Select label={t("bookDemo.timeline")} value={form.timeline} onChange={(v) => set("timeline", v)}
                           options={["Immediate", "< 1 month", "1–3 months", "3–6 months", "Exploring"]} />
                         <div>
-                          <label className="text-[10px] uppercase tracking-widest text-muted-foreground">Anything else?</label>
+                          <label className="text-[10px] uppercase tracking-widest text-muted-foreground">{t("bookDemo.message")}</label>
                           <textarea
                             value={form.message}
                             onChange={(e) => set("message", e.target.value)}
                             rows={3}
-                            placeholder="Tell us about your sourcing priorities…"
+                            placeholder={t("bookDemo.messagePlaceholder")}
                             className="mt-2 w-full rounded-xl bg-background border border-border px-4 py-3 text-sm focus:outline-none focus:ring-1 focus:ring-electric"
                           />
                         </div>
@@ -262,7 +241,7 @@ function BookDemoPage() {
                       disabled={step === 0 || loading}
                       className="text-sm text-muted-foreground hover:text-foreground disabled:opacity-30 inline-flex items-center gap-2"
                     >
-                      <ArrowLeft className="size-4" /> Back
+                      <ArrowLeft className="size-4" /> {t("bookDemo.back")}
                     </button>
                     {step < STEPS.length - 1 ? (
                       <button
@@ -270,7 +249,7 @@ function BookDemoPage() {
                         disabled={!canNext}
                         className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background text-sm font-medium disabled:opacity-40 hover:scale-[1.02] transition-transform"
                       >
-                        Continue <ArrowRight className="size-4" />
+                        {t("bookDemo.next")} <ArrowRight className="size-4" />
                       </button>
                     ) : (
                       <button
@@ -280,11 +259,11 @@ function BookDemoPage() {
                       >
                         {loading ? (
                           <>
-                            Submitting... <Loader2 className="size-4 animate-spin" />
+                            {t("bookDemo.submitting")} <Loader2 className="size-4 animate-spin" />
                           </>
                         ) : (
                           <>
-                            Submit application <ArrowRight className="size-4" />
+                            {t("bookDemo.submit")} <ArrowRight className="size-4" />
                           </>
                         )}
                       </button>
@@ -316,6 +295,7 @@ function Field({ label, value, onChange, placeholder, type = "text", disabled = 
   );
 }
 
+// Select component keeps options in English, as regions, sizes, timeline metrics shouldn't be parsed if they are database columns
 function Select({ label, value, onChange, options, disabled = false }: { label: string; value: string; onChange: (v: string) => void; options: string[]; disabled?: boolean }) {
   return (
     <div>

@@ -4,6 +4,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import { Loader } from "@/components/maisone/Loader";
 import { Navbar } from "@/components/maisone/Navbar";
 import { Hero } from "@/components/maisone/Hero";
+import { useLanguage } from "@/lib/i18n";
 import { About } from "@/components/maisone/About";
 import { WhyMaisone } from "@/components/maisone/WhyMaisone";
 import { HowWeWork } from "@/components/maisone/HowWeWork";
@@ -44,6 +45,8 @@ export const Route = createFileRoute("/")({
 });
 
 function Index() {
+  const { t } = useLanguage();
+
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
@@ -126,7 +129,7 @@ function Index() {
           {/* Floating AI Assistant Button */}
           <div className="fixed bottom-8 right-8 z-50 flex items-center gap-4">
             <span className="bg-card/95 text-foreground border border-electric/40 px-6 py-3 rounded-2xl text-sm font-semibold shadow-[0_10px_30px_-5px_rgba(0,0,0,0.3),0_0_20px_rgba(194,164,109,0.15)] backdrop-blur-md whitespace-nowrap relative animate-float flex items-center">
-              Talk with our <span className="font-serif italic text-electric ml-2 tracking-wide text-base">Maisone AI</span>
+              {t("index.talkWith")} <span className="font-serif italic text-electric ml-2 tracking-wide text-base">Maisone AI</span>
               <span className="absolute top-1/2 -translate-y-1/2 -right-1.5 size-3 rotate-45 bg-card/95 border-r border-t border-electric/40" />
             </span>
             <a

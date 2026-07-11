@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { TrendingUp, Sparkles, Activity, Loader2 } from "lucide-react";
 import { createServerFn } from "@tanstack/react-start";
 import { supabase } from "@/lib/supabase";
+import { useLanguage } from "@/lib/i18n";
 
 export type Region = "Japan" | "United Kingdom" | "Europe" | "United States" | "India" | "China";
 
@@ -205,6 +206,7 @@ export const DEFAULT_DATA: Record<Region, Forecast> = {
 const REGIONS: Region[] = ["Japan", "United Kingdom", "Europe", "United States", "India", "China"];
 const SEASONS = ["S/S 26", "F/W 26", "S/S 27"];
 export function TrendForecast() {
+  const { t } = useLanguage();
   const [region, setRegion] = useState<Region>("Japan");
   const [forecast, setForecast] = useState<Forecast | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -249,12 +251,12 @@ export function TrendForecast() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-8 mb-12">
           <div className="max-w-2xl">
-            <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">— AI Trend Forecast</p>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">{t("trendForecast.label")}</p>
             <h2 className="font-serif text-4xl sm:text-6xl tracking-tight text-balance">
-              Signals from the <span className="italic gradient-text">global atelier</span>.
+              {t("trendForecast.heading")} <span className="italic gradient-text">{t("trendForecast.headingHighlight")}</span>{t("trendForecast.headingEnd")}
             </h2>
             <p className="mt-6 text-muted-foreground">
-              Maisone AI synthesises runway, retail sell-through, social and editorial signals into actionable sourcing forecasts — refreshed every 6 hours.
+              {t("trendForecast.description")}
             </p>
           </div>
           
@@ -277,13 +279,13 @@ export function TrendForecast() {
           <div className="h-[400px] flex items-center justify-center rounded-3xl border border-white/5 glass bg-white/[0.01]">
             <div className="flex flex-col items-center gap-3">
               <Loader2 className="size-8 animate-spin text-electric" />
-              <p className="text-xs text-muted-foreground">Fetching latest sourcing signals...</p>
+              <p className="text-xs text-muted-foreground">{t("trendForecast.loadingText")}</p>
             </div>
           </div>
         ) : forecast ? (
           <div className="grid lg:grid-cols-3 gap-5">
             {/* Fabrics */}
-            <Panel title="Trending fabrics" icon={Activity}>
+            <Panel title={t("trendForecast.panelFabrics")} icon={Activity}>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={region + "-fabrics"}
@@ -315,7 +317,7 @@ export function TrendForecast() {
             </Panel>
 
             {/* Colors */}
-            <Panel title="Color forecast" icon={Sparkles}>
+            <Panel title={t("trendForecast.panelColors")} icon={Sparkles}>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={region + "-colors"}
@@ -347,7 +349,7 @@ export function TrendForecast() {
             </Panel>
 
             {/* Silhouettes */}
-            <Panel title="Silhouettes" icon={TrendingUp}>
+            <Panel title={t("trendForecast.panelSilhouettes")} icon={TrendingUp}>
               <AnimatePresence mode="wait">
                 <motion.div
                   key={region + "-silhouettes"}
@@ -376,7 +378,7 @@ export function TrendForecast() {
                   ))}
 
                   <div className="mt-4 pt-4 border-t border-border text-[10px] text-muted-foreground flex items-center justify-between">
-                    <span>Signals analysed</span>
+                    <span>{t("trendForecast.signalsAnalysed")}</span>
                     <span className="tabular-nums text-foreground/80">2.4M / 6h</span>
                   </div>
                 </motion.div>
@@ -384,7 +386,7 @@ export function TrendForecast() {
             </Panel>
           </div>
         ) : (
-          <div className="text-center py-12 text-muted-foreground">No forecast data available.</div>
+          <div className="text-center py-12 text-muted-foreground">{t("trendForecast.noForecast")}</div>
         )}
       </div>
     </section>

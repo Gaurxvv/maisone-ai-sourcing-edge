@@ -1,38 +1,43 @@
 import { motion } from "framer-motion";
 import shashankImg from "@/assets/founder-shashank.jpg";
 import subahImg from "@/assets/founder-subah.jpg";
+import { useLanguage } from "@/lib/i18n";
 
-const founders = [
-  {
-    name: "Shashank Jain",
-    role: "Co-Founder · Operations & Strategy",
-    bio: "18+ years experience in luxury fashion sourcing, handcrafted textiles, production planning, sustainability, and ethical manufacturing.",
-    footerLabel: "Worked With",
-    tags: ["Valentino", "Balmain", "Stella McCartney", "Giorgio Armani", "Dolce & Gabbana"],
-    initials: "SJ",
-    hue: "from-stone-800/50 to-stone-900/80",
-    image: shashankImg,
-  },
-  {
-    name: "Subah",
-    role: "Co-Founder · Creative & Client Partnerships",
-    bio: "Specializes in design coordination, luxury product development, client engagement, and creative collaboration between brands and manufacturers.",
-    footerLabel: "Expertise",
-    tags: ["Design Coordination", "Luxury Product Dev", "Client Engagement", "Creative Sync"],
-    initials: "S",
-    hue: "from-zinc-800/50 to-zinc-900/80",
-    image: subahImg,
-  },
-];
+// founders list defined dynamically inside Founders component
 
 export function Founders() {
+  const { t } = useLanguage();
+
+  const founders = [
+    {
+      name: "Shashank Jain",
+      role: t("founders.coFounder") + " · Operations & Strategy",
+      bio: t("founders.shashankBio"),
+      footerLabel: t("founders.workedWith"),
+      tags: ["Valentino", "Balmain", "Stella McCartney", "Giorgio Armani", "Dolce & Gabbana"],
+      initials: "SJ",
+      hue: "from-stone-800/50 to-stone-900/80",
+      image: shashankImg,
+    },
+    {
+      name: "Subah",
+      role: t("founders.coFounder") + " · Creative & Client Partnerships",
+      bio: t("founders.subahBio"),
+      footerLabel: t("founders.expertise"),
+      tags: ["Design Coordination", "Luxury Product Dev", "Client Engagement", "Creative Sync"],
+      initials: "S",
+      hue: "from-zinc-800/50 to-zinc-900/80",
+      image: subahImg,
+    },
+  ];
+
   return (
     <section id="founders" className="relative pt-32 pb-16">
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-3xl mb-16">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">— Founders</p>
+          <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">{t("founders.label")}</p>
           <h2 className="font-serif text-4xl sm:text-6xl tracking-tight text-balance">
-            The house behind the <span className="italic gradient-text">house</span>.
+            {t("founders.heading")} <span className="italic gradient-text">{t("founders.headingHighlight")}</span>{t("founders.headingEnd")}
           </h2>
         </div>
 
@@ -59,7 +64,7 @@ export function Founders() {
                 <div className="p-8 pb-4">
                   <div className="flex flex-wrap gap-2 mb-4">
                   <div className="text-[10px] font-medium uppercase tracking-[0.2em] px-3 py-1.5 rounded-xl bg-electric/10 text-electric border border-electric/20 flex flex-col gap-0.5">
-                    <span>Co-Founder</span>
+                    <span>{t("founders.coFounder")}</span>
                     <span className="text-white/80 text-[8px] tracking-wider">{f.role.split(" · ")[1]}</span>
                   </div>
                   </div>

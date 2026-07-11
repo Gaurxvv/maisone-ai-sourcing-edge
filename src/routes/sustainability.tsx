@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, Leaf, Recycle, Droplet, Wind, Sparkles, HelpCircle } from "lucide-react";
+import { ArrowLeft, Leaf, Recycle, Droplet, Wind, Sparkles } from "lucide-react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/maisone/Navbar";
 import { Footer } from "@/components/maisone/Footer";
+import { useLanguage } from "@/lib/i18n";
 
 export const Route = createFileRoute("/sustainability")({
   head: () => ({
@@ -15,21 +16,23 @@ export const Route = createFileRoute("/sustainability")({
 });
 
 function SustainabilityPage() {
+  const { t } = useLanguage();
+
   const pillars = [
     {
       icon: Recycle,
-      title: "Circular & Organic Raw Materials",
-      desc: "We prioritize GOTS organic cotton, mechanically recycled wool, and chemically recycled nylon (like Econyl) to keep garments in a closed cycle and prevent landfill waste."
+      title: t("sustainabilityPage.pillar1Title"),
+      desc: t("sustainabilityPage.pillar1Desc")
     },
     {
       icon: Droplet,
-      title: "Water Conservation & Dyeing Technology",
-      desc: "Our partner factories use supercritical CO2 and digital spray-dyeing systems, reducing freshwater consumption by up to 95% and eliminating toxic chemical runoff."
+      title: t("sustainabilityPage.pillar2Title"),
+      desc: t("sustainabilityPage.pillar2Desc")
     },
     {
       icon: Wind,
-      title: "Logistics Carbon Mitigation",
-      desc: "By consolidating shipments and utilizing vertical regional clusters (where spinning, weaving, and sewing occur nearby), we minimize global shipping emissions."
+      title: t("sustainabilityPage.pillar3Title"),
+      desc: t("sustainabilityPage.pillar3Desc")
     }
   ];
 
@@ -43,11 +46,11 @@ function SustainabilityPage() {
           {/* Header */}
           <div className="space-y-6">
             <Link to="/" className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-electric transition-colors uppercase tracking-wider">
-              <ArrowLeft className="size-4" /> Back to home
+              <ArrowLeft className="size-4" /> {t("nav.backToHome")}
             </Link>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-electric">— Eco-Design Blueprint</p>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-electric">{t("sustainabilityPage.label")}</p>
             <h1 className="font-serif text-4xl sm:text-6xl text-white tracking-tight leading-tight">
-              Regenerative and <span className="italic gradient-text font-serif">circular sourcing blueprints</span>.
+              {t("sustainabilityPage.heading")} <span className="italic gradient-text font-serif">{t("sustainabilityPage.headingHighlight")}</span>{t("sustainabilityPage.headingEnd")}
             </h1>
           </div>
 
@@ -65,7 +68,7 @@ function SustainabilityPage() {
                     <p className="text-muted-foreground text-xs leading-relaxed font-normal">{p.desc}</p>
                   </div>
                   <div className="pt-2 text-[10px] text-electric font-semibold uppercase tracking-wider">
-                    Zero Waste Goal
+                    {t("sustainabilityPage.zeroWasteGoal")}
                   </div>
                 </div>
               );
@@ -75,14 +78,14 @@ function SustainabilityPage() {
           {/* Sustainability Framework Details */}
           <section className="glass-strong rounded-3xl p-8 border border-white/5 space-y-6 max-w-3xl">
             <h2 className="text-white font-serif text-2xl tracking-tight flex items-center gap-2">
-              <Sparkles className="size-5 text-electric" /> Sustainable Sourcing Goals
+              <Sparkles className="size-5 text-electric" /> {t("sustainabilityPage.goalsTitle")}
             </h2>
             <div className="space-y-4 text-sm text-muted-foreground/80 leading-relaxed">
               <p>
-                Our sustainability model is built on resource conservation and waste reduction. Traditional manufacturing creates a massive environmental footprint, from toxic chemical runoff during dyeing to emissions from global transport legs.
+                {t("sustainabilityPage.goalsP1")}
               </p>
               <p>
-                By helping brands pre-order materials based on AI-driven capacity logs and demand predictions, we prevent overproduction and deadstock. We are committed to working exclusively with factories that use renewable energy and water filtration systems by 2028, ensuring fashion supply chains respect local environments.
+                {t("sustainabilityPage.goalsP2")}
               </p>
             </div>
           </section>

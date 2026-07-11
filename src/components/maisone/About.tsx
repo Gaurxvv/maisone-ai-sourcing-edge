@@ -1,21 +1,24 @@
 import { motion } from "framer-motion";
 import { Target, Eye } from "lucide-react";
+import { useLanguage } from "@/lib/i18n";
 
 export function About() {
+  const { t } = useLanguage();
+
   return (
     <section id="about" className="relative py-32">
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-3xl">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">— About</p>
+          <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">{t("about.label")}</p>
           <h2 className="font-serif text-4xl sm:text-6xl tracking-tight text-balance">
-            A next-generation <span className="italic gradient-text">sourcing house</span>.
+            {t("about.heading")} <span className="italic gradient-text">{t("about.headingHighlight")}</span>{t("about.headingEnd")}
           </h2>
           <div className="mt-8 space-y-5 text-muted-foreground leading-relaxed">
             <p>
-              Maisone Global is built on trust, transparency, and a global perspective connecting fashion brands with exceptional sourcing, craftsmanship, and manufacturing across Asia.
+              {t("about.p1")}
             </p>
             <p>
-              More than a supplier, Maisone acts as a strategic partner, bringing together brands, factories, artisans, and innovation to create products with purpose and scale.
+              {t("about.p2")}
             </p>
           </div>
         </div>
@@ -24,29 +27,25 @@ export function About() {
           {[
             {
               icon: Target,
-              label: "Mission",
-              text: "To simplify the fashion manufacturing journey for global brands through sourcing, development, compliance, and quality systems.",
+              label: t("about.missionLabel"),
+              text: t("about.missionText"),
             },
             {
               icon: Eye,
-              label: "Vision",
-              text: "To become the world's most trusted fashion sourcing partner by building transparent, ethical, and intelligently structured supply chains.",
+              label: t("about.visionLabel"),
+              text: t("about.visionText"),
             },
           ].map((b) => (
             <div key={b.label} className="glass-strong rounded-3xl p-8">
               <div className="size-11 rounded-2xl bg-electric/15 flex items-center justify-center mb-5">
                 <b.icon className="size-5 text-electric" />
               </div>
-              <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-3">{b.label}</p>
+              <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-3">— {b.label}</p>
               <p className="font-serif text-2xl leading-snug text-balance">{b.text}</p>
             </div>
           ))}
         </div>
-
-
       </div>
     </section>
   );
 }
-
-

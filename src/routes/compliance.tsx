@@ -1,8 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, CheckCircle2, Award, Clipboard, ShieldAlert, HeartHandshake } from "lucide-react";
+import { ArrowLeft, CheckCircle2, Award, Clipboard, HeartHandshake } from "lucide-react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Navbar } from "@/components/maisone/Navbar";
 import { Footer } from "@/components/maisone/Footer";
+import { useLanguage } from "@/lib/i18n";
 
 export const Route = createFileRoute("/compliance")({
   head: () => ({
@@ -15,12 +16,14 @@ export const Route = createFileRoute("/compliance")({
 });
 
 function CompliancePage() {
+  const { t } = useLanguage();
+
   const certifications = [
-    { name: "GOTS (Global Organic Textile Standard)", scope: "Guarantees that raw fibers (organic cotton, flax, hemp) are grown organically without harmful chemical pesticides and traced through every production step." },
-    { name: "OEKO-TEX Standard 100", scope: "Ensures that finished fabrics are free from harmful chemicals, heavy metals, and dyes that are toxic to skin or the environment." },
-    { name: "SA8000 Social Accountability", scope: "Vets factories for fair living wages, safe working environments, reasonable working hours, and the prohibition of forced labor." },
-    { name: "GRS (Global Recycled Standard)", scope: "Verifies the recycled composition of materials (like recycled nylon or polyester) and ensures environmental and chemical safety standards are met." },
-    { name: "BCI (Better Cotton Initiative)", scope: "Promotes sustainable farming practices, water conservation, and soil health among cotton growers globally." }
+    { name: t("compliancePage.cert1Name"), scope: t("compliancePage.cert1Desc") },
+    { name: t("compliancePage.cert2Name"), scope: t("compliancePage.cert2Desc") },
+    { name: t("compliancePage.cert3Name"), scope: t("compliancePage.cert3Desc") },
+    { name: t("compliancePage.cert4Name"), scope: t("compliancePage.cert4Desc") },
+    { name: t("compliancePage.cert5Name"), scope: t("compliancePage.cert5Desc") }
   ];
 
   return (
@@ -33,11 +36,11 @@ function CompliancePage() {
           {/* Header */}
           <div className="space-y-6">
             <Link to="/" className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-electric transition-colors uppercase tracking-wider">
-              <ArrowLeft className="size-4" /> Back to home
+              <ArrowLeft className="size-4" /> {t("nav.backToHome")}
             </Link>
-            <p className="text-[10px] uppercase tracking-[0.3em] text-electric">— Quality & Ethics</p>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-electric">{t("compliancePage.label")}</p>
             <h1 className="font-serif text-4xl sm:text-6xl text-white tracking-tight leading-tight">
-              Ethical audits and <span className="italic gradient-text font-serif">certified standards</span>.
+              {t("compliancePage.heading")} <span className="italic gradient-text font-serif">{t("compliancePage.headingHighlight")}</span>{t("compliancePage.headingEnd")}
             </h1>
           </div>
 
@@ -46,25 +49,25 @@ function CompliancePage() {
             <div className="space-y-8 text-sm text-muted-foreground/80 leading-relaxed">
               <div className="space-y-3">
                 <h3 className="font-serif text-2xl text-white flex items-center gap-2">
-                  <Clipboard className="size-5 text-electric" /> Our Vetting Protocol
+                  <Clipboard className="size-5 text-electric" /> {t("compliancePage.vettingTitle")}
                 </h3>
                 <p>
-                  At Maisone, compliance is not just about check-box lists. Every factory, vertical mill, and packaging workshop in our network must pass unannounced audits conducted by certified inspectors.
+                  {t("compliancePage.vettingP1")}
                 </p>
                 <p>
-                  We monitor physical working conditions, fire escape routes, ventilation networks, and fair-wage payrolls. We also conduct anonymous worker interviews to ensure standard operating procedures are followed.
+                  {t("compliancePage.vettingP2")}
                 </p>
               </div>
 
               <div className="space-y-3">
                 <h3 className="font-serif text-2xl text-white flex items-center gap-2">
-                  <HeartHandshake className="size-5 text-electric" /> Acceptable Quality Level (AQL 2.5)
+                  <HeartHandshake className="size-5 text-electric" /> {t("compliancePage.aqlTitle")}
                 </h3>
                 <p>
-                  To ensure quality matches design, mass production runs are subject to strict AQL 2.5 standards. Inspectors check stitching density, seam tension, zipper runs, and shrinkage tolerances. 
+                  {t("compliancePage.aqlP1")}
                 </p>
                 <p>
-                  If defect rates exceed AQL limits during in-line audits, production is paused until the root cause is resolved and corrected.
+                  {t("compliancePage.aqlP2")}
                 </p>
               </div>
             </div>
@@ -73,7 +76,7 @@ function CompliancePage() {
             <div className="glass-strong rounded-3xl p-8 border border-white/5 space-y-6">
               <div className="flex items-center gap-2 text-white">
                 <Award className="size-5 text-electric" />
-                <h3 className="font-serif text-xl">Approved Certifications</h3>
+                <h3 className="font-serif text-xl">{t("compliancePage.approvedCerts")}</h3>
               </div>
               <ul className="space-y-4">
                 {certifications.map((c, idx) => (

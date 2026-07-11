@@ -1,3 +1,5 @@
+import { useLanguage } from "@/lib/i18n";
+
 const countries = [
   { name: "United States", code: "USA", cities: ["New York", "Los Angeles"] },
   { name: "United Kingdom", code: "UK", cities: ["London"] },
@@ -9,12 +11,14 @@ const countries = [
 ];
 
 export function Partners() {
+  const { t } = useLanguage();
+
   return (
     <section id="partners" className="relative py-24 border-y border-border">
       <div className="mx-auto max-w-7xl px-6 mb-10">
-        <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-4 text-center">— Trusted by Global Fashion Networks</p>
+        <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-4 text-center">— {t("partners.label")}</p>
         <h2 className="font-serif text-3xl sm:text-5xl tracking-tight text-center text-balance">
-          A network that <span className="italic gradient-text">spans continents</span>.
+          {t("partners.heading")} <span className="italic gradient-text">{t("partners.headingHighlight")}</span>{t("partners.headingEnd")}
         </h2>
       </div>
 

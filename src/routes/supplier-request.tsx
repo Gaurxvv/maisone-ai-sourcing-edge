@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, Check, Factory, Loader2 } from "lucide-react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Logo } from "@/components/maisone/Logo";
 import { supabase } from "@/lib/supabase";
+import { useLanguage } from "@/lib/i18n";
 
 export const Route = createFileRoute("/supplier-request")({
   head: () => ({
@@ -27,9 +28,8 @@ type Form = {
   message: string;
 };
 
-const STEPS = ["Factory details", "Capabilities"];
-
 function SupplierRequestPage() {
+  const { t } = useLanguage();
   const navigate = useNavigate();
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
@@ -45,6 +45,8 @@ function SupplierRequestPage() {
     leadTime: "4–6 weeks",
     message: "",
   });
+
+  const STEPS = ["Factory details", "Capabilities"];
 
   const set = <K extends keyof Form>(k: K, v: Form[K]) => setForm((f) => ({ ...f, [k]: v }));
 
@@ -78,7 +80,7 @@ function SupplierRequestPage() {
       setSubmitted(true);
     } catch (err: any) {
       console.error("Failed to submit request:", err);
-      setError(err.message || "Connection error. Please try again.");
+      setError(err.message || t("bookDemo.errorGeneric"));
     } finally {
       setLoading(false);
     }
@@ -91,7 +93,7 @@ function SupplierRequestPage() {
         <header className="relative z-10 mx-auto max-w-6xl px-6 py-6 flex items-center justify-between">
           <Link to="/"><Logo /></Link>
           <Link to="/" className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground">
-            <ArrowLeft className="size-4" /> Back to site
+            <ArrowLeft className="size-4" /> {t("nav.backToHome")}
           </Link>
         </header>
 
@@ -99,29 +101,14 @@ function SupplierRequestPage() {
           {/* Left intro */}
           <aside className="lg:col-span-2 space-y-8">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-[10px] tracking-[0.25em] uppercase text-muted-foreground">
-              <Factory className="size-3 text-electric" /> Partner Network
+              <Factory className="size-3 text-electric" /> {t("supplierRequest.pageTitle")}
             </div>
             <h1 className="font-serif text-4xl sm:text-5xl tracking-tight text-balance">
-              Join the <span className="italic gradient-text">Maisone</span> global supply network.
+              {t("supplierRequest.pageTitle")} <span className="italic gradient-text">Maisone</span>.
             </h1>
             <p className="text-muted-foreground leading-relaxed">
-              Connect directly with premium fashion brands and designers looking for verified, high-quality manufacturers.
+              {t("supplierRequest.pageSubtitle")}
             </p>
-            <ul className="space-y-3 text-sm">
-              {[
-                "Direct access to pre-vetted fashion brands",
-                "Streamlined communication and project management",
-                "Guaranteed secure payments",
-                "Showcase your capabilities globally",
-              ].map((b) => (
-                <li key={b} className="flex items-start gap-3">
-                  <span className="mt-1 size-4 rounded-full bg-electric/15 flex items-center justify-center">
-                    <Check className="size-2.5 text-electric" />
-                  </span>
-                  <span className="text-muted-foreground">{b}</span>
-                </li>
-              ))}
-            </ul>
           </aside>
 
           {/* Right form */}
@@ -136,15 +123,15 @@ function SupplierRequestPage() {
                   <div className="mx-auto size-14 rounded-full bg-electric/15 flex items-center justify-center mb-6">
                     <Check className="size-6 text-electric" />
                   </div>
-                  <h2 className="font-serif text-3xl mb-3">Application Received</h2>
+                  <h2 className="font-serif text-3xl mb-3">{t("supplierRequest.thankYou")}</h2>
                   <p className="text-muted-foreground max-w-sm mx-auto">
-                    Thank you, {form.fullName.split(" ")[0] || "there"}. Our sourcing team will review your application and contact you at <span className="text-foreground">{form.workEmail}</span> shortly.
+                    {t("supplierRequest.thankYouText")}
                   </p>
                   <button
                     onClick={() => navigate({ to: "/" })}
                     className="mt-8 inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background text-sm font-medium hover:scale-[1.02] transition-transform"
                   >
-                    Return home <ArrowRight className="size-4" />
+                    {t("supplierRequest.returnHome")} <ArrowRight className="size-4" />
                   </button>
                 </motion.div>
               ) : (
@@ -170,24 +157,24 @@ function SupplierRequestPage() {
                     {step === 0 && (
                       <>
                         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                          <Field label="Contact name" value={form.fullName} onChange={(v) => set("fullName", v)} placeholder="Takeshi Kaneshiro" />
-                          <Field label="Work email" type="email" value={form.workEmail} onChange={(v) => set("workEmail", v)} placeholder="contact@factory.com" />
+                          <Field label={t("supplierRequest.contactPerson")} value={form.fullName} onChange={(v) => set("fullName", v)} placeholder="Takeshi Kaneshiro" />
+                          <Field label={t("supplierRequest.email")} type="email" value={form.workEmail} onChange={(v) => set("workEmail", v)} placeholder="contact@factory.com" />
                         </div>
-                        <Field label="Factory name" value={form.factoryName} onChange={(v) => set("factoryName", v)} placeholder="Osaka Denim Mill" />
-                        <Select label="Region" value={form.region} onChange={(v) => set("region", v)}
+                        <Field label={t("supplierRequest.companyName")} value={form.factoryName} onChange={(v) => set("factoryName", v)} placeholder="Osaka Denim Mill" />
+                        <Select label={t("supplierRequest.country")} value={form.region} onChange={(v) => set("region", v)}
                           options={["India", "China", "Vietnam", "Japan", "Portugal", "Italy", "Turkey", "Other"]} />
                       </>
                     )}
                     {step === 1 && (
                       <>
-                        <MultiSelect label="Primary Category" value={form.categories} onChange={(v) => set("categories", v)}
+                        <MultiSelect label={t("supplierRequest.specialization")} value={form.categories} onChange={(v) => set("categories", v)}
                           options={["Apparel", "Denim", "Knitwear", "Leather Goods", "Footwear", "Accessories", "Textiles"]} />
-                        <Select label="Minimum Order Quantity (MOQ)" value={form.moq} onChange={(v) => set("moq", v)}
+                        <Select label={t("supplierRequest.moq")} value={form.moq} onChange={(v) => set("moq", v)}
                           options={["< 100 units", "100–500 units", "500–1000 units", "1000+ units"]} />
-                        <Select label="Average Lead Time" value={form.leadTime} onChange={(v) => set("leadTime", v)}
+                        <Select label={t("supplierRequest.capacity")} value={form.leadTime} onChange={(v) => set("leadTime", v)}
                           options={["2–4 weeks", "4–6 weeks", "6–8 weeks", "8+ weeks"]} />
                         <div>
-                          <label className="text-[10px] uppercase tracking-widest text-muted-foreground">Additional Capabilities</label>
+                          <label className="text-[10px] uppercase tracking-widest text-muted-foreground">{t("supplierRequest.message")}</label>
                           <textarea
                             value={form.message}
                             onChange={(e) => set("message", e.target.value)}
@@ -213,7 +200,7 @@ function SupplierRequestPage() {
                       disabled={step === 0 || loading}
                       className="text-sm text-muted-foreground hover:text-foreground disabled:opacity-30 inline-flex items-center gap-2"
                     >
-                      <ArrowLeft className="size-4" /> Back
+                      <ArrowLeft className="size-4" /> {t("bookDemo.back")}
                     </button>
                     {step < STEPS.length - 1 ? (
                       <button
@@ -221,7 +208,7 @@ function SupplierRequestPage() {
                         disabled={!canNext}
                         className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-foreground text-background text-sm font-medium disabled:opacity-40 hover:scale-[1.02] transition-transform"
                       >
-                        Continue <ArrowRight className="size-4" />
+                        {t("bookDemo.next")} <ArrowRight className="size-4" />
                       </button>
                     ) : (
                       <button
@@ -231,11 +218,11 @@ function SupplierRequestPage() {
                       >
                         {loading ? (
                           <>
-                            Submitting... <Loader2 className="size-4 animate-spin" />
+                            {t("bookDemo.submitting")} <Loader2 className="size-4 animate-spin" />
                           </>
                         ) : (
                           <>
-                            Submit application <ArrowRight className="size-4" />
+                            {t("supplierRequest.submit")} <ArrowRight className="size-4" />
                           </>
                         )}
                       </button>

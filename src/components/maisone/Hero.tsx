@@ -4,6 +4,7 @@ import { Link } from "@tanstack/react-router";
 import { WorldMap } from "./WorldMap";
 import { useRef, useEffect, useState } from "react";
 import heroBg from "@/assets/hero_fashion_bg_1783761896741.png";
+import { useLanguage } from "@/lib/i18n";
 
 const LUXURY_YARNS = [
   "var(--electric)",
@@ -117,6 +118,7 @@ export function Hero() {
   const [isHoveringHero, setIsHoveringHero] = useState(false);
   const cursorX = useSpring(0, { stiffness: 400, damping: 40 });
   const cursorY = useSpring(0, { stiffness: 400, damping: 40 });
+  const { t } = useLanguage();
 
   return (
     <section id="home" className="relative min-h-screen pt-32 pb-20 flex flex-col justify-center overflow-hidden">
@@ -139,7 +141,7 @@ export function Hero() {
         >
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass text-xs tracking-[0.25em] uppercase text-muted-foreground mb-8">
             <Sparkles className="size-3 text-electric" />
-            Global Sourcing & Manufacturing Partner
+            {t("hero.badge")}
           </div>
 
           <h1 
@@ -168,14 +170,14 @@ export function Hero() {
               />
             )}
 
-            <HoverThreadText text="Global Fashion Sourcing &" />
+            <HoverThreadText text={t("hero.headingLine1")} />
             <br />
-            <HoverThreadText text="Manufacturing" className="gradient-text italic hover:[-webkit-text-stroke:1px_var(--violet-glow)]" />
-            <HoverThreadText text=" Partner" />
+            <HoverThreadText text={t("hero.headingLine2")} className="gradient-text italic hover:[-webkit-text-stroke:1px_var(--violet-glow)]" />
+            <HoverThreadText text={t("hero.headingLine3")} />
           </h1>
 
           <p className="mt-8 text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto text-balance leading-relaxed">
-            A premier sourcing house connecting fashion brands with their ideal factories — a complete, one-stop ecosystem for global production.
+            {t("hero.subtitle")}
           </p>
 
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
@@ -183,23 +185,23 @@ export function Hero() {
               to="/book-demo"
               className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-foreground text-background text-sm font-medium hover:scale-[1.02] transition-transform"
             >
-              Book Consultation
+              {t("hero.bookConsultation")}
               <ArrowRight className="size-4 group-hover:translate-x-0.5 transition-transform" />
             </Link>
             <a
               href="#services"
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full glass text-sm font-medium hover:bg-accent transition-colors"
             >
-              Explore Services
+              {t("hero.exploreServices")}
             </a>
           </div>
 
           <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto">
             {[
-              { v: "18+ Years", l: "Industry Experience" },
-              { v: "Global", l: "Manufacturing Network" },
-              { v: "Ethical", l: "Transparent Supply Chains" },
-              { v: "Luxury", l: "Fashion Expertise" },
+              { v: t("hero.stat1Value"), l: t("hero.stat1Label") },
+              { v: t("hero.stat2Value"), l: t("hero.stat2Label") },
+              { v: t("hero.stat3Value"), l: t("hero.stat3Label") },
+              { v: t("hero.stat4Value"), l: t("hero.stat4Label") },
             ].map((s) => (
               <div key={s.l} className="glass rounded-2xl px-4 py-3 text-left">
                 <p className="font-serif text-lg">{s.v}</p>
@@ -221,10 +223,10 @@ export function Hero() {
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-electric opacity-75" />
                 <span className="relative inline-flex rounded-full size-1.5 bg-electric" />
               </span>
-              Live Sourcing Network
+              {t("hero.liveSourcingNetwork")}
             </span>
             <h3 className="font-serif text-2xl sm:text-3xl tracking-tight text-center text-foreground mt-2">
-              We currently source in all these <span className="italic gradient-text font-serif">countries</span>
+              {t("hero.weCurrentlySource")} <span className="italic gradient-text font-serif">{t("hero.countries")}</span>
             </h3>
           </div>
           <div className="glass-strong rounded-3xl p-6 sm:p-10 text-foreground/80">
@@ -243,7 +245,7 @@ export function Hero() {
                 <TrendingUp className="size-4 text-electric" />
               </div>
               <div>
-                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Sourcing Score</p>
+                <p className="text-[10px] uppercase tracking-widest text-muted-foreground">{t("hero.sourcingScore")}</p>
                 <p className="text-lg font-semibold">98.4</p>
               </div>
             </div>
@@ -265,7 +267,7 @@ export function Hero() {
             transition={{ delay: 1.2 }}
           >
             <div className="flex items-center justify-between mb-2">
-              <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Active Suppliers</p>
+              <p className="text-[10px] uppercase tracking-widest text-muted-foreground">{t("hero.activeSuppliers")}</p>
               <span className="text-[10px] text-emerald-400">+12.6%</span>
             </div>
             <p className="text-2xl font-semibold">2,418</p>
@@ -289,7 +291,7 @@ export function Hero() {
             transition={{ delay: 1.4 }}
           >
             <Package className="size-3.5 text-cyan-glow" />
-            <span className="text-xs text-muted-foreground">Live shipment from</span>
+            <span className="text-xs text-muted-foreground">{t("hero.liveShipmentFrom")}</span>
             <span className="text-xs font-medium">Osaka → London</span>
             <span className="size-1.5 rounded-full bg-emerald-400 animate-pulse" />
           </motion.div>

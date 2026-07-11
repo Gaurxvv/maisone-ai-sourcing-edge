@@ -2,6 +2,7 @@ import { useMemo, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUpRight, ArrowDownRight, Bell, Search, Filter, MapPin, Package, Sparkles, User, Phone, Mail, Pencil, Trash2, Link2 } from "lucide-react";
 import { toast } from "sonner";
+import { useLanguage } from "@/lib/i18n";
 
 const trend = [22, 30, 28, 42, 38, 55, 48, 65, 60, 72, 68, 84, 80, 92];
 
@@ -41,6 +42,14 @@ export const SHIPMENTS = [
 const NAV: View[] = ["Overview", "Suppliers", "Shipments", "Inventory", "Trends"];
 
 export function Dashboard() {
+  const { t } = useLanguage();
+  const NAV_LABELS: Record<View, string> = {
+    Overview: t("dashboard.tabOverview"),
+    Suppliers: t("dashboard.tabSuppliers"),
+    Shipments: t("dashboard.tabShipments"),
+    Inventory: t("dashboard.tabInventory"),
+    Trends: t("dashboard.tabTrends"),
+  };
   const [view, setView] = useState<View>("Overview");
   const [query, setQuery] = useState("");
   const [region, setRegion] = useState<string>("All");
@@ -49,11 +58,11 @@ export function Dashboard() {
     <section id="dashboard" className="relative py-32 overflow-hidden">
       <div className="mx-auto max-w-7xl px-6">
         <div className="text-center max-w-3xl mx-auto mb-16">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">— The Console</p>
+          <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">{t("dashboard.label")}</p>
           <h2 className="font-serif text-4xl sm:text-6xl tracking-tight text-balance">
-            One console for every <span className="italic gradient-text">sourcing decision</span>.
+            {t("dashboard.heading")} <span className="italic gradient-text">{t("dashboard.headingHighlight")}</span>{t("dashboard.headingEnd")}
           </h2>
-          <p className="mt-6 text-muted-foreground text-sm">Try the live preview — switch tabs, filter suppliers, search shipments.</p>
+          <p className="mt-6 text-muted-foreground text-sm">{t("dashboard.subtitle")}</p>
         </div>
 
         <motion.div
@@ -78,7 +87,7 @@ export function Dashboard() {
                   <input
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Search suppliers, POs, shipments"
+                    placeholder={t("dashboard.searchPlaceholder")}
                     className="bg-transparent outline-none text-foreground placeholder:text-muted-foreground w-56"
                   />
                 </div>
@@ -97,7 +106,7 @@ export function Dashboard() {
                     className={`w-full text-left px-3 py-2 rounded-lg text-xs transition-colors ${view === l ? "bg-accent text-foreground" : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
                       }`}
                   >
-                    {l}
+                    {NAV_LABELS[l]}
                   </button>
                 ))}
               </div>
@@ -132,6 +141,7 @@ export function Dashboard() {
 }
 
 export function Overview({ query, data }: { query: string; data?: any[] }) {
+  const { t } = useLanguage();
   const [shipmentsList, setShipmentsList] = useState(() => {
     if (typeof window !== "undefined") {
       const saved = localStorage.getItem("MAISONE_SHIPMENTS");
@@ -167,10 +177,10 @@ export function Overview({ query, data }: { query: string; data?: any[] }) {
     <>
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
         {[
-          { label: "Active Suppliers", value: "2,418", delta: "+12.6%", up: true },
-          { label: "Open POs", value: "184", delta: "+4.2%", up: true },
-          { label: "Avg Lead Time", value: "27d", delta: "-3.1d", up: true },
-          { label: "On-time Rate", value: "94.7%", delta: "+1.8%", up: true },
+          { label: t("dashboard.activeSuppliers"), value: "2,418", delta: "+12.6%", up: true },
+          { label: t("dashboard.openPos"), value: "184", delta: "+4.2%", up: true },
+          { label: t("dashboard.avgLeadTime"), value: "27d", delta: "-3.1d", up: true },
+          { label: t("dashboard.onTimeRate"), value: "94.7%", delta: "+1.8%", up: true },
         ].map((k) => (
           <div key={k.label} className="rounded-xl p-4 bg-background border border-border">
             <p className="text-[10px] uppercase tracking-widest text-muted-foreground">{k.label}</p>
@@ -187,8 +197,8 @@ export function Overview({ query, data }: { query: string; data?: any[] }) {
         <div className="rounded-xl p-5 bg-background border border-border">
           <div className="flex items-center justify-between mb-4">
             <div>
-              <p className="text-sm font-medium">Sourcing Volume</p>
-              <p className="text-xs text-muted-foreground">Last 14 weeks · 4 regions</p>
+              <p className="text-sm font-medium">{t("dashboard.sourcingVolume")}</p>
+              <p className="text-xs text-muted-foreground">{t("dashboard.lastWeeks")}</p>
             </div>
             <div className="flex gap-2 text-[10px] text-muted-foreground">
               {["JP", "UK", "EU", "US"].map((r) => (
@@ -223,8 +233,8 @@ export function Overview({ query, data }: { query: string; data?: any[] }) {
 
       <div className="rounded-xl bg-background border border-border overflow-hidden">
         <div className="px-5 py-3 border-b border-border flex items-center justify-between">
-          <p className="text-sm font-medium">Active Shipments</p>
-          <span className="text-[10px] text-muted-foreground">{filteredShip.length} shown</span>
+          <p className="text-sm font-medium">{t("dashboard.activeShipments")}</p>
+          <span className="text-[10px] text-muted-foreground">{filteredShip.length} {t("dashboard.shown")}</span>
         </div>
         <div className="divide-y divide-border text-xs">
           {filteredShip.map((s: any) => (
@@ -264,6 +274,7 @@ export function Suppliers({
   onEdit?: (supplier: any) => void;
   onDelete?: (id: string) => void;
 }) {
+  const { t } = useLanguage();
   const regions = ["All", "Japan", "United Kingdom", "Europe", "United States", "India", "China"];
   const [page, setPage] = useState(1);
   const [expandedId, setExpandedId] = useState<string | null>(null);
@@ -319,7 +330,7 @@ export function Suppliers({
     <>
       <div className="flex items-center justify-between gap-3 flex-wrap">
         <div className="flex items-center gap-2 text-xs text-muted-foreground">
-          <Filter className="size-3" /> Region:
+          <Filter className="size-3" /> {t("dashboard.region")}:
           {regions.map((r) => (
             <button
               key={r}
@@ -333,14 +344,14 @@ export function Suppliers({
             </button>
           ))}
         </div>
-        <span className="text-[11px] text-muted-foreground">{filtered.length} verified suppliers</span>
+        <span className="text-[11px] text-muted-foreground">{filtered.length} {t("dashboard.verifiedSuppliers")}</span>
       </div>
 
       <div className="rounded-xl bg-background border border-border overflow-hidden">
         <div className="grid grid-cols-12 gap-4 px-6 py-4 border-b border-border text-[10px] uppercase tracking-widest text-muted-foreground">
           <span className="col-span-2">ID</span>
-          <span className="col-span-3">Supplier</span>
-          <span className="col-span-2">Region</span>
+          <span className="col-span-3">{t("dashboard.tabSuppliers")}</span>
+          <span className="col-span-2">{t("dashboard.region")}</span>
           <span className="col-span-2">Category</span>
           <span className="col-span-1 text-right">Lead</span>
           <span className="col-span-1 text-right">OTD Rate</span>
@@ -348,7 +359,7 @@ export function Suppliers({
         </div>
         <div className="divide-y divide-border text-xs">
           {paginated.length === 0 && (
-            <div className="px-6 py-8 text-center text-muted-foreground">No suppliers match your filters.</div>
+            <div className="px-6 py-8 text-center text-muted-foreground">{t("dashboard.noSuppliers")}</div>
           )}
           {paginated.map((s: any) => {
             const isExpanded = expandedId === s.id;
@@ -390,7 +401,7 @@ export function Suppliers({
                             <User className="size-4 text-electric" />
                           </div>
                           <div className="space-y-1">
-                            <span className="text-[10px] uppercase tracking-wider text-muted-foreground block font-semibold">Owner Details</span>
+                            <span className="text-[10px] uppercase tracking-wider text-muted-foreground block font-semibold">{t("dashboard.ownerDetails")}</span>
                             <span className="text-white font-medium block text-[13px]">{s.owner_details || "—"}</span>
                           </div>
                         </div>
@@ -399,7 +410,7 @@ export function Suppliers({
                             <Phone className="size-4 text-electric" />
                           </div>
                           <div className="space-y-1">
-                            <span className="text-[10px] uppercase tracking-wider text-muted-foreground block font-semibold">Contact Number</span>
+                            <span className="text-[10px] uppercase tracking-wider text-muted-foreground block font-semibold">{t("dashboard.contactNo")}</span>
                             <span className="text-white font-medium block text-[13px]">{s.contact_no || "—"}</span>
                           </div>
                         </div>
@@ -408,7 +419,7 @@ export function Suppliers({
                             <Mail className="size-4 text-electric" />
                           </div>
                           <div className="space-y-1">
-                            <span className="text-[10px] uppercase tracking-wider text-muted-foreground block font-semibold">Email Address</span>
+                            <span className="text-[10px] uppercase tracking-wider text-muted-foreground block font-semibold">{t("dashboard.emailAddress")}</span>
                             {s.email_id ? (
                               <a
                                 href={`mailto:${s.email_id}`}
@@ -435,7 +446,7 @@ export function Suppliers({
                               }}
                               className="px-4 py-2 rounded-xl border border-white/10 hover:border-electric/50 hover:bg-electric/5 transition-all text-white font-semibold text-[11px] cursor-pointer flex items-center gap-1.5 active:scale-95 hover:scale-102"
                             >
-                              <Pencil className="size-3.5 text-muted-foreground group-hover:text-white" /> Edit Details
+                              <Pencil className="size-3.5 text-muted-foreground group-hover:text-white" /> {t("dashboard.editDetails")}
                             </button>
                           )}
                           {onDelete && (
@@ -446,7 +457,7 @@ export function Suppliers({
                               }}
                               className="px-4 py-2 rounded-xl bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 text-red-400 font-semibold text-[11px] cursor-pointer flex items-center gap-1.5 active:scale-95 hover:scale-102"
                             >
-                              <Trash2 className="size-3.5" /> Delete
+                              <Trash2 className="size-3.5" /> {t("dashboard.delete")}
                             </button>
                           )}
                         </div>
@@ -467,11 +478,11 @@ export function Suppliers({
             disabled={page === 1}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
           >
-            Previous
+            {t("dashboard.previous")}
           </button>
 
           <div className="text-[10px] text-muted-foreground">
-            Page <span className="text-foreground font-semibold">{page}</span> of {totalPages}
+            {t("dashboard.page")} <span className="text-foreground font-semibold">{page}</span> {t("dashboard.of")} {totalPages}
           </div>
 
           <button
@@ -479,7 +490,7 @@ export function Suppliers({
             disabled={page === totalPages}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
           >
-            Next
+            {t("dashboard.next")}
           </button>
         </div>
       )}
@@ -488,6 +499,7 @@ export function Suppliers({
 }
 
 export function Shipments({ query, onSelect, data }: { query: string; onSelect?: (shipment: any) => void; data?: any[] }) {
+  const { t } = useLanguage();
   const [status, setStatus] = useState<string>("All");
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 10;
@@ -535,7 +547,7 @@ export function Shipments({ query, onSelect, data }: { query: string; onSelect?:
   return (
     <>
       <div className="flex items-center gap-2 flex-wrap text-xs text-muted-foreground">
-        <Package className="size-3" /> Status:
+        <Package className="size-3" /> {t("dashboard.status")}:
         {statuses.map((s) => (
           <button
             key={s}
@@ -555,7 +567,7 @@ export function Shipments({ query, onSelect, data }: { query: string; onSelect?:
           <span className="col-span-4">Route / Cargo</span>
           <span className="col-span-2">ETA</span>
           <span className="col-span-3">Progress</span>
-          <span className="col-span-1 text-right">Status</span>
+          <span className="col-span-1 text-right">{t("dashboard.status")}</span>
         </div>
         <div className="divide-y divide-border text-xs">
           {paginated.map((s: any) => (
@@ -589,11 +601,11 @@ export function Shipments({ query, onSelect, data }: { query: string; onSelect?:
             disabled={page === 1}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
           >
-            Previous
+            {t("dashboard.previous")}
           </button>
 
           <div className="text-[10px] text-muted-foreground">
-            Page <span className="text-foreground font-semibold">{page}</span> of {totalPages}
+            {t("dashboard.page")} <span className="text-foreground font-semibold">{page}</span> {t("dashboard.of")} {totalPages}
           </div>
 
           <button
@@ -601,7 +613,7 @@ export function Shipments({ query, onSelect, data }: { query: string; onSelect?:
             disabled={page === totalPages}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
           >
-            Next
+            {t("dashboard.next")}
           </button>
         </div>
       )}
@@ -625,6 +637,7 @@ export const DEFAULT_INVENTORY = [
 ];
 
 export function Inventory({ data }: { data?: any[] }) {
+  const { t } = useLanguage();
   const [page, setPage] = useState(1);
   const PAGE_SIZE = 10;
 
@@ -664,12 +677,12 @@ export function Inventory({ data }: { data?: any[] }) {
   return (
     <div className="space-y-4">
       <div className="rounded-xl bg-background border border-border overflow-hidden">
-        <div className="px-5 py-3 border-b border-border text-sm font-medium">Inventory levels</div>
+        <div className="px-5 py-3 border-b border-border text-sm font-medium">{t("dashboard.inventoryLevels")}</div>
         <div className="grid grid-cols-12 gap-4 px-5 py-2 border-b border-border bg-white/[0.01] text-[10px] uppercase tracking-widest text-muted-foreground font-medium">
           <div className="col-span-2">SKU</div>
-          <div className="col-span-5">Product Name</div>
-          <div className="col-span-3">Stock Level</div>
-          <div className="col-span-2 text-right">Status</div>
+          <div className="col-span-5">{t("dashboard.productName")}</div>
+          <div className="col-span-3">{t("dashboard.stockLevel")}</div>
+          <div className="col-span-2 text-right">{t("dashboard.status")}</div>
         </div>
         <div className="divide-y divide-border text-xs">
           {paginated.map((i: any) => {
@@ -679,7 +692,7 @@ export function Inventory({ data }: { data?: any[] }) {
                 <span className="col-span-2 text-muted-foreground tabular-nums">{i.sku}</span>
                 <span className="col-span-5">{i.name}</span>
                 <span className="col-span-3 tabular-nums">{i.stock.toLocaleString()} u</span>
-                <span className={`col-span-2 text-right text-[11px] ${low ? "text-amber-400" : "text-emerald-400"}`}>{low ? "Reorder" : "Healthy"}</span>
+                <span className={`col-span-2 text-right text-[11px] ${low ? "text-amber-400" : "text-emerald-400"}`}>{low ? t("dashboard.reorder") : t("dashboard.healthy")}</span>
               </div>
             );
           })}
@@ -693,11 +706,11 @@ export function Inventory({ data }: { data?: any[] }) {
             disabled={page === 1}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
           >
-            Previous
+            {t("dashboard.previous")}
           </button>
 
           <div className="text-[10px] text-muted-foreground">
-            Page <span className="text-foreground font-semibold">{page}</span> of {totalPages}
+            {t("dashboard.page")} <span className="text-foreground font-semibold">{page}</span> {t("dashboard.of")} {totalPages}
           </div>
 
           <button
@@ -705,7 +718,7 @@ export function Inventory({ data }: { data?: any[] }) {
             disabled={page === totalPages}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border bg-background text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:pointer-events-none transition-colors cursor-pointer"
           >
-            Next
+            {t("dashboard.next")}
           </button>
         </div>
       )}
@@ -714,6 +727,7 @@ export function Inventory({ data }: { data?: any[] }) {
 }
 
 export function Trends() {
+  const { t } = useLanguage();
   const cats = [
     { c: "Denim", v: [30, 38, 45, 52, 60, 68, 74, 82] },
     { c: "Silk", v: [50, 48, 55, 60, 58, 65, 72, 78] },
@@ -724,7 +738,7 @@ export function Trends() {
       {cats.map((c) => (
         <div key={c.c} className="rounded-xl p-5 bg-background border border-border">
           <p className="text-sm font-medium">{c.c}</p>
-          <p className="text-xs text-muted-foreground mb-3">Demand · 8 weeks</p>
+          <p className="text-xs text-muted-foreground mb-3">{t("dashboard.demandWeeks")}</p>
           <svg viewBox="0 0 100 40" className="w-full h-20">
             <motion.path
               initial={{ pathLength: 0 }}
@@ -736,7 +750,7 @@ export function Trends() {
               strokeWidth="1.2"
             />
           </svg>
-          <p className="text-[11px] text-emerald-400 mt-2">+{c.v[c.v.length - 1] - c.v[0]}% trend</p>
+          <p className="text-[11px] text-emerald-400 mt-2">+{c.v[c.v.length - 1] - c.v[0]}% {t("dashboard.trendText")}</p>
         </div>
       ))}
     </div>

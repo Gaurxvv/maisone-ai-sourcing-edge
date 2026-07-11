@@ -2,36 +2,39 @@ import { motion } from "framer-motion";
 import { ArrowRight, Bot, CheckCircle2, FileText, Factory, PackageCheck } from "lucide-react";
 import textiles from "@/assets/textiles.jpg";
 import factoryImg from "@/assets/sourcing_factory_1783761919092.png";
-
-const steps = [
-  {
-    n: "01",
-    title: "Discover Suppliers",
-    desc: "Brief Maisone in plain language. Our agents surface the most aligned ateliers across four continents within minutes.",
-    img: textiles,
-  },
-  {
-    n: "02",
-    title: "Automate Sourcing",
-    desc: "RFQs, samples, negotiations and POs orchestrated end-to-end with full audit trail and human checkpoints.",
-    img: "",
-  },
-  {
-    n: "03",
-    title: "Scale Operations",
-    desc: "Real-time tracking, demand forecasting and supplier risk monitoring keep every collection on time.",
-    img: factoryImg,
-  },
-];
+import { useLanguage } from "@/lib/i18n";
 
 export function HowItWorks() {
+  const { t } = useLanguage();
+
+  const steps = [
+    {
+      n: "01",
+      title: t("howItWorks.step1Title"),
+      desc: t("howItWorks.step1Desc"),
+      img: textiles,
+    },
+    {
+      n: "02",
+      title: t("howItWorks.step2Title"),
+      desc: t("howItWorks.step2Desc"),
+      img: "",
+    },
+    {
+      n: "03",
+      title: t("howItWorks.step3Title"),
+      desc: t("howItWorks.step3Desc"),
+      img: factoryImg,
+    },
+  ];
+
   return (
     <section className="relative py-32">
       <div className="mx-auto max-w-7xl px-6">
         <div className="max-w-3xl mb-20">
-          <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">— How Maisone Works</p>
+          <p className="text-[10px] uppercase tracking-[0.3em] text-electric mb-6">{t("howItWorks.label")}</p>
           <h2 className="font-serif text-4xl sm:text-6xl tracking-tight text-balance">
-            From brief to <span className="italic gradient-text">delivery</span>, in three movements.
+            {t("howItWorks.heading")} <span className="italic gradient-text">{t("howItWorks.headingHighlight")}</span>{t("howItWorks.headingEnd")}
           </h2>
         </div>
 
@@ -69,10 +72,12 @@ function StepImage({ src, title }: { src: string; title: string }) {
 }
 
 function AutomationWorkflowVisual() {
+  const { t } = useLanguage();
+
   const stages = [
-    { icon: FileText, title: "RFQ Intake", meta: "48 briefs parsed", progress: "92%" },
-    { icon: Factory, title: "Supplier Match", meta: "12 ateliers ranked", progress: "88%" },
-    { icon: PackageCheck, title: "Sample Review", meta: "4 approvals queued", progress: "76%" },
+    { icon: FileText, title: t("howItWorks.rfqIntake"), meta: t("howItWorks.briefsParsed"), progress: "92%" },
+    { icon: Factory, title: t("howItWorks.supplierMatch"), meta: t("howItWorks.ateliersRanked"), progress: "88%" },
+    { icon: PackageCheck, title: t("howItWorks.sampleReview"), meta: t("howItWorks.approvalsQueued"), progress: "76%" },
   ];
 
   return (
@@ -82,12 +87,12 @@ function AutomationWorkflowVisual() {
       <div className="relative flex h-full min-h-[320px] flex-col justify-between gap-8">
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-[10px] uppercase tracking-[0.28em] text-electric">AI Orchestration</p>
-            <h4 className="mt-3 font-serif text-2xl tracking-tight">Sourcing command flow</h4>
+            <p className="text-[10px] uppercase tracking-[0.28em] text-electric">{t("howItWorks.orchestration")}</p>
+            <h4 className="mt-3 font-serif text-2xl tracking-tight">{t("howItWorks.commandFlow")}</h4>
           </div>
           <div className="flex items-center gap-2 rounded-full border border-electric/20 bg-electric/10 px-3 py-1.5 text-xs text-electric">
             <Bot className="size-3.5" />
-            Live mockup
+            {t("howItWorks.liveMockup")}
           </div>
         </div>
 
@@ -127,15 +132,15 @@ function AutomationWorkflowVisual() {
 
         <div className="grid gap-3 sm:grid-cols-2">
           <div className="rounded-2xl border border-border/70 bg-background/45 p-4">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Next action</p>
+            <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">{t("howItWorks.nextAction")}</p>
             <div className="mt-3 flex items-center gap-2 text-sm">
               <CheckCircle2 className="size-4 text-electric" />
-              Generate supplier quote comparison
+              {t("howItWorks.generateQuote")}
             </div>
           </div>
           <div className="rounded-2xl border border-border/70 bg-background/45 p-4">
-            <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">Human checkpoint</p>
-            <div className="mt-3 text-sm">Creative Director approval pending</div>
+            <p className="text-[10px] uppercase tracking-[0.25em] text-muted-foreground">{t("howItWorks.humanCheckpoint")}</p>
+            <div className="mt-3 text-sm">{t("howItWorks.directorApproval")}</div>
           </div>
         </div>
       </div>
