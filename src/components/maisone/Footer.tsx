@@ -81,23 +81,20 @@ export function Footer() {
           <p>© {new Date().getFullYear()} Maisone Global. {t("footer.allRightsReserved")}</p>
           <div className="flex gap-5">
             {[
-              { name: "Instagram", url: "https://www.instagram.com/maisone.global?igsh=MTN0d3Q4dzZrcHZlcg%3D%3D&utm_source=qr" },
-              { name: "LinkedIn", url: "https://www.linkedin.com/company/maisonè-global/?viewAsMember=true" },
-              { name: "Email", url: "mailto:info@maisone.com" }
-            ].map((s) => {
-              const isMailto = s.url.startsWith("mailto:");
-              return (
-                <a 
-                  key={s.name} 
-                  href={s.url} 
-                  target={isMailto ? undefined : "_blank"} 
-                  rel={isMailto ? undefined : "noopener noreferrer"} 
-                  className="hover:text-foreground transition-colors"
-                >
-                  {s.name}
-                </a>
-              );
-            })}
+              { name: "Instagram", url: "https://www.instagram.com/maisone.global?igsh=MTN0d3Q4dzZrcHZlcg%3D%3D&utm_source=qr", isExternal: true },
+              { name: "LinkedIn", url: "https://www.linkedin.com/company/maison%C3%A8-global/?viewAsMember=true", isExternal: true },
+              { name: "Email", url: "mailto:info@maisone.com", isExternal: false }
+            ].map((s) => (
+              <a 
+                key={s.name} 
+                href={s.url} 
+                target={s.isExternal ? "_blank" : undefined} 
+                rel={s.isExternal ? "noopener noreferrer" : undefined} 
+                className="hover:text-foreground transition-colors cursor-pointer"
+              >
+                {s.name}
+              </a>
+            ))}
           </div>
         </div>
       </div>
