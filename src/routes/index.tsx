@@ -174,13 +174,13 @@ function Index() {
           
           {/* Floating AI Assistant Button */}
           <div className="fixed bottom-8 right-8 z-50 flex items-center gap-4">
-            <span className={`bg-card/95 text-foreground border border-electric/40 pt-7 pb-3 px-6 rounded-2xl text-sm font-semibold shadow-[0_10px_30px_-5px_rgba(0,0,0,0.3),0_0_20px_rgba(194,164,109,0.15)] backdrop-blur-md relative animate-float flex flex-col items-start transition-all duration-500 origin-right ${
+            <span className={`bg-card/95 text-foreground border border-electric/40 pl-6 pr-10 py-3.5 rounded-2xl text-sm font-semibold shadow-[0_10px_30px_-5px_rgba(0,0,0,0.3),0_0_20px_rgba(194,164,109,0.15)] backdrop-blur-md relative animate-float flex flex-col items-start transition-all duration-500 origin-right ${
               showAIPopup ? "scale-100 opacity-100 translate-x-0" : "scale-0 opacity-0 translate-x-8 pointer-events-none"
             }`}>
               {/* Close Button */}
               <button
                 onClick={() => setShowAIPopup(false)}
-                className="absolute top-2 left-2.5 size-4 rounded-full bg-[#ff5f56] hover:bg-[#ff5f56]/90 transition-colors cursor-pointer flex items-center justify-center text-white"
+                className="absolute top-3.5 right-3 size-4 rounded-full bg-[#ff5f56] hover:bg-[#ff5f56]/90 transition-colors cursor-pointer flex items-center justify-center text-white"
                 title="Close"
                 aria-label="Close popup"
               >
