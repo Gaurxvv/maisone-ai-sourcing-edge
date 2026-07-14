@@ -116,7 +116,7 @@ export function HowWeWork() {
                 whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.06 }}
-                className="grid md:grid-cols-[1fr_auto_1fr] items-center gap-5 glass-strong rounded-3xl p-6 md:p-8"
+                className="grid md:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)] items-center gap-5 glass-strong rounded-3xl p-6 md:p-8"
               >
                 <p className="font-serif text-xl md:text-2xl text-balance">{p.problem}</p>
                 <ArrowRight className="size-5 text-electric mx-auto rotate-90 md:rotate-0" />
