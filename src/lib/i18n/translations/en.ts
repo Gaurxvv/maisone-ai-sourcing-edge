@@ -343,7 +343,7 @@ export const en = {
 
   // ── ExtraMile / Compliance ──
   extraMile: {
-    label: "— Compliance & Certifications",
+    label: "— Compliance & Certifications of our factory network",
     socialCompliance: "Social Compliance",
     organicContent: "Organic Content",
     organicTextiles: "Organic Textiles",
