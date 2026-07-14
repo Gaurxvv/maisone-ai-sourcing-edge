@@ -15,13 +15,27 @@ const ZipperPull = ({ className }: { className?: string }) => (
 
 
 export function Loader() {
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(() => {
+    if (typeof window !== "undefined") {
+      return !sessionStorage.getItem("maisone_has_loaded");
+    }
+    return true;
+  });
   
   useEffect(() => {
+    if (!show) return;
+    
     // 5 seconds loading time
-    const t = setTimeout(() => setShow(false), 5000);
+    const t = setTimeout(() => {
+      setShow(false);
+      try {
+        sessionStorage.setItem("maisone_has_loaded", "true");
+      } catch (e) {
+        console.error(e);
+      }
+    }, 5000);
     return () => clearTimeout(t);
-  }, []);
+  }, [show]);
 
   return (
     <AnimatePresence>
