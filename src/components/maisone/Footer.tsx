@@ -80,8 +80,12 @@ export function Footer() {
         <div className="flex flex-col sm:flex-row items-center justify-between pt-8 border-t border-border text-xs text-muted-foreground gap-4">
           <p>© {new Date().getFullYear()} Maisone Global. {t("footer.allRightsReserved")}</p>
           <div className="flex gap-5">
-            {["Instagram", "LinkedIn", "Facebook"].map((s) => (
-              <a key={s} href="#" className="hover:text-foreground transition-colors">{s}</a>
+            {[
+              { name: "Instagram", url: "https://www.instagram.com/maisone.global?igsh=MTN0d3Q4dzZrcHZlcg%3D%3D&utm_source=qr" },
+              { name: "LinkedIn", url: "https://www.linkedin.com/company/maisonè-global/?viewAsMember=true" },
+              { name: "Facebook", url: "#" }
+            ].map((s) => (
+              <a key={s.name} href={s.url} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">{s.name}</a>
             ))}
           </div>
         </div>
