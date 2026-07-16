@@ -1,4 +1,4 @@
-import { motion, useSpring } from "framer-motion";
+import { motion, useSpring, useTransform } from "framer-motion";
 import { ArrowRight, Sparkles, TrendingUp } from "lucide-react";
 import { Link } from "@tanstack/react-router";
 import { WorldMap } from "./WorldMap";
@@ -114,6 +114,34 @@ const HoverThreadText = ({ text, className = "" }: { text: string; className?: s
   );
 };
 
+const MotionLink = motion.create(Link);
+
+const WovenBackdrop = ({ cursorX, cursorY }: { cursorX: any; cursorY: any }) => {
+  const xTransform = useTransform(cursorX, [0, 2000], [-10, 10]);
+  const yTransform = useTransform(cursorY, [0, 1000], [-10, 10]);
+  
+  const springX = useSpring(xTransform, { stiffness: 50, damping: 20 });
+  const springY = useSpring(yTransform, { stiffness: 50, damping: 20 });
+
+  return (
+    <div className="absolute inset-0 z-[1] overflow-hidden pointer-events-none opacity-5 dark:opacity-10 mix-blend-overlay">
+      <motion.div
+        className="w-full h-full"
+        style={{ x: springX, y: springY }}
+      >
+        <svg className="w-[110%] h-[110%] -left-[5%] -top-[5%] absolute" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="weavePattern" width="30" height="30" patternUnits="userSpaceOnUse">
+              <path d="M0,15 L30,15 M15,0 L15,30" stroke="var(--foreground)" strokeWidth="0.5" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#weavePattern)" />
+        </svg>
+      </motion.div>
+    </div>
+  );
+};
+
 export function Hero() {
   const [isHoveringHero, setIsHoveringHero] = useState(false);
   const cursorX = useSpring(0, { stiffness: 400, damping: 40 });
@@ -131,6 +159,8 @@ export function Hero() {
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/90 to-background" />
         <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-background" />
       </div>
+
+      <WovenBackdrop cursorX={cursorX} cursorY={cursorY} />
 
       <div className="relative mx-auto w-full max-w-[1400px] px-4 sm:px-6 lg:px-10 z-10">
         <motion.div
@@ -181,19 +211,23 @@ export function Hero() {
           </p>
 
           <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
-            <Link
+            <MotionLink
               to="/book-demo"
-              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-foreground text-background text-sm font-medium hover:scale-[1.02] transition-transform"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="group inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-foreground text-background text-sm font-medium transition-transform"
             >
               {t("hero.bookConsultation")}
               <ArrowRight className="size-4 group-hover:translate-x-0.5 transition-transform" />
-            </Link>
-            <a
+            </MotionLink>
+            <motion.a
               href="#services"
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
               className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full glass text-sm font-medium hover:bg-accent transition-colors"
             >
               {t("hero.exploreServices")}
-            </a>
+            </motion.a>
           </div>
 
           <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-3 max-w-4xl mx-auto">
