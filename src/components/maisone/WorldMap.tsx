@@ -38,13 +38,13 @@ const toXY = (lat: number, lon: number) => ({
 });
 
 export const HUBS = [
-  { name: "United States", region: "United States", lat: 39.09, lon: -98.71, align: "top" },
-  { name: "United Kingdom", region: "United Kingdom", lat: 54.0, lon: -2.5, align: "top" },
-  { name: "France", region: "France", lat: 46.22, lon: 2.21, align: "left" },
-  { name: "Italy", region: "Italy", lat: 42.5, lon: 12.5, align: "right" },
-  { name: "India", region: "India", lat: 21.0, lon: 78.0, align: "left" },
-  { name: "China", region: "China", lat: 33.0, lon: 104.0, align: "bottom" },
-  { name: "Japan", region: "Japan", lat: 36.0, lon: 138.0, align: "right" },
+  { name: "United States", region: "United States", lat: 39.09, lon: -98.71, align: "top", stats: "High-Tech Textiles & Denim" },
+  { name: "United Kingdom", region: "United Kingdom", lat: 54.0, lon: -2.5, align: "top", stats: "Premium Wool & Tweeds" },
+  { name: "France", region: "France", lat: 46.22, lon: 2.21, align: "left", stats: "Luxury Silks & Leather" },
+  { name: "Italy", region: "Italy", lat: 42.5, lon: 12.5, align: "right", stats: "Fine Leather & Knitwear" },
+  { name: "India", region: "India", lat: 21.0, lon: 78.0, align: "left", stats: "Organic Cotton & Embroidery" },
+  { name: "China", region: "China", lat: 33.0, lon: 104.0, align: "bottom", stats: "Advanced Synthetics & Silk" },
+  { name: "Japan", region: "Japan", lat: 36.0, lon: 138.0, align: "right", stats: "Selvedge Denim & Tech Fabrics" },
 ];
 
 const getLabelStyle = (align?: string) => {
@@ -145,10 +145,11 @@ export function WorldMap({ compact = false }: { compact?: boolean }) {
                 key={i}
                 d={`M ${ax} ${ay} Q ${mx} ${my} ${bx} ${by}`}
                 stroke="url(#arc-grad)"
-                strokeWidth="0.15"
+                strokeWidth="0.25"
+                className="drop-shadow-[0_0_1px_rgba(194,164,109,0.8)]"
                 fill="none"
                 initial={{ pathLength: 0, opacity: 0 }}
-                whileInView={{ pathLength: 1, opacity: 0.55 }}
+                whileInView={{ pathLength: 1, opacity: 0.85 }}
                 viewport={{ once: true }}
                 transition={{ duration: 2, delay: i * 0.15 }}
               />
@@ -253,16 +254,17 @@ export function WorldMap({ compact = false }: { compact?: boolean }) {
       {points.map((p, i) => (
         <motion.div
           key={p.name}
-          className="absolute"
+          className="absolute group z-20 cursor-pointer"
           style={{ left: `${p.x}%`, top: `${p.y}%`, transform: "translate(-50%, -50%)" }}
           initial={{ scale: 0, opacity: 0 }}
           whileInView={{ scale: 1, opacity: 1 }}
           viewport={{ once: true }}
           transition={{ delay: 0.3 + i * 0.08, type: "spring" }}
         >
-          <div className="relative">
-            <div className="absolute inset-0 size-3 rounded-full bg-electric animate-pulse-glow" />
-            <div className="relative size-2 rounded-full bg-electric ring-2 ring-background" />
+          <div className="relative flex items-center justify-center">
+            <div className="absolute -inset-2 rounded-full bg-electric/30 animate-ping" style={{ animationDuration: '3s' }} />
+            <div className="absolute inset-0 size-3 rounded-full bg-electric animate-pulse-glow opacity-50" />
+            <div className="relative size-2 rounded-full bg-electric ring-2 ring-background transition-transform duration-300 group-hover:scale-150 group-hover:bg-violet-glow" />
             {!compact && (
               <div 
                 className="absolute whitespace-nowrap z-10"
