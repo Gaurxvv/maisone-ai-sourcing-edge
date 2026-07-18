@@ -157,9 +157,9 @@ export function Hero() {
   const springBgX = useSpring(bgX, { stiffness: 40, damping: 22 });
   const springBgY = useSpring(bgY, { stiffness: 40, damping: 22 });
 
-  // Resolve theme dynamically to swap background image
+  // Resolve theme dynamically to swap background video
   const isDark = theme === "dark";
-  const bgImage = isDark ? "/images/Background.png" : "/images/WhiteBg.png";
+  const bgVideo = isDark ? "/images/dark-bg-final.mp4" : "/images/light-bg-final.mp4";
 
   return (
     <section
@@ -172,10 +172,13 @@ export function Hero() {
     >
       {/* Creative Parallax Background */}
       <div className={`absolute inset-0 z-0 overflow-hidden transition-opacity duration-300 ${isDark ? "opacity-80" : "opacity-90"}`}>
-        <motion.img
-          key={bgImage} // Re-mount when image source changes for smooth loading animation
-          src={bgImage}
-          alt="Hero Background"
+        <motion.video
+          key={bgVideo} // Re-mount when video source changes for smooth loading animation
+          src={bgVideo}
+          autoPlay
+          loop
+          muted
+          playsInline
           className="absolute inset-0 w-full h-full object-cover"
           initial={{ scale: 1.15, opacity: 0 }}
           animate={{ scale: 1.05, opacity: 1 }}
