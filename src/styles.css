@@ -227,6 +227,18 @@
     100% { transform: translateX(-33.333%); }
   }
   .animate-marquee { animation: marquee 40s linear infinite; }
+
+  @keyframes stitch {
+    0% { stroke-dashoffset: 24; }
+    100% { stroke-dashoffset: 0; }
+  }
+  .animate-stitch { animation: stitch 1s linear infinite; }
+
+  @keyframes slow-zoom {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.08); }
+  }
+  .animate-slow-zoom { animation: slow-zoom 20s ease-in-out infinite; }
 }
 
 /* Custom Premium Scrollbar */
