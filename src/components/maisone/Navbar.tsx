@@ -16,56 +16,61 @@ export function Navbar() {
   const [showHint, setShowHint] = useState(false);
 
   useEffect(() => {
-    // Only show hint on main page, and only once
-    if (typeof window !== "undefined" && window.location.pathname === "/") {
-      const hasShown = localStorage.getItem("maisone_settings_hint_v3");
-      if (!hasShown) {
-        const hasLoadedBefore = sessionStorage.getItem("maisone_has_loaded");
-        const delay = hasLoadedBefore ? 4000 : 8500;
+    let hintTimeout: NodeJS.Timeout;
 
-        // Wait for loader to finish (7.5s) + buffer, or 4s if skipped
-        const t1 = setTimeout(() => {
-          setShowHint(true);
-          localStorage.setItem("maisone_settings_hint_v3", "true");
-          
-          // Subtle pop sound via Web Audio API
-          try {
-            const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-            if (AudioContext) {
-              const ctx = new AudioContext();
-              const osc = ctx.createOscillator();
-              const gain = ctx.createGain();
-              osc.connect(gain);
-              gain.connect(ctx.destination);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 20);
+
+      // Trigger hint when scrolling past About section
+      if (typeof window !== "undefined" && window.location.pathname === "/") {
+        const hasShown = localStorage.getItem("maisone_settings_hint_v4");
+        if (!hasShown) {
+          const aboutSection = document.getElementById("about");
+          if (aboutSection) {
+            // Trigger when passing the top of the about section minus a bit of buffer
+            if (window.scrollY > aboutSection.offsetTop - 200) {
+              localStorage.setItem("maisone_settings_hint_v4", "true");
+              setShowHint(true);
               
-              osc.type = "sine";
-              osc.frequency.setValueAtTime(800, ctx.currentTime);
-              osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1);
-              
-              gain.gain.setValueAtTime(0, ctx.currentTime);
-              gain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.02);
-              gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
-              
-              osc.start(ctx.currentTime);
-              osc.stop(ctx.currentTime + 0.3);
+              // Subtle pop sound via Web Audio API
+              try {
+                const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
+                if (AudioContext) {
+                  const ctx = new AudioContext();
+                  const osc = ctx.createOscillator();
+                  const gain = ctx.createGain();
+                  osc.connect(gain);
+                  gain.connect(ctx.destination);
+                  
+                  osc.type = "sine";
+                  osc.frequency.setValueAtTime(800, ctx.currentTime);
+                  osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.1);
+                  
+                  gain.gain.setValueAtTime(0, ctx.currentTime);
+                  gain.gain.linearRampToValueAtTime(0.1, ctx.currentTime + 0.02);
+                  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.3);
+                  
+                  osc.start(ctx.currentTime);
+                  osc.stop(ctx.currentTime + 0.3);
+                }
+              } catch (e) {
+                console.error("Audio play failed", e);
+              }
+
+              // Hide after 6 seconds
+              hintTimeout = setTimeout(() => setShowHint(false), 6000);
             }
-          } catch (e) {
-            console.error("Audio play failed", e);
           }
-
-          // Hide after 6 seconds
-          setTimeout(() => setShowHint(false), 6000);
-        }, delay);
-        return () => clearTimeout(t1);
+        }
       }
-    }
-  }, []);
+    };
 
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
     onScroll();
     window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      clearTimeout(hintTimeout);
+    };
   }, []);
 
   return (
