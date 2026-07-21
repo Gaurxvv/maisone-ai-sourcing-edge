@@ -42,8 +42,8 @@ export function WhyMaisone() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isError, setIsError] = useState(false);
 
-  // The perfect sequence is the logical progression: 1 (Clarity) -> 2 (Integrity) -> 3 (Partnership) -> 4 (Craftsmanship)
-  const perfectAnswer = ["card1", "card2", "card3", "card4"];
+  // The perfect sequence as requested by the user: Integrity (2) -> Partnership (3) -> Craftsmanship (4) -> Clarity (1)
+  const perfectAnswer = ["card2", "card3", "card4", "card1"];
 
   const checkAnswer = () => {
     const currentOrder = order.join(",");
