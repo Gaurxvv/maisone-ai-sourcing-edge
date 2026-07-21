@@ -148,7 +148,7 @@ export function Navbar() {
                     >
                       <div className="absolute -top-2 right-4 w-4 h-4 glass-strong border-l border-t border-electric/40 rotate-45" />
                       <p className="text-xs text-foreground font-medium text-center relative z-10">
-                        {t("nav.settingsHint") || "Customize theme & language here!"}
+                        Customize theme & language here!
                       </p>
                     </motion.div>
                   )}
@@ -167,7 +167,7 @@ export function Navbar() {
                         aria-label="Toggle theme"
                         className="size-8 rounded-full bg-white/5 hover:bg-white/10 flex items-center justify-center hover:scale-105 transition-all border border-white/10"
                       >
-                        {theme === "dark" ? <Sun className="size-3.5" /> : <Moon className="size-3.5" />}
+                        {theme === "dark" ? <Moon className="size-3.5" /> : <Sun className="size-3.5" />}
                       </button>
                     </div>
                     <div className="flex items-center justify-between gap-4">

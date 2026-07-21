@@ -48,7 +48,7 @@ export function SettingsMenu() {
               aria-label="Toggle theme"
               className="size-8 rounded-full bg-foreground/5 hover:bg-foreground/10 flex items-center justify-center hover:scale-105 transition-all border border-border text-foreground"
             >
-              {theme === "dark" ? <Sun className="size-3.5" /> : <Moon className="size-3.5" />}
+              {theme === "dark" ? <Moon className="size-3.5" /> : <Sun className="size-3.5" />}
             </button>
           </div>
 
