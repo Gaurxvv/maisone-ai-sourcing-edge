@@ -169,7 +169,7 @@ export function Navbar() {
                           <span className="text-[10px] uppercase tracking-widest font-bold">Tailor Your View</span>
                         </div>
                         <p className="text-xs text-foreground font-medium text-center leading-relaxed px-1">
-                          Personalize your <span className="text-electric italic font-serif text-sm">fabric</span> of choice—theme & language settings await here!
+                          Customize your theme & language settings here.
                         </p>
                       </div>
                     </motion.div>
