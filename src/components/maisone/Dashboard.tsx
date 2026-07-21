@@ -136,7 +136,7 @@ export function Dashboard() {
   );
 }
 
-export function Overview({ query, data }: { query: string; data?: any[] }) {
+export function Overview({ query, data, hideShipments }: { query: string; data?: any[]; hideShipments?: boolean }) {
   const { t } = useLanguage();
   const [shipmentsList, setShipmentsList] = useState(() => {
     if (typeof window !== "undefined") {
@@ -227,30 +227,32 @@ export function Overview({ query, data }: { query: string; data?: any[] }) {
         </div>
       </div>
 
-      <div className="rounded-xl bg-background border border-border overflow-hidden">
-        <div className="px-5 py-3 border-b border-border flex items-center justify-between">
-          <p className="text-sm font-medium">{t("dashboard.activeShipments")}</p>
-          <span className="text-[10px] text-muted-foreground">{filteredShip.length} {t("dashboard.shown")}</span>
-        </div>
-        <div className="divide-y divide-border text-xs">
-          {filteredShip.map((s: any) => (
-            <div key={s.id} className="grid grid-cols-12 gap-4 px-5 py-3 items-center">
-              <span className="col-span-2 tabular-nums text-muted-foreground">{s.id}</span>
-              <span className="col-span-4">{s.route}</span>
-              <span className="col-span-2 text-muted-foreground">{s.eta}</span>
-              <div className="col-span-3 h-1 rounded-full bg-muted overflow-hidden">
-                <motion.div
-                  className="h-full bg-gradient-to-r from-electric to-cyan-glow"
-                  initial={{ width: 0 }}
-                  animate={{ width: `${s.prog}%` }}
-                  transition={{ duration: 1 }}
-                />
+      {!hideShipments && (
+        <div className="rounded-xl bg-background border border-border overflow-hidden">
+          <div className="px-5 py-3 border-b border-border flex items-center justify-between">
+            <p className="text-sm font-medium">{t("dashboard.activeShipments")}</p>
+            <span className="text-[10px] text-muted-foreground">{filteredShip.length} {t("dashboard.shown")}</span>
+          </div>
+          <div className="divide-y divide-border text-xs">
+            {filteredShip.map((s: any) => (
+              <div key={s.id} className="grid grid-cols-12 gap-4 px-5 py-3 items-center">
+                <span className="col-span-2 tabular-nums text-muted-foreground">{s.id}</span>
+                <span className="col-span-4">{s.route}</span>
+                <span className="col-span-2 text-muted-foreground">{s.eta}</span>
+                <div className="col-span-3 h-1 rounded-full bg-muted overflow-hidden">
+                  <motion.div
+                    className="h-full bg-gradient-to-r from-electric to-cyan-glow"
+                    initial={{ width: 0 }}
+                    animate={{ width: `${s.prog}%` }}
+                    transition={{ duration: 1 }}
+                  />
+                </div>
+                <span className="col-span-1 text-right text-emerald-400">{s.status}</span>
               </div>
-              <span className="col-span-1 text-right text-emerald-400">{s.status}</span>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

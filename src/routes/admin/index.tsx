@@ -1,9 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Search } from "lucide-react";
-import { supabase } from "@/lib/supabase";
 import { Overview } from "@/components/maisone/Dashboard";
-import { OverviewSkeleton } from "../admin";
 import { useLanguage } from "@/lib/i18n";
 
 export const Route = createFileRoute("/admin/")({
@@ -13,27 +11,6 @@ export const Route = createFileRoute("/admin/")({
 function AdminIndexRoute() {
   const { t } = useLanguage();
   const [query, setQuery] = useState("");
-  const [shipmentsList, setShipmentsList] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  const fetchShipments = async () => {
-    try {
-      const { data, error } = await supabase
-        .from("shipments")
-        .select("id:shipment_id, route, eta, status, prog:progress")
-        .order("created_at", { ascending: false });
-      if (error) throw error;
-      setShipmentsList(data || []);
-    } catch (err) {
-      console.error("Failed to fetch overview shipments:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchShipments();
-  }, []);
 
   return (
     <div className="space-y-4 animate-in fade-in duration-300">
@@ -47,11 +24,7 @@ function AdminIndexRoute() {
           className="w-full rounded-xl bg-foreground/[0.03] border border-foreground/10 pl-11 pr-4 py-2.5 text-sm focus:outline-none focus:ring-1 focus:ring-electric text-foreground"
         />
       </div>
-      {loading ? (
-        <OverviewSkeleton />
-      ) : (
-        <Overview query={query} data={shipmentsList} />
-      )}
+      <Overview query={query} hideShipments={true} />
     </div>
   );
 }

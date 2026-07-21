@@ -27,7 +27,6 @@ import { Route as AdminTrendsRouteImport } from './routes/admin/trends'
 import { Route as AdminTestimonialsRouteImport } from './routes/admin/testimonials'
 import { Route as AdminSuppliersRouteImport } from './routes/admin/suppliers'
 import { Route as AdminSupplierRequestsRouteImport } from './routes/admin/supplier-requests'
-import { Route as AdminShipmentsRouteImport } from './routes/admin/shipments'
 import { Route as AdminLoginRouteImport } from './routes/admin.login'
 import { Route as AdminInquiriesRouteImport } from './routes/admin/inquiries'
 import { Route as AdminBlogsRouteImport } from './routes/admin/blogs'
@@ -122,11 +121,6 @@ const AdminSupplierRequestsRoute = AdminSupplierRequestsRouteImport.update({
   path: '/supplier-requests',
   getParentRoute: () => AdminRoute,
 } as any)
-const AdminShipmentsRoute = AdminShipmentsRouteImport.update({
-  id: '/shipments',
-  path: '/shipments',
-  getParentRoute: () => AdminRoute,
-} as any)
 const AdminLoginRoute = AdminLoginRouteImport.update({
   id: '/login',
   path: '/login',
@@ -159,7 +153,6 @@ export interface FileRoutesByFullPath {
   '/admin/blogs': typeof AdminBlogsRoute
   '/admin/inquiries': typeof AdminInquiriesRoute
   '/admin/login': typeof AdminLoginRoute
-  '/admin/shipments': typeof AdminShipmentsRoute
   '/admin/supplier-requests': typeof AdminSupplierRequestsRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
@@ -182,7 +175,6 @@ export interface FileRoutesByTo {
   '/admin/blogs': typeof AdminBlogsRoute
   '/admin/inquiries': typeof AdminInquiriesRoute
   '/admin/login': typeof AdminLoginRoute
-  '/admin/shipments': typeof AdminShipmentsRoute
   '/admin/supplier-requests': typeof AdminSupplierRequestsRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
@@ -207,7 +199,6 @@ export interface FileRoutesById {
   '/admin/blogs': typeof AdminBlogsRoute
   '/admin/inquiries': typeof AdminInquiriesRoute
   '/admin/login': typeof AdminLoginRoute
-  '/admin/shipments': typeof AdminShipmentsRoute
   '/admin/supplier-requests': typeof AdminSupplierRequestsRoute
   '/admin/suppliers': typeof AdminSuppliersRoute
   '/admin/testimonials': typeof AdminTestimonialsRoute
@@ -233,7 +224,6 @@ export interface FileRouteTypes {
     | '/admin/blogs'
     | '/admin/inquiries'
     | '/admin/login'
-    | '/admin/shipments'
     | '/admin/supplier-requests'
     | '/admin/suppliers'
     | '/admin/testimonials'
@@ -256,7 +246,6 @@ export interface FileRouteTypes {
     | '/admin/blogs'
     | '/admin/inquiries'
     | '/admin/login'
-    | '/admin/shipments'
     | '/admin/supplier-requests'
     | '/admin/suppliers'
     | '/admin/testimonials'
@@ -280,7 +269,6 @@ export interface FileRouteTypes {
     | '/admin/blogs'
     | '/admin/inquiries'
     | '/admin/login'
-    | '/admin/shipments'
     | '/admin/supplier-requests'
     | '/admin/suppliers'
     | '/admin/testimonials'
@@ -433,13 +421,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminSupplierRequestsRouteImport
       parentRoute: typeof AdminRoute
     }
-    '/admin/shipments': {
-      id: '/admin/shipments'
-      path: '/shipments'
-      fullPath: '/admin/shipments'
-      preLoaderRoute: typeof AdminShipmentsRouteImport
-      parentRoute: typeof AdminRoute
-    }
     '/admin/login': {
       id: '/admin/login'
       path: '/login'
@@ -468,7 +449,6 @@ interface AdminRouteChildren {
   AdminBlogsRoute: typeof AdminBlogsRoute
   AdminInquiriesRoute: typeof AdminInquiriesRoute
   AdminLoginRoute: typeof AdminLoginRoute
-  AdminShipmentsRoute: typeof AdminShipmentsRoute
   AdminSupplierRequestsRoute: typeof AdminSupplierRequestsRoute
   AdminSuppliersRoute: typeof AdminSuppliersRoute
   AdminTestimonialsRoute: typeof AdminTestimonialsRoute
@@ -480,7 +460,6 @@ const AdminRouteChildren: AdminRouteChildren = {
   AdminBlogsRoute: AdminBlogsRoute,
   AdminInquiriesRoute: AdminInquiriesRoute,
   AdminLoginRoute: AdminLoginRoute,
-  AdminShipmentsRoute: AdminShipmentsRoute,
   AdminSupplierRequestsRoute: AdminSupplierRequestsRoute,
   AdminSuppliersRoute: AdminSuppliersRoute,
   AdminTestimonialsRoute: AdminTestimonialsRoute,

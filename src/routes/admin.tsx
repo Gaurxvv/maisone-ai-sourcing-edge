@@ -148,77 +148,6 @@ export function StatusDropdown({ currentStatus, onChange, options = ["Pending", 
   );
 }
 
-export function ShipmentStatusDropdown({ currentStatus, onChange }: { currentStatus: string; onChange: (status: string) => void }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const statuses = ["In transit", "Customs", "Delivered"];
-
-  const getStatusStyles = (status: string) => {
-    switch (status) {
-      case "Delivered":
-        return {
-          bg: "bg-emerald-500/10 hover:bg-emerald-500/20",
-          text: "text-emerald-400",
-          border: "border-emerald-500/20",
-          dot: "bg-emerald-400"
-        };
-      case "Customs":
-        return {
-          bg: "bg-amber-500/10 hover:bg-amber-500/20",
-          text: "text-amber-400",
-          border: "border-amber-500/20",
-          dot: "bg-amber-400"
-        };
-      default: // "In transit"
-        return {
-          bg: "bg-blue-500/10 hover:bg-blue-500/20",
-          text: "text-blue-400",
-          border: "border-blue-500/20",
-          dot: "bg-blue-400"
-        };
-    }
-  };
-
-  const current = getStatusStyles(currentStatus);
-
-  return (
-    <div className="relative inline-block text-left">
-      <button
-        type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className={`inline-flex items-center justify-between gap-2 text-xs font-semibold px-3.5 py-1.5 rounded-full border transition-all cursor-pointer ${current.bg} ${current.text} ${current.border}`}
-      >
-        <span className={`size-1.5 rounded-full ${current.dot}`} />
-        {currentStatus}
-        <ChevronDown className={`size-3 opacity-60 transition-transform duration-200 ${isOpen ? "rotate-180" : ""}`} />
-      </button>
-
-      {isOpen && (
-        <>
-          <div className="fixed inset-0 z-30" onClick={() => setIsOpen(false)} />
-          <div className="absolute left-0 mt-2 w-36 rounded-xl border border-border bg-background/95 backdrop-blur-md py-1 shadow-2xl z-40 overflow-hidden">
-            {statuses.map((status) => {
-              const styles = getStatusStyles(status);
-              return (
-                <button
-                  key={status}
-                  type="button"
-                  onClick={() => {
-                    onChange(status);
-                    setIsOpen(false);
-                  }}
-                  className={`w-full text-left px-4 py-2.5 text-xs flex items-center gap-2 hover:bg-foreground/5 transition-colors cursor-pointer ${styles.text}`}
-                >
-                  <span className={`size-1.5 rounded-full ${styles.dot}`} />
-                  {status}
-                </button>
-              );
-            })}
-          </div>
-        </>
-      )}
-    </div>
-  );
-}
 
 export function CustomSelect({ value, onChange, options }: { value: string; onChange: (v: string) => void; options: string[] }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -321,14 +250,13 @@ export function OverviewSkeleton() {
   );
 }
 
-type AdminTab = "overview" | "inquiries" | "supplier_requests" | "suppliers" | "shipments" | "trends" | "blogs" | "testimonials";
+type AdminTab = "overview" | "inquiries" | "supplier_requests" | "suppliers" | "trends" | "blogs" | "testimonials";
 
 const ADMIN_TABS = [
   { id: "overview" as const, to: "/admin" as const, labelKey: "admin.tabs.overview", icon: Layers },
   { id: "inquiries" as const, to: "/admin/inquiries" as const, labelKey: "admin.tabs.inquiries", icon: Mail },
   { id: "supplier_requests" as const, to: "/admin/supplier-requests" as const, labelKey: "admin.tabs.supplierRequests", icon: Mail },
   { id: "suppliers" as const, to: "/admin/suppliers" as const, labelKey: "admin.tabs.suppliers", icon: Building2 },
-  { id: "shipments" as const, to: "/admin/shipments" as const, labelKey: "admin.tabs.shipments", icon: Globe },
   { id: "trends" as const, to: "/admin/trends" as const, labelKey: "admin.tabs.trends", icon: TrendingUp },
   { id: "blogs" as const, to: "/admin/blogs" as const, labelKey: "admin.tabs.blogs", icon: BookOpen },
   { id: "testimonials" as const, to: "/admin/testimonials" as const, labelKey: "admin.tabs.testimonials", icon: MessageSquare },
