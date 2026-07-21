@@ -152,7 +152,7 @@ export function Navbar() {
                       initial={{ opacity: 0, y: 10, scale: 0.9 }}
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.9, y: 10 }}
-                      className="absolute right-0 top-full mt-3 w-60 bg-card rounded-xl border-2 border-dashed border-electric/40 shadow-[0_10px_40px_-10px_rgba(194,164,109,0.4)] z-50 pointer-events-none"
+                      className="absolute left-0 top-full mt-3 w-60 bg-card rounded-xl border-2 border-dashed border-electric/40 shadow-[0_10px_40px_-10px_rgba(194,164,109,0.4)] z-50 pointer-events-none"
                     >
                       {/* Background ambient glow */}
                       <div className="absolute inset-0 overflow-hidden rounded-xl pointer-events-none">
@@ -161,7 +161,7 @@ export function Navbar() {
                       </div>
                       
                       {/* Arrow */}
-                      <div className="absolute -top-[10px] right-[12px] w-4 h-4 bg-card border-l-2 border-t-2 border-dashed border-electric/40 rotate-45" />
+                      <div className="absolute -top-[10px] left-[12px] w-4 h-4 bg-card border-l-2 border-t-2 border-dashed border-electric/40 rotate-45" />
                       
                       <div className="relative z-10 p-3 flex flex-col gap-1.5 items-center">
                         <div className="flex items-center gap-2 text-electric bg-electric/10 px-3 py-1 rounded-full border border-electric/20 mb-1">
@@ -180,7 +180,7 @@ export function Navbar() {
                   <motion.div
                     initial={{ opacity: 0, scale: 0.95, y: 10 }}
                     animate={{ opacity: 1, scale: 1, y: 0 }}
-                    className="absolute right-0 top-full mt-2 glass-strong rounded-2xl p-4 border border-white/5 shadow-2xl flex flex-col gap-4 min-w-[200px]"
+                    className="absolute left-0 top-full mt-2 glass-strong rounded-2xl p-4 border border-white/5 shadow-2xl flex flex-col gap-4 min-w-[200px]"
                   >
                     <div className="flex items-center justify-between gap-4">
                       <span className="text-xs text-muted-foreground font-medium">{t("nav.theme") || "Theme"}</span>
